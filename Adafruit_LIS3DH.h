@@ -111,7 +111,7 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   bool       begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
 
   void read();
-  uint16_t readADC(uint8_t a);
+  int16_t readADC(uint8_t a);
 
   void setRange(lis3dh_range_t range);
   lis3dh_range_t getRange(void);
@@ -124,7 +124,7 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
 
   uint8_t getOrientation(void);
 
-  void setClick(uint8_t c, uint8_t clickthresh = 2, uint8_t timelimit = 10, uint8_t timelatency = 20, uint8_t timewindow = 255);
+  void setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit = 10, uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
   int16_t x, y, z;

@@ -168,7 +168,7 @@ void Adafruit_LIS3DH::read(void) {
 */
 /**************************************************************************/
 
-uint16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
+int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
   if ((adc < 1) || (adc > 3)) return 0;
   uint16_t value;
 
