@@ -14,7 +14,7 @@ Atmega32u4 @ 8MHz |      X       |             |            | Use SDA/SCL on pin
 ESP8266           |      X       |             |            | SDA/SCL default to pins 4 &amp; 5 but any two pins can be assigned as SDA/SCL using Wire.begin(SDA,SCL)
 Atmega2560 @ 16MHz |      X       |             |            | 
 ATSAM3X8E         |      X       |             |            | 
-ATSAM21D          |             |             |     X       | 
+ATSAM21D          |      X       |             |            | Use SDA and SCL pins and Native USB port
 ATtiny85 @ 16MHz  |             |             |     X       | 
 ATtiny85 @ 8M     |             |             |     X       | 
 
