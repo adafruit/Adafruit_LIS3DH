@@ -33,17 +33,17 @@
 */
 /**************************************************************************/
 // I2C
-Adafruit_LIS3DH::Adafruit_LIS3DH() 
+Adafruit_LIS3DH::Adafruit_LIS3DH()
   : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
 {
 }
 
-Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin) 
-  : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1) 
+Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin)
+  : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
 { }
 
-Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin) 
-  : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin), _sensorID(-1) 
+Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
+  : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin), _sensorID(-1)
 { }
 
 
@@ -55,7 +55,7 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, i
 /**************************************************************************/
 bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   _i2caddr = i2caddr;
-  
+
 
   if (_cs == -1) {
     // i2c
@@ -129,7 +129,7 @@ void Adafruit_LIS3DH::read(void) {
     Wire.beginTransmission(_i2caddr);
     Wire.write(LIS3DH_REG_OUT_X_L | 0x80); // 0x80 for autoincrement
     Wire.endTransmission();
-    
+
     Wire.requestFrom(_i2caddr, 6);
     x = Wire.read(); x |= ((uint16_t)Wire.read()) << 8;
     y = Wire.read(); y |= ((uint16_t)Wire.read()) << 8;
@@ -146,7 +146,7 @@ void Adafruit_LIS3DH::read(void) {
 
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus 
+      SPI.endTransaction();              // release the SPI bus
 
   }
   uint8_t range = getRange();
@@ -180,7 +180,7 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
     // i2c
     Wire.beginTransmission(_i2caddr);
     Wire.write(reg | 0x80);   // 0x80 for autoincrement
-    Wire.endTransmission();    
+    Wire.endTransmission();
     Wire.requestFrom(_i2caddr, 2);
     value = Wire.read();  value |= ((uint16_t)Wire.read()) << 8;
   } else {
@@ -193,7 +193,7 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
 
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus 
+      SPI.endTransaction();              // release the SPI bus
   }
 
   return value;
@@ -214,7 +214,7 @@ void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit
     writeRegister8(LIS3DH_REG_CTRL3, r);
     writeRegister8(LIS3DH_REG_CLICKCFG, 0);
     return;
-  } 
+  }
   // else...
 
   writeRegister8(LIS3DH_REG_CTRL3, 0x80); // turn on int1 click
@@ -285,7 +285,7 @@ lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void)
 }
 
 /**************************************************************************/
-/*! 
+/*!
     @brief  Gets the most recent sensor event
 */
 /**************************************************************************/
@@ -300,13 +300,13 @@ bool Adafruit_LIS3DH::getEvent(sensors_event_t *event) {
 
   read();
 
-  event->acceleration.x = x_g;
-  event->acceleration.y = y_g;
-  event->acceleration.z = z_g;
+  event->acceleration.x = x_g * SENSORS_GRAVITY_STANDARD;
+  event->acceleration.y = y_g * SENSORS_GRAVITY_STANDARD;
+  event->acceleration.z = z_g * SENSORS_GRAVITY_STANDARD;
 }
 
 /**************************************************************************/
-/*! 
+/*!
     @brief  Gets the sensor_t data
 */
 /**************************************************************************/
@@ -321,22 +321,22 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   sensor->sensor_id   = _sensorID;
   sensor->type        = SENSOR_TYPE_ACCELEROMETER;
   sensor->min_delay   = 0;
-  sensor->max_value   = 0;             
+  sensor->max_value   = 0;
   sensor->min_value   = 0;
-  sensor->resolution  = 0;             
+  sensor->resolution  = 0;
 }
 
 
 /**************************************************************************/
-/*! 
+/*!
     @brief  Low level SPI
 */
 /**************************************************************************/
 
 uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
-  if (_sck == -1) 
+  if (_sck == -1)
     return SPI.transfer(x);
-  
+
   // software spi
   //Serial.println("Software SPI");
   uint8_t reply = 0;
@@ -345,7 +345,7 @@ uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
     digitalWrite(_sck, LOW);
     digitalWrite(_mosi, x & (1<<i));
     digitalWrite(_sck, HIGH);
-    if (digitalRead(_miso)) 
+    if (digitalRead(_miso))
       reply |= 1;
   }
   return reply;
@@ -382,7 +382,7 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
 /**************************************************************************/
 uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   uint8_t value;
-  
+
   if (_cs == -1) {
     Wire.beginTransmission(_i2caddr);
     Wire.write((uint8_t)reg);
@@ -402,4 +402,3 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   }
   return value;
 }
-
