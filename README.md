@@ -1,5 +1,5 @@
 # Adafruit_LIS3DH
-Arduino Library for Adafruit LIS3DH breakout board
+Arduino Library for Adafruit LIS3DH breakout board (https://www.adafruit.com/products/2809)
 
 <!-- START COMPATIBILITY TABLE -->
 
