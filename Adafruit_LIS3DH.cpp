@@ -64,6 +64,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
     digitalWrite(_cs, HIGH);
     pinMode(_cs, OUTPUT);
 
+#ifndef __AVR_ATtiny85__
     if (_sck == -1) {
       // hardware SPI
       SPI.begin();
@@ -73,6 +74,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
       pinMode(_mosi, OUTPUT);
       pinMode(_miso, INPUT);
     }
+#endif
   }
 
   /*
@@ -88,7 +90,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   if (deviceid != 0x33)
   {
     /* No LIS3DH detected ... return false */
-    Serial.println(deviceid, HEX);
+    //Serial.println(deviceid, HEX);
     return false;
   }
 
@@ -134,7 +136,9 @@ void Adafruit_LIS3DH::read(void) {
     x = Wire.read(); x |= ((uint16_t)Wire.read()) << 8;
     y = Wire.read(); y |= ((uint16_t)Wire.read()) << 8;
     z = Wire.read(); z |= ((uint16_t)Wire.read()) << 8;
-  } else {
+  } 
+  #ifndef __AVR_ATtiny85__
+  else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
@@ -149,6 +153,7 @@ void Adafruit_LIS3DH::read(void) {
       SPI.endTransaction();              // release the SPI bus 
 
   }
+  #endif
   uint8_t range = getRange();
   uint16_t divider = 1;
   if (range == LIS3DH_RANGE_16_G) divider = 2048;
@@ -183,7 +188,9 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
     Wire.endTransmission();    
     Wire.requestFrom(_i2caddr, 2);
     value = Wire.read();  value |= ((uint16_t)Wire.read()) << 8;
-  } else {
+  } 
+  #ifndef __AVR_ATtiny85__
+  else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
@@ -195,6 +202,7 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
     if (_sck == -1)
       SPI.endTransaction();              // release the SPI bus 
   }
+  #endif
 
   return value;
 }
@@ -334,6 +342,7 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
 /**************************************************************************/
 
 uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
+  #ifndef __AVR_ATtiny85__
   if (_sck == -1) 
     return SPI.transfer(x);
   
@@ -349,6 +358,7 @@ uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
       reply |= 1;
   }
   return reply;
+  #endif
 }
 
 
@@ -363,7 +373,9 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
     Wire.write((uint8_t)reg);
     Wire.write((uint8_t)value);
     Wire.endTransmission();
-  } else {
+  } 
+  #ifndef __AVR_ATtiny85__
+  else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
@@ -373,6 +385,7 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
     if (_sck == -1)
       SPI.endTransaction();              // release the SPI bus
   }
+  #endif
 }
 
 /**************************************************************************/
@@ -390,7 +403,9 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
 
     Wire.requestFrom(_i2caddr, 1);
     value = Wire.read();
-  }  else {
+  }  
+  #ifndef __AVR_ATtiny85__
+  else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
@@ -400,6 +415,7 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
     if (_sck == -1)
       SPI.endTransaction();              // release the SPI bus
   }
+  #endif
   return value;
 }
 
