@@ -24,7 +24,9 @@
 #endif
 
 #include <Wire.h>
-#include <SPI.h>
+#ifndef __AVR_ATtiny85__
+  #include <SPI.h>
+#endif
 #include <Adafruit_Sensor.h>
 
 /*=========================================================================
