@@ -5,18 +5,20 @@ Arduino Library for Adafruit LIS3DH breakout board (https://www.adafruit.com/pro
 
 ## Compatibility
 
-MCU               | Tested Works | Doesn't Work | Not Tested  | Notes
------------------ | :----------: | :----------: | :---------: | -----
-Atmega328 @ 16MHz |      X       |             |            | 
-Atmega328 @ 12MHz |      X       |             |            | 
+MCU                | Tested Works | Doesn't Work | Not Tested  | Notes
+------------------ | :----------: | :----------: | :---------: | -----
+Atmega328 @ 16MHz  |      X       |             |            | 
+Atmega328 @ 12MHz  |      X       |             |            | 
 Atmega32u4 @ 16MHz |      X       |             |            | Use SDA/SCL on pins D2 &amp; D3
-Atmega32u4 @ 8MHz |      X       |             |            | Use SDA/SCL on pins D2 &amp; D3
-ESP8266           |      X       |             |            | SDA/SCL default to pins 4 &amp; 5 but any two pins can be assigned as SDA/SCL using Wire.begin(SDA,SCL)
+Atmega32u4 @ 8MHz  |      X       |             |            | Use SDA/SCL on pins D2 &amp; D3
+ESP8266            |      X       |             |            | SDA/SCL default to pins 4 &amp; 5 but any two pins can be assigned as SDA/SCL using Wire.begin(SDA,SCL)
 Atmega2560 @ 16MHz |      X       |             |            | 
-ATSAM3X8E         |      X       |             |            | 
-ATSAM21D          |      X       |             |            | Use SDA and SCL pins and Native USB port
-ATtiny85 @ 16MHz  |      X       |             |            | 
-ATtiny85 @ 8MHz   |      X       |             |            | 
+ATSAM3X8E          |      X       |             |            | 
+ATSAM21D           |      X       |             |            | Use SDA and SCL pins and Native USB port
+ATtiny85 @ 16MHz   |      X       |             |            | 
+ATtiny85 @ 8MHz    |      X       |             |            | 
+Intel Curie @ 32MHz |             |             |     X       | 
+STM32F2            |             |             |     X       | 
 
   * ATmega328 @ 16MHz : Arduino UNO, Adafruit Pro Trinket 5V, Adafruit Metro 328, Adafruit Metro Mini
   * ATmega328 @ 12MHz : Adafruit Pro Trinket 3V
