@@ -122,6 +122,16 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   return true;
 }
 
+/**************************************************************************/
+/*!
+@brief  Check to see if new data available
+*/
+/**************************************************************************/
+
+bool Adafruit_LIS3DH::available() {
+	// checking ZYXDA in REG_STATUS2 tells us if data available
+	return (readRegister8(LIS3DH_REG_STATUS2) & 0x8) >> 3;
+}
 
 void Adafruit_LIS3DH::read(void) {
   // read x y z at once

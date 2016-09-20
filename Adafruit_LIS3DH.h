@@ -112,6 +112,8 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   
   bool       begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
 
+  bool available();
+
   void read();
   int16_t readADC(uint8_t a);
 
