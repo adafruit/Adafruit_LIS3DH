@@ -84,6 +84,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 #endif
   }
 
+  /*
   Serial.println("Debug");
   
   for (uint8_t i=0; i<0x30; i++) {
@@ -91,7 +92,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
     Serial.print(i, HEX); Serial.print(" = 0x");
     Serial.println(readRegister8(i), HEX);
   }
-  
+  */
 
   /* Check connection */
   uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
