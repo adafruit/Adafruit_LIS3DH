@@ -71,6 +71,8 @@
 #define LIS3DH_REG_TIMELIMIT     0x3B
 #define LIS3DH_REG_TIMELATENCY   0x3C
 #define LIS3DH_REG_TIMEWINDOW    0x3D
+#define LIS3DH_REG_ACTTHS        0x3E
+#define LIS3DH_REG_ACTDUR        0x3F
 
 typedef enum
 {
