@@ -36,6 +36,13 @@
 Adafruit_LIS3DH::Adafruit_LIS3DH()
   : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
 {
+  I2Cinterface = &Wire;
+}
+
+Adafruit_LIS3DH::Adafruit_LIS3DH(TwoWire *Wi)
+  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
+{
+  I2Cinterface = Wi;
 }
 
 Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin)
@@ -59,7 +66,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 
   if (_cs == -1) {
     // i2c
-    Wire.begin();
+    I2Cinterface->begin();
   } else {
     digitalWrite(_cs, HIGH);
     pinMode(_cs, OUTPUT);
@@ -78,6 +85,8 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   }
 
   /*
+  Serial.println("Debug");
+  
   for (uint8_t i=0; i<0x30; i++) {
     Serial.print("$");
     Serial.print(i, HEX); Serial.print(" = 0x");
@@ -128,14 +137,14 @@ void Adafruit_LIS3DH::read(void) {
 
   if (_cs == -1) {
     // i2c
-    Wire.beginTransmission(_i2caddr);
-    Wire.write(LIS3DH_REG_OUT_X_L | 0x80); // 0x80 for autoincrement
-    Wire.endTransmission();
+    I2Cinterface->beginTransmission(_i2caddr);
+    I2Cinterface->write(LIS3DH_REG_OUT_X_L | 0x80); // 0x80 for autoincrement
+    I2Cinterface->endTransmission();
 
-    Wire.requestFrom(_i2caddr, 6);
-    x = Wire.read(); x |= ((uint16_t)Wire.read()) << 8;
-    y = Wire.read(); y |= ((uint16_t)Wire.read()) << 8;
-    z = Wire.read(); z |= ((uint16_t)Wire.read()) << 8;
+    I2Cinterface->requestFrom(_i2caddr, 6);
+    x = I2Cinterface->read(); x |= ((uint16_t)I2Cinterface->read()) << 8;
+    y = I2Cinterface->read(); y |= ((uint16_t)I2Cinterface->read()) << 8;
+    z = I2Cinterface->read(); z |= ((uint16_t)I2Cinterface->read()) << 8;
   } 
   #ifndef __AVR_ATtiny85__
   else {
@@ -183,11 +192,11 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
 
   if (_cs == -1) {
     // i2c
-    Wire.beginTransmission(_i2caddr);
-    Wire.write(reg | 0x80);   // 0x80 for autoincrement
-    Wire.endTransmission();
-    Wire.requestFrom(_i2caddr, 2);
-    value = Wire.read();  value |= ((uint16_t)Wire.read()) << 8;
+    I2Cinterface->beginTransmission(_i2caddr);
+    I2Cinterface->write(reg | 0x80);   // 0x80 for autoincrement
+    I2Cinterface->endTransmission();
+    I2Cinterface->requestFrom(_i2caddr, 2);
+    value = I2Cinterface->read();  value |= ((uint16_t)I2Cinterface->read()) << 8;
   } 
   #ifndef __AVR_ATtiny85__
   else {
@@ -369,10 +378,10 @@ uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
 /**************************************************************************/
 void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
   if (_cs == -1) {
-    Wire.beginTransmission((uint8_t)_i2caddr);
-    Wire.write((uint8_t)reg);
-    Wire.write((uint8_t)value);
-    Wire.endTransmission();
+    I2Cinterface->beginTransmission((uint8_t)_i2caddr);
+    I2Cinterface->write((uint8_t)reg);
+    I2Cinterface->write((uint8_t)value);
+    I2Cinterface->endTransmission();
   } 
   #ifndef __AVR_ATtiny85__
   else {
@@ -397,12 +406,12 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   uint8_t value;
 
   if (_cs == -1) {
-    Wire.beginTransmission(_i2caddr);
-    Wire.write((uint8_t)reg);
-    Wire.endTransmission();
+    I2Cinterface->beginTransmission(_i2caddr);
+    I2Cinterface->write((uint8_t)reg);
+    I2Cinterface->endTransmission();
 
-    Wire.requestFrom(_i2caddr, 1);
-    value = Wire.read();
+    I2Cinterface->requestFrom(_i2caddr, 1);
+    value = I2Cinterface->read();
   }  
   #ifndef __AVR_ATtiny85__
   else {
