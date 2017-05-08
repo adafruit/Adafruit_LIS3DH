@@ -17,6 +17,10 @@
 */
 /**************************************************************************/
 
+
+#ifndef ADAFRUIT_LIS3DH_H
+#define ADAFRUIT_LIS3DH_H
+
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -149,3 +153,5 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   // SPI
   int8_t _cs, _mosi, _miso, _sck;
 };
+
+#endif
