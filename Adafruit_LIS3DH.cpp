@@ -131,6 +131,25 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   return true;
 }
 
+/**************************************************************************/
+
+/*!
+    @brief  Checks connection status to LIS3DH.
+*/
+
+/**************************************************************************/
+
+bool Adafruit_LIS3DH::isAlive(void) {
+
+  uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
+  if (deviceid != 0x33)
+  {
+    /* No LIS3DH detected ... return false */
+    //Serial.println(deviceid, HEX);
+    return false;
+  }
+  return true;
+}
 
 void Adafruit_LIS3DH::read(void) {
   // read x y z at once
