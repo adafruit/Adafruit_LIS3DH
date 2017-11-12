@@ -81,6 +81,7 @@
 typedef enum
 {
   LIS3DH_RANGE_16_G         = 0b11,   // +/- 16g
+
   LIS3DH_RANGE_8_G           = 0b10,   // +/- 8g
   LIS3DH_RANGE_4_G           = 0b01,   // +/- 4g
   LIS3DH_RANGE_2_G           = 0b00    // +/- 2g (default value)
@@ -118,6 +119,7 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
   
   bool       begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
+  bool       isAlive(void);
  
   void read();
   int16_t readADC(uint8_t a);
