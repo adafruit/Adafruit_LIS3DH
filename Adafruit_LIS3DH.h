@@ -78,6 +78,10 @@
 #define LIS3DH_REG_ACTTHS        0x3E
 #define LIS3DH_REG_ACTDUR        0x3F
 
+//WSS FFL 09.2018
+#define LIS3DH_WAI			     0x33
+#define LIS3DSH_WAI			     0x3F
+
 typedef enum
 {
   LIS3DH_RANGE_16_G         = 0b11,   // +/- 16g
@@ -117,13 +121,16 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   Adafruit_LIS3DH(int8_t cspin);
   Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
   
-  bool       begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
+  bool	begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
  
   void read();
   int16_t readADC(uint8_t a);
 
   void setRange(lis3dh_range_t range);
   lis3dh_range_t getRange(void);
+  
+  //WSS FFL 09.2018
+  void setWAI(uint8_t wWAI);
 
   void setDataRate(lis3dh_dataRate_t dataRate);
   lis3dh_dataRate_t getDataRate(void);
@@ -138,6 +145,8 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
 
   int16_t x, y, z;
   float x_g, y_g, z_g;
+  
+  byte _wai;
 
  private:
   TwoWire *I2Cinterface;

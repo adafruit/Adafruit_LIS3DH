@@ -34,25 +34,39 @@
 /**************************************************************************/
 // I2C
 Adafruit_LIS3DH::Adafruit_LIS3DH()
-  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
+  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1), _wai(LIS3DH_WAI)
 {
   I2Cinterface = &Wire;
 }
 
 Adafruit_LIS3DH::Adafruit_LIS3DH(TwoWire *Wi)
-  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
+  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1), _wai(LIS3DH_WAI)
 {
   I2Cinterface = Wi;
 }
 
 Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin)
-  : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
+  : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1), _wai(LIS3DH_WAI)
 { }
 
 Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
-  : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin), _sensorID(-1)
+  : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin), _sensorID(-1), _wai(LIS3DH_WAI)
 { }
 
+
+
+/**************************************************************************/
+/*!
+    @brief  Reads 8-bits from the specified register
+*/
+/**************************************************************************/
+void Adafruit_LIS3DH::setWAI(uint8_t wWAI){
+	
+	_wai = wWAI;
+	
+	//return;
+	
+}
 
 
 /**************************************************************************/
@@ -96,7 +110,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 
   /* Check connection */
   uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
-  if (deviceid != 0x33)
+  if (deviceid != _wai)
   {
     /* No LIS3DH detected ... return false */
     //Serial.println(deviceid, HEX);
