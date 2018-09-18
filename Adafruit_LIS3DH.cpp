@@ -57,7 +57,7 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, i
 
 /**************************************************************************/
 /*!
-    @brief  Reads 8-bits from the specified register
+    @brief  Sets expected "Who Am I" register
 */
 /**************************************************************************/
 void Adafruit_LIS3DH::setWAI(uint8_t wWAI){
