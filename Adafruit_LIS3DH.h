@@ -17,6 +17,9 @@
 */
 /**************************************************************************/
 
+#ifndef ADAFRUIT_LIS3DH_H
+#define ADAFRUIT_LIS3DH_H
+
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -137,15 +140,18 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   float x_g, y_g, z_g;
 
  private:
-  
+  TwoWire *I2Cinterface;
+
   uint8_t readRegister8(uint8_t reg);
   void writeRegister8(uint8_t reg, uint8_t value);
   uint8_t spixfer(uint8_t x = 0xFF);
 
-
-  int32_t _sensorID;
-  int8_t  _i2caddr;
-
   // SPI
   int8_t _cs, _mosi, _miso, _sck;
+
+  int8_t  _i2caddr;
+
+  int32_t _sensorID;
 };
+
+#endif
