@@ -1,65 +1,91 @@
-/**************************************************************************/
 /*!
-    @file     Adafruit_LIS3DH.cpp
-    @author   K. Townsend / Limor Fried (Adafruit Industries)
-    @license  BSD (see license.txt)
+ * @file Adafruit_LIS3DH.cpp
+ *
+ *  @mainpage Adafruit LIS3DH breakout board 
+ *
+ *  @section intro_sec Introduction
+ *
+ *  This is a library for the Adafruit LIS3DH Accel breakout board
+ *
+ *  Designed specifically to work with the Adafruit LIS3DH Accel breakout board.
+ *
+ *  Pick one up today in the adafruit shop!
+ *  ------> https://www.adafruit.com/product/2809
+ *
+ *  This sensor communicates over I2C or SPI (our library code supports both) so you can share it with a bunch of other sensors on the same I2C bus.
+ *
+ *  Adafruit invests time and resources providing this open source code,
+ *  please support Adafruit andopen-source hardware by purchasing products
+ *  from Adafruit!
+ *
+ *  @section author Author
+ *
+ *  K. Townsend / Limor Fried (Adafruit Industries)
+ *
+ *  @section license License
+ *
+ *  BSD license, all text above must be included in any redistribution
+ */
 
-    This is a library for the Adafruit LIS3DH Accel breakout board
-    ----> https://www.adafruit.com/products/2809
-
-    Adafruit invests time and resources providing this open source code,
-    please support Adafruit and open-source hardware by purchasing
-    products from Adafruit!
-
-    @section  HISTORY
-
-    v1.0  - First release
-*/
-/**************************************************************************/
-
-#if ARDUINO >= 100
  #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
 
 #include <Wire.h>
 #include <Adafruit_LIS3DH.h>
 
 
-/**************************************************************************/
 /*!
-    @brief  Instantiates a new LIS3DH class in I2C or SPI mode
-*/
-/**************************************************************************/
-// I2C
-Adafruit_LIS3DH::Adafruit_LIS3DH()
-  : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
-{
-  I2Cinterface = &Wire;
-}
-
+ *  @brief  Instantiates a new LIS3DH class in I2C 
+ *  @param  Wi
+ *          optional wire object
+ */
 Adafruit_LIS3DH::Adafruit_LIS3DH(TwoWire *Wi)
   : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
 {
   I2Cinterface = Wi;
 }
 
-Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin)
-  : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1)
-{ }
-
-Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
-  : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin), _sensorID(-1)
-{ }
-
-
-
-/**************************************************************************/
 /*!
-    @brief  Setups the HW (reads coefficients values, etc.)
-*/
-/**************************************************************************/
+ *   @brief  Instantiates a new LIS3DH class using hardware SPI
+ *   @param  cspin
+ *           number of CSPIN (Chip Select)
+ *   @param  *theSPI
+ *           optional parameter contains spi object
+ */
+Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI)
+{ 
+	_cs = cspin;
+	_mosi = -1;
+	_miso = -1;
+	_sck = -1;
+	_sensorID = -1;
+	SPIinterface = theSPI;
+}
+
+/*!
+ *   @brief  Instantiates a new LIS3DH class using software SPI
+ *   @param  cspin
+ *           number of CSPIN (Chip Select)
+ *   @param  mosipin
+ *           number of pin used for MOSI (Master Out Slave In))
+ *   @param  misopin
+ *           number of pin used for MISO (Master In Slave Out)
+ *   @param  sckpin
+ *           number of pin used for CLK (clock pin)
+ */
+Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
+{
+	_cs = cspin;
+	_mosi = mosipin;
+	_miso = misopin;
+	_sck = sckpin;
+	_sensorID = -1;
+}
+
+/*!
+ *  @brief  Setups the HW (reads coefficients values, etc.)
+ *  @param  i2caddr 
+ *          i2c address (optional, fallback to default)
+ */
 bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   _i2caddr = i2caddr;
 
@@ -74,7 +100,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 #ifndef __AVR_ATtiny85__
     if (_sck == -1) {
       // hardware SPI
-      SPI.begin();
+      SPIinterface->begin();
     } else {
       // software SPI
       pinMode(_sck, OUTPUT);
@@ -131,10 +157,10 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   return true;
 }
 
-
-void Adafruit_LIS3DH::read(void) {
-  // read x y z at once
-
+/*!
+ *  @brief  Reads x y z values at once
+ */
+void Adafruit_LIS3DH::read() {
   if (_cs == -1) {
     // i2c
     I2Cinterface->beginTransmission(_i2caddr);
@@ -149,7 +175,7 @@ void Adafruit_LIS3DH::read(void) {
   #ifndef __AVR_ATtiny85__
   else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(LIS3DH_REG_OUT_X_L | 0x80 | 0x40); // read multiple, bit 7&6 high
 
@@ -159,7 +185,7 @@ void Adafruit_LIS3DH::read(void) {
 
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus
+      SPIinterface->endTransaction();              // release the SPI bus
 
   }
   #endif
@@ -176,12 +202,11 @@ void Adafruit_LIS3DH::read(void) {
 
 }
 
-/**************************************************************************/
 /*!
-    @brief  Read the auxilary ADC
-*/
-/**************************************************************************/
-
+ *  @brief  Read the auxilary ADC
+ *  @param  adc
+ *          adc value
+ */
 int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
   if ((adc < 1) || (adc > 3)) return 0;
   uint16_t value;
@@ -201,7 +226,7 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
   #ifndef __AVR_ATtiny85__
   else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80 | 0x40); // read multiple, bit 7&6 high
 
@@ -209,7 +234,7 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
 
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus
+      SPIinterface->endTransaction();              // release the SPI bus
   }
   #endif
 
@@ -254,11 +279,11 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Sets the g range for the accelerometer
-*/
-/**************************************************************************/
+ *   @brief  Sets the g range for the accelerometer
+ *   @param  range
+ *           range value 
+ */
 void Adafruit_LIS3DH::setRange(lis3dh_range_t range)
 {
   uint8_t r = readRegister8(LIS3DH_REG_CTRL4);
@@ -267,22 +292,21 @@ void Adafruit_LIS3DH::setRange(lis3dh_range_t range)
   writeRegister8(LIS3DH_REG_CTRL4, r);
 }
 
-/**************************************************************************/
 /*!
-    @brief  Sets the g range for the accelerometer
-*/
-/**************************************************************************/
-lis3dh_range_t Adafruit_LIS3DH::getRange(void)
+ *  @brief  Gets the g range for the accelerometer
+ *  @return Returns g range value
+ */
+lis3dh_range_t Adafruit_LIS3DH::getRange()
 {
   /* Read the data format register to preserve bits */
   return (lis3dh_range_t)((readRegister8(LIS3DH_REG_CTRL4) >> 4) & 0x03);
 }
 
-/**************************************************************************/
 /*!
-    @brief  Sets the data rate for the LIS3DH (controls power consumption)
-*/
-/**************************************************************************/
+ *  @brief  Sets the data rate for the LIS3DH (controls power consumption)
+ *  @param  dataRate
+ *          date rate value
+ */
 void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate)
 {
   uint8_t ctl1 = readRegister8(LIS3DH_REG_CTRL1);
@@ -291,21 +315,21 @@ void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate)
   writeRegister8(LIS3DH_REG_CTRL1, ctl1);
 }
 
-/**************************************************************************/
 /*!
-    @brief  Sets the data rate for the LIS3DH (controls power consumption)
-*/
-/**************************************************************************/
-lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void)
+ *   @brief  Sets the data rate for the LIS3DH (controls power consumption)
+ *   @return Returns Date Rate value
+ */
+lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate()
 {
   return (lis3dh_dataRate_t)((readRegister8(LIS3DH_REG_CTRL1) >> 4)& 0x0F);
 }
 
-/**************************************************************************/
 /*!
-    @brief  Gets the most recent sensor event
-*/
-/**************************************************************************/
+ *  @brief  Gets the most recent sensor event
+ *  @param  *event
+ *          sensor event that we want to read
+ *  @return true if successfull
+ */
 bool Adafruit_LIS3DH::getEvent(sensors_event_t *event) {
   /* Clear the event */
   memset(event, 0, sizeof(sensors_event_t));
@@ -324,11 +348,11 @@ bool Adafruit_LIS3DH::getEvent(sensors_event_t *event) {
   return true;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Gets the sensor_t data
-*/
-/**************************************************************************/
+ *   @brief  Gets the sensor_t data
+ *   @param  *sensor
+ *           sensor that we want to read from
+ */
 void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   /* Clear the sensor_t object */
   memset(sensor, 0, sizeof(sensor_t));
@@ -355,7 +379,7 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
 uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
   #ifndef __AVR_ATtiny85__
   if (_sck == -1)
-    return SPI.transfer(x);
+    return SPIinterface->transfer(x);
 
   // software spi
   //Serial.println("Software SPI");
@@ -388,13 +412,13 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
   #ifndef __AVR_ATtiny85__
   else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg & ~0x80); // write, bit 7 low
     spixfer(value);
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus
+      SPIinterface->endTransaction();              // release the SPI bus
   }
   #endif
 }
@@ -418,13 +442,13 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   #ifndef __AVR_ATtiny85__
   else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
     value = spixfer(0);
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
-      SPI.endTransaction();              // release the SPI bus
+      SPIinterface->endTransaction();              // release the SPI bus
   }
   #endif
   return value;
