@@ -1,7 +1,7 @@
 Adafruit_LIS3DH [![Build Status](https://travis-ci.com/adafruit/Adafruit_LIS3DH_Library.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_LIS3DH_Library)
 ================
 
-<a href="https://www.adafruit.com/products/2809"><img src="assets/board.jpg?raw=true" width="500px" /></a>
+<a href="https://www.adafruit.com/products/2809"><img src="assets/image.jpg?raw=true" width="500px" /></a>
 
 This is the Adafruit LIS3DH breakout board library.
 * https://www.adafruit.com/products/2809
