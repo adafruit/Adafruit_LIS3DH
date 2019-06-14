@@ -19,11 +19,6 @@
 // I2C
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
-#if defined(ARDUINO_ARCH_SAMD)
-// for Zero, output on USB Serial console, remove line below if using programming port to program the Zero!
-   #define Serial SerialUSB
-#endif
-
 // Adjust this number for the sensitivity of the 'click' force
 // this strongly depend on the range! for 16G, try 5-10
 // for 8G, try 10-20. for 4G try 20-40. for 2G try 40-80

@@ -19,11 +19,6 @@
 // I2C
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
-#if defined(ARDUINO_ARCH_SAMD)
-// for Zero, output on USB Serial console, remove line below if using programming port to program the Zero!
-   #define Serial SerialUSB
-#endif
-
 void setup(void) {
 #ifndef ESP8266
   while (!Serial);     // will pause Zero, Leonardo, etc until serial console opens
