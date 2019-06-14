@@ -320,7 +320,7 @@ lis3dh_range_t Adafruit_LIS3DH::getRange()
 /*!
  *  @brief  Sets the data rate for the LIS3DH (controls power consumption)
  *  @param  dataRate
- *          date rate value
+ *          data rate value
  */
 void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate)
 {
@@ -331,8 +331,8 @@ void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate)
 }
 
 /*!
- *   @brief  Sets the data rate for the LIS3DH (controls power consumption)
- *   @return Returns Date Rate value
+ *   @brief  Gets the data rate for the LIS3DH (controls power consumption)
+ *   @return Returns Data Rate value
  */
 lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate()
 {
@@ -366,7 +366,7 @@ bool Adafruit_LIS3DH::getEvent(sensors_event_t *event) {
 /*!
  *   @brief  Gets the sensor_t data
  *   @param  *sensor
- *           sensor that we want to read from
+ *           sensor that we want to write data into
  */
 void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   /* Clear the sensor_t object */
@@ -386,7 +386,9 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
 
 /*!
  *  @brief  Low level SPI
- *  @param
+ *  @param  x
+ *          value that will be written throught SPI
+ *  @return reply
  */
 uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
   #ifndef __AVR_ATtiny85__
@@ -411,6 +413,10 @@ uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
 
 /*!
  *  @brief  Writes 8-bits to the specified destination register
+ *  @param  reg
+ *          register address
+ *  @param  value
+ *          value that will be written into selected register
  */
 void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
   if (_cs == -1) {
@@ -435,6 +441,9 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
 
 /*!
  *  @brief  Reads 8-bits from the specified register
+ *  @param  reg
+ *          register address
+ *  @return read value
  */
 uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   uint8_t value;

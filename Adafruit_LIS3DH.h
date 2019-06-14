@@ -372,12 +372,13 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
 	float y_g; /**< y_g axis value (calculated by selected range) */
 	float z_g; /**< z_g axis value (calculated by selected scale) */
 
+ protected:
+  uint8_t spixfer(uint8_t x = 0xFF);
+  void writeRegister8(uint8_t reg, uint8_t value);
+  uint8_t readRegister8(uint8_t reg);
+
  private:
   TwoWire *I2Cinterface;
-
-  uint8_t readRegister8(uint8_t reg);
-  void writeRegister8(uint8_t reg, uint8_t value);
-  uint8_t spixfer(uint8_t x = 0xFF);
 
   // SPI
 	SPIClass *SPIinterface;
