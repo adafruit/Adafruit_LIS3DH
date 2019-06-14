@@ -85,6 +85,7 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, i
  *  @brief  Setups the HW (reads coefficients values, etc.)
  *  @param  i2caddr 
  *          i2c address (optional, fallback to default)
+ *  @return true if successful
  */
 bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
   _i2caddr = i2caddr;
@@ -205,7 +206,8 @@ void Adafruit_LIS3DH::read() {
 /*!
  *  @brief  Read the auxilary ADC
  *  @param  adc
- *          adc value
+ *          adc index. possible values (1, 2, 3).
+ *  @return auxilary ADC value
  */
 int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
   if ((adc < 1) || (adc > 3)) return 0;
@@ -242,12 +244,21 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Set INT to output for single or double click
-*/
-/**************************************************************************/
-
+ *   @brief  Set INT to output for single or double click
+ *   @param  c
+ *					 0 = turn off I1_CLICK
+ *           1 = turn on all axes & singletap
+ *					 2 = turn on all axes & doubletap
+ *   @param  clickthresh
+ *           CLICK threshold value
+ *   @param  timelimit
+ *           sets time limit (default 10)
+ *   @param  timelatency
+ *   				 sets time latency (default 20)
+ *   @param  timewindow
+ *   				 sets time window (default 255)
+ */
 void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit, uint8_t timelatency, uint8_t timewindow) {
   if (!c) {
     //disable int
@@ -274,7 +285,11 @@ void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit
   writeRegister8(LIS3DH_REG_TIMEWINDOW, timewindow); // arbitrary
 }
 
-uint8_t Adafruit_LIS3DH::getClick(void) {
+/*!
+ *   @brief  Get uint8_t for single or double click
+ *   @return register LIS3DH_REG_CLICKSRC
+ */
+uint8_t Adafruit_LIS3DH::getClick() {
   return readRegister8(LIS3DH_REG_CLICKSRC);
 }
 
@@ -328,7 +343,7 @@ lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate()
  *  @brief  Gets the most recent sensor event
  *  @param  *event
  *          sensor event that we want to read
- *  @return true if successfull
+ *  @return true if successful
  */
 bool Adafruit_LIS3DH::getEvent(sensors_event_t *event) {
   /* Clear the event */
@@ -369,13 +384,10 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   sensor->resolution  = 0;
 }
 
-
-/**************************************************************************/
 /*!
-    @brief  Low level SPI
-*/
-/**************************************************************************/
-
+ *  @brief  Low level SPI
+ *  @param
+ */
 uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
   #ifndef __AVR_ATtiny85__
   if (_sck == -1)
@@ -397,11 +409,9 @@ uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Writes 8-bits to the specified destination register
-*/
-/**************************************************************************/
+ *  @brief  Writes 8-bits to the specified destination register
+ */
 void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
   if (_cs == -1) {
     I2Cinterface->beginTransmission((uint8_t)_i2caddr);
@@ -423,11 +433,9 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
   #endif
 }
 
-/**************************************************************************/
 /*!
-    @brief  Reads 8-bits from the specified register
-*/
-/**************************************************************************/
+ *  @brief  Reads 8-bits from the specified register
+ */
 uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
   uint8_t value;
 

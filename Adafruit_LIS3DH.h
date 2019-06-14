@@ -361,13 +361,16 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
 
-  uint8_t getOrientation();
-
   void setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit = 10, uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
-  int16_t x, y, z;
-  float x_g, y_g, z_g;
+  int16_t x; /**< x axis value */
+	int16_t y; /**< y axis value */
+	int16_t z; /**< z axis value */
+
+  float x_g; /**< x_g axis value (calculated by selected range) */
+	float y_g; /**< y_g axis value (calculated by selected range) */
+	float z_g; /**< z_g axis value (calculated by selected scale) */
 
  private:
   TwoWire *I2Cinterface;
