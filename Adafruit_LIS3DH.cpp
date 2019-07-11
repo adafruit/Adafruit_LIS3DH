@@ -166,6 +166,15 @@ uint8_t Adafruit_LIS3DH::getDeviceID() {
 }
 
 /*!
+ *  @brief  Check to see if new data available
+ *  @return true if there is new data available, false otherwise
+ */
+bool Adafruit_LIS3DH::haveNewData() {
+	// checking ZYXDA in REG_STATUS2 tells us if data available
+ 	return (readRegister8(LIS3DH_REG_STATUS2) & 0x8) >> 3;
+}
+
+/*!
  *  @brief  Reads x y z values at once
  */
 void Adafruit_LIS3DH::read() {
