@@ -92,9 +92,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a139fd9b82c1fe379d642b854790656b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a139fd9b82c1fe379d642b854790656b0">Adafruit_LIS3DH</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)</td></tr>
 <tr class="memdesc:a139fd9b82c1fe379d642b854790656b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class using software SPI.  <a href="#a139fd9b82c1fe379d642b854790656b0">More...</a><br /></td></tr>
 <tr class="separator:a139fd9b82c1fe379d642b854790656b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4362882195db8be1d9ad0217131d9d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#ad4362882195db8be1d9ad0217131d9d0">begin</a> (uint8_t addr=<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6">LIS3DH_DEFAULT_ADDRESS</a>)</td></tr>
-<tr class="memdesc:ad4362882195db8be1d9ad0217131d9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the HW (reads coefficients values, etc.)  <a href="#ad4362882195db8be1d9ad0217131d9d0">More...</a><br /></td></tr>
-<tr class="separator:ad4362882195db8be1d9ad0217131d9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a284400739526e307eb4a9423b2299e90"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a284400739526e307eb4a9423b2299e90">begin</a> (uint8_t addr=<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6">LIS3DH_DEFAULT_ADDRESS</a>, uint8_t nWAI=0x33)</td></tr>
+<tr class="memdesc:a284400739526e307eb4a9423b2299e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the HW (reads coefficients values, etc.)  <a href="#a284400739526e307eb4a9423b2299e90">More...</a><br /></td></tr>
+<tr class="separator:a284400739526e307eb4a9423b2299e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a21b13f8110487980205bf11f34afa"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#ab4a21b13f8110487980205bf11f34afa">getDeviceID</a> ()</td></tr>
+<tr class="memdesc:ab4a21b13f8110487980205bf11f34afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Device ID from LIS3DH_REG_WHOAMI.  <a href="#ab4a21b13f8110487980205bf11f34afa">More...</a><br /></td></tr>
+<tr class="separator:ab4a21b13f8110487980205bf11f34afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf0a76e86fff89b1960b7d23157acd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#aaaf0a76e86fff89b1960b7d23157acd2">haveNewData</a> ()</td></tr>
+<tr class="memdesc:aaaf0a76e86fff89b1960b7d23157acd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if new data available.  <a href="#aaaf0a76e86fff89b1960b7d23157acd2">More...</a><br /></td></tr>
+<tr class="separator:aaaf0a76e86fff89b1960b7d23157acd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf864e5feaea83076164c754851b0ae4"><td class="memItemLeft" align="right" valign="top"><a id="adf864e5feaea83076164c754851b0ae4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#adf864e5feaea83076164c754851b0ae4">read</a> ()</td></tr>
 <tr class="memdesc:adf864e5feaea83076164c754851b0ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads x y z values at once. <br /></td></tr>
@@ -272,8 +278,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad4362882195db8be1d9ad0217131d9d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4362882195db8be1d9ad0217131d9d0">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a284400739526e307eb4a9423b2299e90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a284400739526e307eb4a9423b2299e90">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,8 +288,18 @@ Protected Member Functions</h2></td></tr>
           <td class="memname">bool Adafruit_LIS3DH::begin </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>i2caddr</em> = <code><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6">LIS3DH_DEFAULT_ADDRESS</a></code></td><td>)</td>
+          <td class="paramname"><em>i2caddr</em> = <code><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6">LIS3DH_DEFAULT_ADDRESS</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>nWAI</em> = <code>0x33</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -292,10 +308,51 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2caddr</td><td>i2c address (optional, fallback to default) </td></tr>
+    <tr><td class="paramname">nWAI</td><td>Who Am I register value - defaults to 0x33 (LIS3DH) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if successful </dd></dl>
+
+</div>
+</div>
+<a id="ab4a21b13f8110487980205bf11f34afa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4a21b13f8110487980205bf11f34afa">&#9670;&nbsp;</a></span>getDeviceID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Adafruit_LIS3DH::getDeviceID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get Device ID from LIS3DH_REG_WHOAMI. </p>
+<dl class="section return"><dt>Returns</dt><dd>WHO AM I value </dd></dl>
+
+</div>
+</div>
+<a id="aaaf0a76e86fff89b1960b7d23157acd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaf0a76e86fff89b1960b7d23157acd2">&#9670;&nbsp;</a></span>haveNewData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_LIS3DH::haveNewData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check to see if new data available. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if there is new data available, false otherwise </dd></dl>
 
 </div>
 </div>
