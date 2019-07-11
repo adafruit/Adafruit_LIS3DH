@@ -83,10 +83,13 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin,
  *  @brief  Setups the HW (reads coefficients values, etc.)
  *  @param  i2caddr
  *          i2c address (optional, fallback to default)
+ *  @param  nWAI
+ *          Who Am I register value - defaults to 0x33 (LIS3DH)
  *  @return true if successful
  */
-bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
+bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   _i2caddr = i2caddr;
+  _wai = nWAI;
 
   if (_cs == -1) {
     // i2c
@@ -120,7 +123,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 
   /* Check connection */
   uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
-  if (deviceid != 0x33) {
+  if (deviceid != _wai) {
     /* No LIS3DH detected ... return false */
     // Serial.println(deviceid, HEX);
     return false;
@@ -155,16 +158,11 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr) {
 }
 
 /*!
- *  @brief  Checks connection status to LIS3DH.
- *  @return True if alive, false if no detected
+ *  @brief  Get Device ID from LIS3DH_REG_WHOAMI
+ *  @return WHO AM I value
  */
 uint8_t Adafruit_LIS3DH::getDeviceID() {
-  uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
-  if (deviceid != 0x33) {
-    /* No LIS3DH detected */ 
-    return 0;
-  }
-  return deviceid;
+  return readRegister8(LIS3DH_REG_WHOAMI);
 }
 
 /*!
