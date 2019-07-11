@@ -348,6 +348,7 @@ class Adafruit_LIS3DH : public Adafruit_Sensor {
   Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
   
   bool begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS);
+  bool isAlive();
  
   void read();
   int16_t readADC(uint8_t a);
