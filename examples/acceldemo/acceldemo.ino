@@ -1,3 +1,4 @@
+
 // Basic demo for accelerometer readings from Adafruit LIS3DH
 
 #include <Wire.h>
@@ -27,7 +28,7 @@ void setup(void) {
   
   if (! lis.begin(0x18)) {   // change this to 0x19 for alternative i2c address
     Serial.println("Couldnt start");
-    while (1);
+    while (1) yield();
   }
   Serial.println("LIS3DH found!");
   
