@@ -20,11 +20,9 @@
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
 void setup(void) {
-#ifndef ESP8266
-  while (!Serial);     // will pause Zero, Leonardo, etc until serial console opens
-#endif
-
   Serial.begin(9600);
+  while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
+
   Serial.println("LIS3DH test!");
   
   if (! lis.begin(0x18)) {   // change this to 0x19 for alternative i2c address
