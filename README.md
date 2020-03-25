@@ -1,5 +1,4 @@
-Adafruit_LIS3DH [![Build Status](https://travis-ci.com/adafruit/Adafruit_LIS3DH.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_LIS3DH)
-================ 
+# Adafruit LIS3DH [![Build Status](https://github.com/adafruit/Adafruit_LIS3DH/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_LIS3DH/actions)
 
 <a href="https://www.adafruit.com/products/2809"><img src="assets/image.jpg?raw=true" width="500px" /></a>
 
