@@ -32,6 +32,9 @@
 #include <SPI.h>
 #include <Wire.h>
 
+#include <Adafruit_BusIO_Register.h>
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
 
 /** I2C ADDRESS/BITS **/
@@ -383,6 +386,9 @@ protected:
 private:
   TwoWire *I2Cinterface;
   SPIClass *SPIinterface;
+
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
+  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to I2C bus interface
 
   uint8_t _wai;
 
