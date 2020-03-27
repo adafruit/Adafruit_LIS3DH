@@ -90,69 +90,61 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin,
 bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   _i2caddr = i2caddr;
   _wai = nWAI;
+  if (I2Cinterface){
+    i2c_dev = new Adafruit_I2CDevice(_i2caddr, I2Cinterface);
 
-  if (_cs == -1) {
-    // i2c
-    I2Cinterface->begin();
-  } else {
-    digitalWrite(_cs, HIGH);
-    pinMode(_cs, OUTPUT);
-
-#ifndef __AVR_ATtiny85__
-    if (_sck == -1) {
-      // hardware SPI
-      SPIinterface->begin();
-    } else {
-      // software SPI
-      pinMode(_sck, OUTPUT);
-      pinMode(_mosi, OUTPUT);
-      pinMode(_miso, INPUT);
+    if (!i2c_dev->begin()) {
+      return false;
     }
-#endif
+  } else if (_cs != -1){
+    Serial.println("NO SPI YET");
+    //  spi_dev = new Adafruit_SPIDevice(cs_pin, sck_pin, miso_pin, mosi_pin,
+    //                                1000000,               // frequency
+    //                                SPI_BITORDER_MSBFIRST, // bit order
+    //                                SPI_MODE0);            // data mode
+    // if (!spi_dev->begin()) {
+    //   return false;
+    // }
+
   }
 
-  /*
-  Serial.println("Debug");
-
-  for (uint8_t i=0; i<0x30; i++) {
-    Serial.print("$");
-    Serial.print(i, HEX); Serial.print(" = 0x");
-    Serial.println(readRegister8(i), HEX);
-  }
-  */
+  Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
 
   /* Check connection */
-  uint8_t deviceid = readRegister8(LIS3DH_REG_WHOAMI);
+  uint8_t deviceid = _chip_id.read();
   if (deviceid != _wai) {
     /* No LIS3DH detected ... return false */
     // Serial.println(deviceid, HEX);
     return false;
   }
+  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+  // writeRegister8(LIS3DH_REG_CTRL1, 0x07);
+  _ctrl1.write(0x07); // enable all axes, normal mode
 
-  // enable all axes, normal mode
-  writeRegister8(LIS3DH_REG_CTRL1, 0x07);
   // 400Hz rate
   setDataRate(LIS3DH_DATARATE_400_HZ);
 
-  // High res & BDU enabled
-  writeRegister8(LIS3DH_REG_CTRL4, 0x88);
 
-  // DRDY on INT1
-  writeRegister8(LIS3DH_REG_CTRL3, 0x10);
+  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
+  // writeRegister8(LIS3DH_REG_CTRL4, 0x88);
+  _ctrl4.write(0x88);// High res & BDU enabled
+
+
+  Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
+  // writeRegister8(LIS3DH_REG_CTRL3, 0x10);
+  _ctrl3.write(0x10); // DRDY on INT1
 
   // Turn on orientation config
   // writeRegister8(LIS3DH_REG_PL_CFG, 0x40);
 
-  // enable adcs
-  writeRegister8(LIS3DH_REG_TEMPCFG, 0x80);
-
-  /*
-  for (uint8_t i=0; i<0x30; i++) {
-    Serial.print("$");
-    Serial.print(i, HEX); Serial.print(" = 0x");
-    Serial.println(readRegister8(i), HEX);
-  }
-  */
+  Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TEMPCFG, 1);
+  // writeRegister8(LIS3DH_REG_TEMPCFG, 0x80);
+  _tmp_cfg.write(0x80);  // enable adcs
 
   return true;
 }
