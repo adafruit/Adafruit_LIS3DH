@@ -273,32 +273,60 @@ int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
  *   @param  timewindow
  *   				 sets time window (default 255)
  */
+
 void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh,
                                uint8_t timelimit, uint8_t timelatency,
                                uint8_t timewindow) {
+
+  Adafruit_BusIO_Register ctrl3 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
+  Adafruit_BusIO_RegisterBits i1_click = Adafruit_BusIO_RegisterBits(
+    &ctrl3, 1, 7);
+
+  Adafruit_BusIO_Register click_cfg = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKCFG, 1);
+
   if (!c) {
     // disable int
-    uint8_t r = readRegister8(LIS3DH_REG_CTRL3);
-    r &= ~(0x80); // turn off I1_CLICK
-    writeRegister8(LIS3DH_REG_CTRL3, r);
-    writeRegister8(LIS3DH_REG_CLICKCFG, 0);
+    i1_click.write(0); // disable i1 click
+    click_cfg.write(0);
     return;
   }
   // else...
 
-  writeRegister8(LIS3DH_REG_CTRL3, 0x80); // turn on int1 click
-  writeRegister8(LIS3DH_REG_CTRL5, 0x08); // latch interrupt on int1
+  // writeRegister8(LIS3DH_REG_CTRL3, 0x80); // turn on int1 click
+  i1_click.write(1); // enable i1 click
+
+  // writeRegister8(LIS3DH_REG_CTRL5, 0x08); // latch interrupt on int1
+  Adafruit_BusIO_Register ctrl5 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL5, 1);
+
+  Adafruit_BusIO_RegisterBits int1_latch_bit =
+    Adafruit_BusIO_RegisterBits(&ctrl5, 1, 3);
+  int1_latch_bit.write(true);
 
   if (c == 1)
-    writeRegister8(LIS3DH_REG_CLICKCFG, 0x15); // turn on all axes & singletap
+    click_cfg.write(0x15); // turn on all axes & singletap
   if (c == 2)
-    writeRegister8(LIS3DH_REG_CLICKCFG, 0x2A); // turn on all axes & doubletap
+    click_cfg.write(0x2A); // turn on all axes & doubletap
 
-  writeRegister8(LIS3DH_REG_CLICKTHS, clickthresh);    // arbitrary
-  writeRegister8(LIS3DH_REG_TIMELIMIT, timelimit);     // arbitrary
-  writeRegister8(LIS3DH_REG_TIMELATENCY, timelatency); // arbitrary
-  writeRegister8(LIS3DH_REG_TIMEWINDOW, timewindow);   // arbitrary
+  Adafruit_BusIO_Register click_ths = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKTHS, 1);
+  click_ths.write(clickthresh);    // arbitrary
+
+  Adafruit_BusIO_Register time_limit = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TIMELIMIT, 1);
+  time_limit.write(timelimit);     // arbitrary
+
+  Adafruit_BusIO_Register time_latency = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TIMELATENCY, 1);
+  time_latency.write(timelatency); // arbitrary
+
+  Adafruit_BusIO_Register time_window = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TIMEWINDOW, 1);
+  time_window.write(timewindow);   // arbitrary
 }
+
 
 /*!
  *   @brief  Get uint8_t for single or double click
@@ -446,6 +474,8 @@ void Adafruit_LIS3DH::writeRegister8(uint8_t reg, uint8_t value) {
     I2Cinterface->write((uint8_t)reg);
     I2Cinterface->write((uint8_t)value);
     I2Cinterface->endTransmission();
+    Serial.print("WRITE\t0x"); Serial.print(reg, HEX);
+    Serial.print("\t0x"); Serial.println(value, HEX);
   }
 #ifndef __AVR_ATtiny85__
   else {
@@ -474,9 +504,11 @@ uint8_t Adafruit_LIS3DH::readRegister8(uint8_t reg) {
     I2Cinterface->beginTransmission(_i2caddr);
     I2Cinterface->write((uint8_t)reg);
     I2Cinterface->endTransmission();
+    Serial.print("WRITE\t0x"); Serial.println(reg, HEX);
 
     I2Cinterface->requestFrom(_i2caddr, 1);
     value = I2Cinterface->read();
+    Serial.print("READ\t0x"); Serial.println(reg, HEX);
   }
 #ifndef __AVR_ATtiny85__
   else {
