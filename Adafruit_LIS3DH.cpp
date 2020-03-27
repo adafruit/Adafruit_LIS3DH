@@ -112,8 +112,8 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
 
   /* Check connection */
-  uint8_t deviceid = _chip_id.read();
-  if (deviceid != _wai) {
+  // uint /8_t deviceid = _chip_id.read();
+  if (getDeviceID() != _wai) {
     /* No LIS3DH detected ... return false */
     // Serial.println(deviceid, HEX);
     return false;
@@ -125,11 +125,9 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   // 400Hz rate
   setDataRate(LIS3DH_DATARATE_400_HZ);
 
-
   Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
   _ctrl4.write(0x88);// High res & BDU enabled
-
 
   Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
@@ -150,9 +148,11 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
  *  @return WHO AM I value
  */
 uint8_t Adafruit_LIS3DH::getDeviceID() {
-  return readRegister8(LIS3DH_REG_WHOAMI);
-}
+    Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
 
+  return _chip_id.read();
+}
 /*!
  *  @brief  Check to see if new data available
  *  @return true if there is new data available, false otherwise
@@ -314,10 +314,12 @@ uint8_t Adafruit_LIS3DH::getClick() {
  *           range value
  */
 void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
-  uint8_t r = readRegister8(LIS3DH_REG_CTRL4);
-  r &= ~(0x30);
-  r |= range << 4;
-  writeRegister8(LIS3DH_REG_CTRL4, r);
+
+  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
+
+  Adafruit_BusIO_RegisterBits range_bits = Adafruit_BusIO_RegisterBits(&_ctrl4, 2, 4);
+  range_bits.write(range);
 }
 
 /*!
@@ -325,8 +327,11 @@ void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
  *  @return Returns g range value
  */
 lis3dh_range_t Adafruit_LIS3DH::getRange() {
-  /* Read the data format register to preserve bits */
-  return (lis3dh_range_t)((readRegister8(LIS3DH_REG_CTRL4) >> 4) & 0x03);
+  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
+
+  Adafruit_BusIO_RegisterBits range_bits = Adafruit_BusIO_RegisterBits(&_ctrl4, 2, 4);
+  return (lis3dh_range_t) range_bits.read();
 }
 
 /*!
