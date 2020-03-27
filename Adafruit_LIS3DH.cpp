@@ -120,7 +120,6 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   }
   Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
-  // writeRegister8(LIS3DH_REG_CTRL1, 0x07);
   _ctrl1.write(0x07); // enable all axes, normal mode
 
   // 400Hz rate
@@ -129,13 +128,11 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
 
   Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
-  // writeRegister8(LIS3DH_REG_CTRL4, 0x88);
   _ctrl4.write(0x88);// High res & BDU enabled
 
 
   Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
-  // writeRegister8(LIS3DH_REG_CTRL3, 0x10);
   _ctrl3.write(0x10); // DRDY on INT1
 
   // Turn on orientation config
@@ -143,7 +140,6 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
 
   Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TEMPCFG, 1);
-  // writeRegister8(LIS3DH_REG_TEMPCFG, 0x80);
   _tmp_cfg.write(0x80);  // enable adcs
 
   return true;
@@ -339,10 +335,11 @@ lis3dh_range_t Adafruit_LIS3DH::getRange() {
  *          data rate value
  */
 void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate) {
-  uint8_t ctl1 = readRegister8(LIS3DH_REG_CTRL1);
-  ctl1 &= ~(0xF0); // mask off bits
-  ctl1 |= (dataRate << 4);
-  writeRegister8(LIS3DH_REG_CTRL1, ctl1);
+  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+  Adafruit_BusIO_RegisterBits data_rate_bits = Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+
+  data_rate_bits.write(dataRate);
 }
 
 /*!
@@ -350,7 +347,11 @@ void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate) {
  *   @return Returns Data Rate value
  */
 lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate() {
-  return (lis3dh_dataRate_t)((readRegister8(LIS3DH_REG_CTRL1) >> 4) & 0x0F);
+  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+  Adafruit_BusIO_RegisterBits data_rate_bits = Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+
+  return (lis3dh_dataRate_t)data_rate_bits.read();
 }
 
 /*!
