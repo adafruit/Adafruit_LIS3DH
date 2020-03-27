@@ -305,7 +305,10 @@ void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh,
  *   @return register LIS3DH_REG_CLICKSRC
  */
 uint8_t Adafruit_LIS3DH::getClick() {
-  return readRegister8(LIS3DH_REG_CLICKSRC);
+  Adafruit_BusIO_Register click_reg = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKSRC, 1);
+
+  return click_reg.read();
 }
 
 /*!
