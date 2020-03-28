@@ -21,7 +21,7 @@
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
 
   Serial.println("LIS3DH test!");
@@ -32,12 +32,12 @@ void setup(void) {
   }
   Serial.println("LIS3DH found!");
 
-  lis.setRange(LIS3DH_RANGE_4_G);   // 2, 4, 8 or 16 G!
+  // lis.setRange(LIS3DH_RANGE_4_G);   // 2, 4, 8 or 16 G!
 
   Serial.print("Range = "); Serial.print(2 << lis.getRange());
   Serial.println("G");
 
-  //  lis.setDataRate(LIS3DH_DATARATE_400_HZ);
+  // lis.setDataRate(LIS3DH_DATARATE_50_HZ);
   Serial.print("Data rate set to: ");
   switch (lis.getDataRate()) {
     case LIS3DH_DATARATE_1_HZ: Serial.println("1 Hz"); break;

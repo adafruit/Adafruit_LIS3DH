@@ -378,9 +378,6 @@ public:
   float y_g; /**< y_g axis value (calculated by selected range) */
   float z_g; /**< z_g axis value (calculated by selected scale) */
 
-protected:
-  uint8_t spixfer(uint8_t x = 0xFF);
-
 private:
   TwoWire *I2Cinterface;
   SPIClass *SPIinterface;
