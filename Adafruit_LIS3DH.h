@@ -98,12 +98,12 @@
  *           Refer to Table 29, "High pass filter mode configuration"
  *   HPCF2-1 High pass filter cut off frequency selection
  *   FDS     Filtered data selection. Default value: 0
- *					 (0: internal filter bypassed; 1: data from
- *internal filter sent to output register and FIFO) HPCLICK High pass filter
- *enabled for CLICK function. (0: filter bypassed; 1: filter enabled) HPIS2   X
- *axis enable. Default value: 1 (0: X axis disabled; 1: X axis enabled) HPIS1
- *High pass filter enabled for AOI function on interrupt 1, (0: filter bypassed;
- *1: filter enabled)
+ *					 (0: internal filter bypassed; 1: data
+ *from internal filter sent to output register and FIFO) HPCLICK High pass
+ *filter enabled for CLICK function. (0: filter bypassed; 1: filter enabled)
+ *HPIS2   X axis enable. Default value: 1 (0: X axis disabled; 1: X axis
+ *enabled) HPIS1 High pass filter enabled for AOI function on interrupt 1, (0:
+ *filter bypassed; 1: filter enabled)
  */
 #define LIS3DH_REG_CTRL2 0x21
 /*!
@@ -351,10 +351,10 @@ public:
 
   bool begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
 
-  uint8_t getDeviceID();
-  bool haveNewData();
+  uint8_t getDeviceID(void);
+  bool haveNewData(void);
 
-  void read();
+  void read(void);
   int16_t readADC(uint8_t a);
 
   void setRange(lis3dh_range_t range);
@@ -380,8 +380,6 @@ public:
 
 protected:
   uint8_t spixfer(uint8_t x = 0xFF);
-  void writeRegister8(uint8_t reg, uint8_t value);
-  uint8_t readRegister8(uint8_t reg);
 
 private:
   TwoWire *I2Cinterface;
