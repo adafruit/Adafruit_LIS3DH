@@ -97,14 +97,24 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
       return false;
     }
   } else if (_cs != -1) {
-    Serial.println("NO SPI YET");
-    //  spi_dev = new Adafruit_SPIDevice(cs_pin, sck_pin, miso_pin, mosi_pin,
-    //                                1000000,               // frequency
-    //                                SPI_BITORDER_MSBFIRST, // bit order
-    //                                SPI_MODE0);            // data mode
-    // if (!spi_dev->begin()) {
-    //   return false;
-    // }
+
+    // SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+    if (_sck == -1) {
+      spi_dev = new Adafruit_SPIDevice(_cs,
+                                       500000,                // frequency
+                                       SPI_BITORDER_MSBFIRST, // bit order
+                                       SPI_MODE0,             // data mode
+                                       SPIinterface);
+    } else {
+      spi_dev = new Adafruit_SPIDevice(_cs, _sck, _miso, _mosi,
+                                       500000,                // frequency
+                                       SPI_BITORDER_MSBFIRST, // bit order
+                                       SPI_MODE0);            // data mode
+    }
+
+    if (!spi_dev->begin()) {
+      return false;
+    }
   }
 
   Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
@@ -167,9 +177,17 @@ bool Adafruit_LIS3DH::haveNewData(void) {
  */
 void Adafruit_LIS3DH::read(void) {
 
+  uint8_t register_address = LIS3DH_REG_OUT_X_L;
+  if (i2c_dev) {
+    register_address |= 0x80; // set [7] for auto-increment
+  } else {
+    register_address |= 0x40; // set [6] for auto-increment
+    register_address |= 0x80; // set [7] for read
+  }
+
   Adafruit_BusIO_Register xl_data = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, (LIS3DH_REG_OUT_X_L | 0x80),
-      6); // 0x80 for autoincrement
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, register_address, 6);
+
   uint8_t buffer[6];
   xl_data.read(buffer, 6);
 
@@ -205,36 +223,26 @@ void Adafruit_LIS3DH::read(void) {
 int16_t Adafruit_LIS3DH::readADC(uint8_t adc) {
   if ((adc < 1) || (adc > 3))
     return 0;
+  adc--; // switch to 0 indexed
+
   uint16_t value;
+  uint8_t reg = LIS3DH_REG_OUTADC1_L + (adc * 2);
 
-  adc--;
-
-  uint8_t reg = LIS3DH_REG_OUTADC1_L + adc * 2;
-
-  if (_cs == -1) {
-    // i2c
-    I2Cinterface->beginTransmission(_i2caddr);
-    I2Cinterface->write(reg | 0x80); // 0x80 for autoincrement
-    I2Cinterface->endTransmission();
-    I2Cinterface->requestFrom(_i2caddr, 2);
-    value = I2Cinterface->read();
-    value |= ((uint16_t)I2Cinterface->read()) << 8;
+  if (i2c_dev) {
+    reg |= 0x80; // set [7] for auto-increment
+  } else {
+    reg |= 0x40; // set [6] for auto-increment
+    reg |= 0x80; // set [7] for read
   }
-#ifndef __AVR_ATtiny85__
-  else {
-    if (_sck == -1)
-      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(reg | 0x80 | 0x40); // read multiple, bit 7&6 high
 
-    value = spixfer();
-    value |= ((uint16_t)spixfer()) << 8;
+  uint8_t buffer[2];
+  Adafruit_BusIO_Register adc_data =
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, reg, 2);
 
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      SPIinterface->endTransaction(); // release the SPI bus
-  }
-#endif
+  adc_data.read(buffer, 2);
+
+  value = buffer[0];
+  value |= ((uint16_t)buffer[1]) << 8;
 
   return value;
 }
@@ -416,30 +424,4 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   sensor->max_value = 0;
   sensor->min_value = 0;
   sensor->resolution = 0;
-}
-
-/*!
- *  @brief  Low level SPI
- *  @param  x
- *          value that will be written throught SPI
- *  @return reply
- */
-uint8_t Adafruit_LIS3DH::spixfer(uint8_t x) {
-#ifndef __AVR_ATtiny85__
-  if (_sck == -1)
-    return SPIinterface->transfer(x);
-
-  // software spi
-  // Serial.println("Software SPI");
-  uint8_t reply = 0;
-  for (int i = 7; i >= 0; i--) {
-    reply <<= 1;
-    digitalWrite(_sck, LOW);
-    digitalWrite(_mosi, x & (1 << i));
-    digitalWrite(_sck, HIGH);
-    if (digitalRead(_miso))
-      reply |= 1;
-  }
-  return reply;
-#endif
 }
