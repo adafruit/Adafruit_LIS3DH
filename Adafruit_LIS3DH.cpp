@@ -166,39 +166,20 @@ bool Adafruit_LIS3DH::haveNewData() {
  *  @brief  Reads x y z values at once
  */
 void Adafruit_LIS3DH::read() {
-  if (_cs == -1) {
-    // i2c
-    I2Cinterface->beginTransmission(_i2caddr);
-    I2Cinterface->write(LIS3DH_REG_OUT_X_L | 0x80); // 0x80 for autoincrement
-    I2Cinterface->endTransmission();
 
-    I2Cinterface->requestFrom(_i2caddr, 6);
-    x = I2Cinterface->read();
-    x |= ((uint16_t)I2Cinterface->read()) << 8;
-    y = I2Cinterface->read();
-    y |= ((uint16_t)I2Cinterface->read()) << 8;
-    z = I2Cinterface->read();
-    z |= ((uint16_t)I2Cinterface->read()) << 8;
-  }
-#ifndef __AVR_ATtiny85__
-  else {
-    if (_sck == -1)
-      SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(LIS3DH_REG_OUT_X_L | 0x80 | 0x40); // read multiple, bit 7&6 high
 
-    x = spixfer();
-    x |= ((uint16_t)spixfer()) << 8;
-    y = spixfer();
-    y |= ((uint16_t)spixfer()) << 8;
-    z = spixfer();
-    z |= ((uint16_t)spixfer()) << 8;
+  Adafruit_BusIO_Register xl_data = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, (LIS3DH_REG_OUT_X_L | 0x80), 6); // 0x80 for autoincrement
+  uint8_t buffer[6];
+  xl_data.read(buffer, 6);
 
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      SPIinterface->endTransaction(); // release the SPI bus
-  }
-#endif
+  x = buffer[0];
+  x |= ((uint16_t)buffer[1]) << 8;
+  y = buffer[2];
+  y |= ((uint16_t)buffer[3]) << 8;
+  z = buffer[4];
+  z |= ((uint16_t)buffer[5]) << 8;
+
   uint8_t range = getRange();
   uint16_t divider = 1;
   if (range == LIS3DH_RANGE_16_G)
@@ -294,10 +275,8 @@ void Adafruit_LIS3DH::setClick(uint8_t c, uint8_t clickthresh,
   }
   // else...
 
-  // writeRegister8(LIS3DH_REG_CTRL3, 0x80); // turn on int1 click
   i1_click.write(1); // enable i1 click
 
-  // writeRegister8(LIS3DH_REG_CTRL5, 0x08); // latch interrupt on int1
   Adafruit_BusIO_Register ctrl5 = Adafruit_BusIO_Register(
     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL5, 1);
 
@@ -351,6 +330,7 @@ void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
 
   Adafruit_BusIO_RegisterBits range_bits = Adafruit_BusIO_RegisterBits(&_ctrl4, 2, 4);
   range_bits.write(range);
+  delay(10); // delay to let new setting settle
 }
 
 /*!
