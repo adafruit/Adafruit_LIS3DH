@@ -351,10 +351,10 @@ public:
 
   bool begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
 
-  uint8_t getDeviceID();
-  bool haveNewData();
+  uint8_t getDeviceID(void);
+  bool haveNewData(void);
 
-  void read();
+  void read(void);
   int16_t readADC(uint8_t a);
 
   void setRange(lis3dh_range_t range);
@@ -380,8 +380,6 @@ public:
 
 protected:
   uint8_t spixfer(uint8_t x = 0xFF);
-  void writeRegister8(uint8_t reg, uint8_t value);
-  uint8_t readRegister8(uint8_t reg);
 
 private:
   TwoWire *I2Cinterface;
