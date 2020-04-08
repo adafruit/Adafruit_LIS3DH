@@ -32,11 +32,14 @@ void setup(void) {
   }
   Serial.println("H3LIS331 found!");
 
-  // lis.setRange(H3LIS331_RANGE_4_G);   // 2, 4, 8 or 16 G!
-
-  Serial.print("Range = "); Serial.print(2 << lis.getRange());
-  Serial.println("G");
-
+  lis.setRange(H3LIS331_RANGE_100_G);   // 100, 200, or 400 G!
+  // lis.setDataRate(H3LIS331_DATARATE_50_HZ);
+  Serial.print("Range set to: ");
+  switch (lis.getRange()) {
+    case H3LIS331_RANGE_100_G: Serial.println("100 g"); break;
+    case H3LIS331_RANGE_200_G: Serial.println("200 g"); break;
+    case H3LIS331_RANGE_400_G: Serial.println("400 g"); break;
+  }
   // // lis.setDataRate(H3LIS331_DATARATE_50_HZ);
   // Serial.print("Data rate set to: ");
   // switch (lis.getDataRate()) {
@@ -73,5 +76,5 @@ void loop() {
 
   Serial.println();
 
-  delay(200);
+  delay(1000);
 }

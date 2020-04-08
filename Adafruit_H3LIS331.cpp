@@ -131,21 +131,22 @@ bool Adafruit_H3LIS331::begin(uint8_t i2caddr, uint8_t nWAI) {
   _ctrl1.write(0x07); // enable all axes, normal mode
 
   // 400Hz rate
-  setDataRate(H3LIS331_DATARATE_400_HZ);
+  setDataRate(H3LIS331_DATARATE_50_HZ);
+  setRange(H3LIS331_RANGE_100_G);
 
-  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL4, 1);
-  _ctrl4.write(0x88); // High res & BDU enabled
+  // Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL4, 1);
+  // _ctrl4.write(0x88); // High res & BDU enabled
 
-  Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL3, 1);
-  _ctrl3.write(0x10); // DRDY on INT1
+  // Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL3, 1);
+  // _ctrl3.write(0x10); // DRDY on INT1
 
   // Turn on orientation config
 
-  Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_TEMPCFG, 1);
-  _tmp_cfg.write(0x80); // enable adcs
+  // Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_TEMPCFG, 1);
+  // _tmp_cfg.write(0x80); // enable adcs
 
   return true;
 }
@@ -193,23 +194,30 @@ void Adafruit_H3LIS331::read(void) {
 
   x = buffer[0];
   x |= ((uint16_t)buffer[1]) << 8;
+  x >>=4;
   y = buffer[2];
   y |= ((uint16_t)buffer[3]) << 8;
+  y >>=4;
   z = buffer[4];
   z |= ((uint16_t)buffer[5]) << 8;
-
+  z >>= 4;
   uint8_t range = getRange();
-  uint16_t divider = 1;
+  Serial.print("Range:");Serial.println(range);
+  uint16_t scale_max = 1;
+  Serial.print("RAW X: ");Serial.println(x);
+  Serial.print("RAW Y: ");Serial.println(y);
+  Serial.print("RAW Z: ");Serial.println(z);
   if (range == H3LIS331_RANGE_100_G)
-    divider = 49;
+    scale_max = 100;
   if (range == H3LIS331_RANGE_200_G)
-    divider = 98;
+    scale_max = 200;
   if (range == H3LIS331_RANGE_400_G)
-    divider = 195;
+    scale_max = 400;
+  float lsb_value = 2*scale_max * (float)1/4098;
 
-  x_g = (float)x / divider;
-  y_g = (float)y / divider;
-  z_g = (float)z / divider;
+  x_g = ((float)x * lsb_value);
+  y_g = ((float)y * lsb_value);
+  z_g = ((float)z * lsb_value);
 }
 
 /*!
@@ -304,9 +312,9 @@ bool Adafruit_H3LIS331::getEvent(sensors_event_t *event) {
 
   read();
 
-  event->acceleration.x = x_g * SENSORS_GRAVITY_STANDARD;
-  event->acceleration.y = y_g * SENSORS_GRAVITY_STANDARD;
-  event->acceleration.z = z_g * SENSORS_GRAVITY_STANDARD;
+  event->acceleration.x = x_g;
+  event->acceleration.y = y_g;
+  event->acceleration.z = z_g;
 
   return true;
 }
