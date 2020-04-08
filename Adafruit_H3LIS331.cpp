@@ -38,10 +38,64 @@
  *  @param  Wi
  *          optional wire object
  */
-Adafruit_H3LIS331::Adafruit_H3LIS331(TwoWire *Wi)
-    : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1) {
-  I2Cinterface = Wi;
-}
+Adafruit_H3LIS331::Adafruit_H3LIS331(){};
+
+
+
+
+// /*!
+//  *    @brief  Sets up the hardware and initializes hardware SPI
+//  *    @param  cs_pin The arduino pin # connected to chip select
+//  *    @param  theSPI The SPI object to be used for SPI connections.
+//  *    @param  sensor_id
+//  *            The user-defined ID to differentiate different sensors
+//  *    @return True if initialization was successful, otherwise false.
+//  */
+// bool Adafruit_H3LIS331::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
+//                                 int32_t sensor_id) {
+//   i2c_dev = NULL;
+
+//   if (spi_dev) {
+//     delete spi_dev; // remove old interface
+//   }
+//   spi_dev = new Adafruit_SPIDevice(cs_pin,
+//                                    1000000,               // frequency
+//                                    SPI_BITORDER_MSBFIRST, // bit order
+//                                    SPI_MODE0,             // data mode
+//                                    theSPI);
+//   if (!spi_dev->begin()) {
+//     return false;
+//   }
+
+//   return _init(sensor_id);
+// }
+
+// /*!
+//  *    @brief  Sets up the hardware and initializes software SPI
+//  *    @param  cs_pin The arduino pin # connected to chip select
+//  *    @param  sck_pin The arduino pin # connected to SPI clock
+//  *    @param  miso_pin The arduino pin # connected to SPI MISO
+//  *    @param  mosi_pin The arduino pin # connected to SPI MOSI
+//  *    @param  sensor_id
+//  *            The user-defined ID to differentiate different sensors
+//  *    @return True if initialization was successful, otherwise false.
+//  */
+// bool Adafruit_H3LIS331::begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
+//                                 int8_t mosi_pin, int32_t sensor_id) {
+//   i2c_dev = NULL;
+
+//   if (spi_dev) {
+//     delete spi_dev; // remove old interface
+//   }
+//   spi_dev = new Adafruit_SPIDevice(cs_pin, sck_pin, miso_pin, mosi_pin,
+//                                    1000000,               // frequency
+//                                    SPI_BITORDER_MSBFIRST, // bit order
+//                                    SPI_MODE0);            // data mode
+//   if (!spi_dev->begin()) {
+//     return false;
+//   }
+//   return _init(sensor_id);
+// }
 
 /*!
  *   @brief  Instantiates a new H3LIS331 class using hardware SPI
@@ -50,220 +104,112 @@ Adafruit_H3LIS331::Adafruit_H3LIS331(TwoWire *Wi)
  *   @param  *theSPI
  *           optional parameter contains spi object
  */
-Adafruit_H3LIS331::Adafruit_H3LIS331(int8_t cspin, SPIClass *theSPI) {
-  _cs = cspin;
-  _mosi = -1;
-  _miso = -1;
-  _sck = -1;
-  _sensorID = -1;
-  SPIinterface = theSPI;
-}
+// Adafruit_H3LIS331::Adafruit_H3LIS331(int8_t cspin, SPIClass *theSPI) {
+//   _cs = cspin;
+//   _mosi = -1;
+//   _miso = -1;
+//   _sck = -1;
+//   _sensorID = -1;
+//   SPIinterface = theSPI;
+// }
+
+// /*!
+//  *   @brief  Instantiates a new H3LIS331 class using software SPI
+//  *   @param  cspin
+//  *           number of CSPIN (Chip Select)
+//  *   @param  mosipin
+//  *           number of pin used for MOSI (Master Out Slave In))
+//  *   @param  misopin
+//  *           number of pin used for MISO (Master In Slave Out)
+//  *   @param  sckpin
+//  *           number of pin used for CLK (clock pin)
+//  */
+// Adafruit_H3LIS331::Adafruit_H3LIS331(int8_t cspin, int8_t mosipin, int8_t misopin,
+//                                  int8_t sckpin) {
+//   _cs = cspin;
+//   _mosi = mosipin;
+//   _miso = misopin;
+//   _sck = sckpin;
+//   _sensorID = -1;
+// }
 
 /*!
- *   @brief  Instantiates a new H3LIS331 class using software SPI
- *   @param  cspin
- *           number of CSPIN (Chip Select)
- *   @param  mosipin
- *           number of pin used for MOSI (Master Out Slave In))
- *   @param  misopin
- *           number of pin used for MISO (Master In Slave Out)
- *   @param  sckpin
- *           number of pin used for CLK (clock pin)
+ *    @brief  Sets up the hardware and initializes I2C
+ *    @param  i2c_address
+ *            The I2C address to be used.
+ *    @param  wire
+ *            The Wire object to be used for I2C connections.
+ *    @param  sensor_id
+ *            The user-defined ID to differentiate different sensors
+ *    @return True if initialization was successful, otherwise false.
  */
-Adafruit_H3LIS331::Adafruit_H3LIS331(int8_t cspin, int8_t mosipin, int8_t misopin,
-                                 int8_t sckpin) {
-  _cs = cspin;
-  _mosi = mosipin;
-  _miso = misopin;
-  _sck = sckpin;
-  _sensorID = -1;
-}
-
-/*!
- *  @brief  Setups the HW (reads coefficients values, etc.)
- *  @param  i2caddr
- *          i2c address (optional, fallback to default)
- *  @param  nWAI
- *          Who Am I register value - defaults to 0x32 (H3H3LIS331DL)
- *  @return true if successful
- */
-bool Adafruit_H3LIS331::begin(uint8_t i2caddr, uint8_t nWAI) {
-  _i2caddr = i2caddr;
-  _wai = nWAI;
-  if (I2Cinterface) {
-    i2c_dev = new Adafruit_I2CDevice(_i2caddr, I2Cinterface);
-
-    if (!i2c_dev->begin()) {
-      return false;
-    }
-  } else if (_cs != -1) {
-
-    // SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    if (_sck == -1) {
-      spi_dev = new Adafruit_SPIDevice(_cs,
-                                       500000,                // frequency
-                                       SPI_BITORDER_MSBFIRST, // bit order
-                                       SPI_MODE0,             // data mode
-                                       SPIinterface);
-    } else {
-      spi_dev = new Adafruit_SPIDevice(_cs, _sck, _miso, _mosi,
-                                       500000,                // frequency
-                                       SPI_BITORDER_MSBFIRST, // bit order
-                                       SPI_MODE0);            // data mode
-    }
-
-    if (!spi_dev->begin()) {
-      return false;
-    }
+bool Adafruit_H3LIS331::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t sensor_id) {
+  if (i2c_dev) {
+    delete i2c_dev; // remove old interface
   }
 
+  i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
+
+  if (!i2c_dev->begin()) {
+    return false;
+  }
+
+
   Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_WHOAMI, 1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
 
   /* Check connection */
-  if (getDeviceID() != _wai) {
+  if (getDeviceID() != H3LIS331_CHIP_ID) {
     /* No H3LIS331 detected ... return false */
     // Serial.println(deviceid, HEX);
     return false;
   }
   Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL1, 1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
   _ctrl1.write(0x07); // enable all axes, normal mode
 
-  // 400Hz rate
-  setDataRate(H3LIS331_DATARATE_50_HZ);
+  setDataRate(H3LIS331_DATARATE_1000_HZ);
   setRange(H3LIS331_RANGE_100_G);
 
   // Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
-  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL4, 1);
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
   // _ctrl4.write(0x88); // High res & BDU enabled
 
   // Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
-  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL3, 1);
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
   // _ctrl3.write(0x10); // DRDY on INT1
 
   // Turn on orientation config
 
   // Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
-  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_TEMPCFG, 1);
+  //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TEMPCFG, 1);
   // _tmp_cfg.write(0x80); // enable adcs
 
   return true;
 }
 
-/*!
- *  @brief  Get Device ID from H3LIS331_REG_WHOAMI
- *  @return WHO AM I value
- */
-uint8_t Adafruit_H3LIS331::getDeviceID(void) {
-  Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_WHOAMI, 1);
+void Adafruit_H3LIS331::_scaleValues(void){
 
-  return _chip_id.read();
-}
-/*!
- *  @brief  Check to see if new data available
- *  @return true if there is new data available, false otherwise
- */
-bool Adafruit_H3LIS331::haveNewData(void) {
-  Adafruit_BusIO_Register status_2 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_STATUS2, 1);
-  Adafruit_BusIO_RegisterBits zyx_data_available =
-      Adafruit_BusIO_RegisterBits(&status_2, 1, 3);
-  return zyx_data_available.read();
-}
-
-/*!
- *  @brief  Reads x y z values at once
- */
-void Adafruit_H3LIS331::read(void) {
-
-  uint8_t register_address = H3LIS331_REG_OUT_X_L;
-  if (i2c_dev) {
-    register_address |= 0x80; // set [7] for auto-increment
-  } else {
-    register_address |= 0x40; // set [6] for auto-increment
-    register_address |= 0x80; // set [7] for read
-  }
-
-  Adafruit_BusIO_Register xl_data = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, register_address, 6);
-
-  uint8_t buffer[6];
-  xl_data.read(buffer, 6);
-
-  x = buffer[0];
-  x |= ((uint16_t)buffer[1]) << 8;
+  // actually 12 bit but left justified
   x >>=4;
-  y = buffer[2];
-  y |= ((uint16_t)buffer[3]) << 8;
   y >>=4;
-  z = buffer[4];
-  z |= ((uint16_t)buffer[5]) << 8;
   z >>= 4;
   uint8_t range = getRange();
-  Serial.print("Range:");Serial.println(range);
   uint16_t scale_max = 1;
-  Serial.print("RAW X: ");Serial.println(x);
-  Serial.print("RAW Y: ");Serial.println(y);
-  Serial.print("RAW Z: ");Serial.println(z);
   if (range == H3LIS331_RANGE_100_G)
     scale_max = 100;
   if (range == H3LIS331_RANGE_200_G)
     scale_max = 200;
   if (range == H3LIS331_RANGE_400_G)
     scale_max = 400;
-  float lsb_value = 2*scale_max * (float)1/4098;
+
+  float lsb_value = 2*scale_max * (float) 1/4098;
 
   x_g = ((float)x * lsb_value);
   y_g = ((float)y * lsb_value);
   z_g = ((float)z * lsb_value);
 }
 
-/*!
- *   @brief  Set INT to output for single or double click
- *   @param  c
- *					 0 = turn off I1_CLICK
- *           1 = turn on all axes & singletap
- *					 2 = turn on all axes & doubletap
- *   @param  clickthresh
- *           CLICK threshold value
- *   @param  timelimit
- *           sets time limit (default 10)
- *   @param  timelatency
- *   				 sets time latency (default 20)
- *   @param  timewindow
- *   				 sets time window (default 255)
- */
-
-/*!
- *   @brief  Sets the g range for the accelerometer
- *   @param  range
- *           range value
- */
-void Adafruit_H3LIS331::setRange(h3lis331dl_range_t range) {
-
-  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL4, 1);
-
-  Adafruit_BusIO_RegisterBits range_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl4, 2, 4);
-  range_bits.write(range);
-  delay(15); // delay to let new setting settle
-}
-
-/*!
- *  @brief  Gets the g range for the accelerometer
- *  @return Returns g range value
- */
-h3lis331dl_range_t Adafruit_H3LIS331::getRange(void) {
-  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL4, 1);
-
-  Adafruit_BusIO_RegisterBits range_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl4, 2, 4);
-  return (h3lis331dl_range_t)range_bits.read();
-}
 
 /*!
  *  @brief  Sets the data rate for the H3LIS331 (controls power consumption)
@@ -271,15 +217,8 @@ h3lis331dl_range_t Adafruit_H3LIS331::getRange(void) {
  *          data rate value
  */
 void Adafruit_H3LIS331::setDataRate(h3lis331dl_dataRate_t dataRate) {
-  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL1, 1);
-  // This will set the power mode/PM bits and data rate/DR bits simultaneously
-  // to avoid having to figure out which combo to use to get the desired rate
-  // This also means the low power rates will always set the filter freq to 37hz
-  Adafruit_BusIO_RegisterBits data_rate_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5);
 
-  data_rate_bits.write(dataRate);
+  writeDataRate((lis3dh_dataRate_t)dataRate);
 }
 
 /*!
@@ -287,55 +226,6 @@ void Adafruit_H3LIS331::setDataRate(h3lis331dl_dataRate_t dataRate) {
  *   @return Returns Data Rate value
  */
 h3lis331dl_dataRate_t Adafruit_H3LIS331::getDataRate(void) {
-  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, H3LIS331_REG_CTRL1, 1);
-  Adafruit_BusIO_RegisterBits data_rate_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5);
 
-  return (h3lis331dl_dataRate_t)data_rate_bits.read();
-}
-
-/*!
- *  @brief  Gets the most recent sensor event
- *  @param  *event
- *          sensor event that we want to read
- *  @return true if successful
- */
-bool Adafruit_H3LIS331::getEvent(sensors_event_t *event) {
-  /* Clear the event */
-  memset(event, 0, sizeof(sensors_event_t));
-
-  event->version = sizeof(sensors_event_t);
-  event->sensor_id = _sensorID;
-  event->type = SENSOR_TYPE_ACCELEROMETER;
-  event->timestamp = 0;
-
-  read();
-
-  event->acceleration.x = x_g;
-  event->acceleration.y = y_g;
-  event->acceleration.z = z_g;
-
-  return true;
-}
-
-/*!
- *   @brief  Gets the sensor_t data
- *   @param  *sensor
- *           sensor that we want to write data into
- */
-void Adafruit_H3LIS331::getSensor(sensor_t *sensor) {
-  /* Clear the sensor_t object */
-  memset(sensor, 0, sizeof(sensor_t));
-
-  /* Insert the sensor name in the fixed length char array */
-  strncpy(sensor->name, "H3LIS331", sizeof(sensor->name) - 1);
-  sensor->name[sizeof(sensor->name) - 1] = 0;
-  sensor->version = 1;
-  sensor->sensor_id = _sensorID;
-  sensor->type = SENSOR_TYPE_ACCELEROMETER;
-  sensor->min_delay = 0;
-  sensor->max_value = 0;
-  sensor->min_value = 0;
-  sensor->resolution = 0;
+  return (h3lis331dl_dataRate_t)readDataRate();
 }

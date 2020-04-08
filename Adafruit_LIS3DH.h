@@ -314,7 +314,10 @@ typedef enum {
   LIS3DH_RANGE_16_G = 0b11, // +/- 16g
   LIS3DH_RANGE_8_G = 0b10,  // +/- 8g
   LIS3DH_RANGE_4_G = 0b01,  // +/- 4g
-  LIS3DH_RANGE_2_G = 0b00   // +/- 2g (default value)
+  LIS3DH_RANGE_2_G = 0b00,   // +/- 2g (default value)
+  H3LIS331_RANGE_100_G = 0x0, ///< +/- 100g
+  H3LIS331_RANGE_200_G = 0x1, ///< +/- 200g
+  H3LIS331_RANGE_400_G = 0x03, ///< +/- 400g
 } lis3dh_range_t;
 
 /** A structure to represent axes **/
@@ -326,16 +329,16 @@ typedef enum {
 
 /** Used with register 0x2A (LIS3DH_REG_CTRL_REG1) to set bandwidth **/
 typedef enum {
-  LIS3DH_DATARATE_400_HZ = 0b0111, //  400Hz
-  LIS3DH_DATARATE_200_HZ = 0b0110, //  200Hz
-  LIS3DH_DATARATE_100_HZ = 0b0101, //  100Hz
-  LIS3DH_DATARATE_50_HZ = 0b0100,  //   50Hz
-  LIS3DH_DATARATE_25_HZ = 0b0011,  //   25Hz
-  LIS3DH_DATARATE_10_HZ = 0b0010,  // 10 Hz
-  LIS3DH_DATARATE_1_HZ = 0b0001,   // 1 Hz
-  LIS3DH_DATARATE_POWERDOWN = 0,
-  LIS3DH_DATARATE_LOWPOWER_1K6HZ = 0b1000,
-  LIS3DH_DATARATE_LOWPOWER_5KHZ = 0b1001,
+  LIS3DH_DATARATE_400_HZ = 0b01110, //  400Hz
+  LIS3DH_DATARATE_200_HZ = 0b01100, //  200Hz
+  LIS3DH_DATARATE_100_HZ = 0b01010, //  100Hz
+  LIS3DH_DATARATE_50_HZ = 0b01000,  //   50Hz
+  LIS3DH_DATARATE_25_HZ = 0b00110,  //   25Hz
+  LIS3DH_DATARATE_10_HZ = 0b00100,  // 10 Hz
+  LIS3DH_DATARATE_1_HZ = 0b00010,   // 1 Hz
+  LIS3DH_DATARATE_POWERDOWN = 00,
+  LIS3DH_DATARATE_LOWPOWER_1K6HZ = 0b10000,
+  LIS3DH_DATARATE_LOWPOWER_5KHZ = 0b10010,
 
 } lis3dh_dataRate_t;
 
@@ -360,8 +363,6 @@ public:
   void setRange(lis3dh_range_t range);
   lis3dh_range_t getRange(void);
 
-  void setDataRate(lis3dh_dataRate_t dataRate);
-  lis3dh_dataRate_t getDataRate(void);
 
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
@@ -370,6 +371,11 @@ public:
                 uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
+  void writeDataRate(lis3dh_dataRate_t dataRate);
+  lis3dh_dataRate_t readDataRate(void);
+
+  virtual void _scaleValues(void);
+  protected:
   int16_t x; /**< x axis value */
   int16_t y; /**< y axis value */
   int16_t z; /**< z axis value */
@@ -377,8 +383,6 @@ public:
   float x_g; /**< x_g axis value (calculated by selected range) */
   float y_g; /**< y_g axis value (calculated by selected range) */
   float z_g; /**< z_g axis value (calculated by selected scale) */
-
-private:
   TwoWire *I2Cinterface;
   SPIClass *SPIinterface;
 
@@ -392,6 +396,8 @@ private:
   int8_t _i2caddr;
 
   int32_t _sensorID;
+private:
+
 };
 
 #endif

@@ -131,7 +131,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   _ctrl1.write(0x07); // enable all axes, normal mode
 
   // 400Hz rate
-  setDataRate(LIS3DH_DATARATE_400_HZ);
+  writeDataRate(LIS3DH_DATARATE_400_HZ);
 
   Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
@@ -198,6 +198,10 @@ void Adafruit_LIS3DH::read(void) {
   z = buffer[4];
   z |= ((uint16_t)buffer[5]) << 8;
 
+  _scaleValues();
+}
+
+void Adafruit_LIS3DH::_scaleValues(void){
   uint8_t range = getRange();
   uint16_t divider = 1;
   if (range == LIS3DH_RANGE_16_G)
@@ -213,7 +217,6 @@ void Adafruit_LIS3DH::read(void) {
   y_g = (float)y / divider;
   z_g = (float)z / divider;
 }
-
 /*!
  *  @brief  Read the auxilary ADC
  *  @param  adc
@@ -359,11 +362,12 @@ lis3dh_range_t Adafruit_LIS3DH::getRange(void) {
  *  @param  dataRate
  *          data rate value
  */
-void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate) {
+void Adafruit_LIS3DH::writeDataRate(lis3dh_dataRate_t dataRate) {
   Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
   Adafruit_BusIO_RegisterBits data_rate_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+      // Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5); // including LPen bit
 
   data_rate_bits.write(dataRate);
 }
@@ -372,11 +376,12 @@ void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate) {
  *   @brief  Gets the data rate for the LIS3DH (controls power consumption)
  *   @return Returns Data Rate value
  */
-lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void) {
+lis3dh_dataRate_t Adafruit_LIS3DH::readDataRate(void) {
   Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
   Adafruit_BusIO_RegisterBits data_rate_bits =
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+      // Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5); // including LPen bit
 
   return (lis3dh_dataRate_t)data_rate_bits.read();
 }
