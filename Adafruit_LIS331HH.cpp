@@ -1,5 +1,5 @@
 /*!
- * @file Adafruit_H3LIS331.cpp
+ * @file Adafruit_LIS331HH.cpp
  *
  *  @mainpage Adafruit H3LIS331 breakout board
  *
@@ -30,7 +30,7 @@
 
 #include "Arduino.h"
 
-#include <Adafruit_H3LIS331.h>
+#include <Adafruit_LIS331HH.h>
 #include <Wire.h>
 
 /*!
@@ -38,7 +38,7 @@
  *  @param  Wi
  *          optional wire object
  */
-Adafruit_H3LIS331::Adafruit_H3LIS331(){};
+Adafruit_LIS331HH::Adafruit_LIS331HH(){};
 
 
 /*!
@@ -51,7 +51,7 @@ Adafruit_H3LIS331::Adafruit_H3LIS331(){};
  *            The user-defined ID to differentiate different sensors
  *    @return True if initialization was successful, otherwise false.
  */
-bool Adafruit_H3LIS331::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t sensor_id) {
+bool Adafruit_LIS331HH::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t sensor_id) {
   if (i2c_dev) {
     delete i2c_dev; // remove old interface
   }
@@ -73,8 +73,8 @@ bool Adafruit_H3LIS331::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t se
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3X_REG_CTRL1, 1);
   _ctrl1.write(0x07); // enable all axes, normal mode
 
-  setDataRate(H3LIS331_DATARATE_1000_HZ);
-  setRange(H3LIS331_RANGE_100_G);
+  setDataRate(LIS331HH_DATARATE_1000_HZ);
+  setRange(LIS331HH_RANGE_24_G);
 
   // Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
   //     i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3X_REG_CTRL4, 1);
@@ -87,7 +87,7 @@ bool Adafruit_H3LIS331::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t se
   return true;
 }
 
-void Adafruit_H3LIS331::_scaleValues(void){
+void Adafruit_LIS331HH::_scaleValues(void){
 
   // actually 12 bit but left justified
   x >>=4;
@@ -95,12 +95,13 @@ void Adafruit_H3LIS331::_scaleValues(void){
   z >>= 4;
   uint8_t range = getRange();
   uint16_t scale_max = 1;
-  if (range == H3LIS331_RANGE_100_G)
-    scale_max = 100;
-  if (range == H3LIS331_RANGE_200_G)
-    scale_max = 200;
-  if (range == H3LIS331_RANGE_400_G)
-    scale_max = 400;
+
+  if (range == LIS331HH_RANGE_6_G)
+    scale_max = 6;
+  if (range == LIS331HH_RANGE_12_G)
+    scale_max = 12;
+  if (range == LIS331HH_RANGE_24_G)
+    scale_max = 24;
 
   float lsb_value = 2*scale_max * (float) 1/4098;
 
@@ -109,12 +110,13 @@ void Adafruit_H3LIS331::_scaleValues(void){
   z_g = ((float)z * lsb_value);
 }
 
+
 /*!
  *  @brief  Sets the data rate for the H3LIS331 (controls power consumption)
  *  @param  dataRate
  *          data rate value
  */
-void Adafruit_H3LIS331::setDataRate(h3lis331dl_dataRate_t dataRate) {
+void Adafruit_LIS331HH::setDataRate(lis331hh_dataRate_t dataRate) {
 
   writeDataRate((uint8_t)dataRate);
 }
@@ -123,18 +125,17 @@ void Adafruit_H3LIS331::setDataRate(h3lis331dl_dataRate_t dataRate) {
  *   @brief  Gets the data rate for the H3LIS331 (controls power consumption)
  *   @return Returns Data Rate value
  */
-h3lis331dl_dataRate_t Adafruit_H3LIS331::getDataRate(void) {
+lis331hh_dataRate_t Adafruit_LIS331HH::getDataRate(void) {
 
-  return (h3lis331dl_dataRate_t)readDataRate();
+  return (lis331hh_dataRate_t)readDataRate();
 }
-
 /**
  *  @brief  Sets the measurement range for the H3LIS331
  *  @param  range The range to set
  */
 
 
-void Adafruit_H3LIS331::setRange(h3lis331dl_range_t range) {
+void Adafruit_LIS331HH::setRange(lis331hh_range_t range) {
   writeRange((uint8_t)range);
 }
 
@@ -142,8 +143,8 @@ void Adafruit_H3LIS331::setRange(h3lis331dl_range_t range) {
  *   @brief  Gets the measurement range for the H3LIS331
  *   @return The range value
  */
-h3lis331dl_range_t Adafruit_H3LIS331::getRange(void) {
+lis331hh_range_t Adafruit_LIS331HH::getRange(void) {
 
-  return (h3lis331dl_range_t)readRange();
+  return (lis331hh_range_t)readRange();
 
 }
