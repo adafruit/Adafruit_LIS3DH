@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['adafruit_20lis3dh_20breakout_20board',['Adafruit LIS3DH breakout board',['../index.html',1,'']]]
+  ['adafruit_20lis3x_20breakout_20board',['Adafruit LIS3X breakout board',['../index.html',1,'']]]
 ];
