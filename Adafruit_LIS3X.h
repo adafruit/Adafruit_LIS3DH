@@ -1,16 +1,23 @@
 /*!
  *  @file Adafruit_LIS3X.h
  *
- *  This is a library for the Adafruit LIS3X Accel breakout board
+ *  @mainpage Adafruit LIS3X breakout board
  *
- *  Designed specifically to work with the Adafruit LIS3X Triple-Axis
- *Accelerometer
- *	(+-2g/4g/8g/16g)
+ *  @section intro_sec Introduction
+ * *  This is a library for the Adafruit LIS3XX Family of Accelerometer breakout
+ boards
  *
+ *  Designed specifically to work with:
+ *  * [Adafruit LIS3DH Triple-Axis Accelerometer
+ (+-2g/4g/8g/16g)](https://www.adafruit.com/product/2809)
+ *  * [Adafruit LIS331HH Triple-Axis Accelerometer
+ (+-6g/12g/24g)](https://www.adafruit.com/product/4XXX)
+ *  * [Adafruit H3LIS331 High-G Triple-Axis Accelerometer
+ (+-100g/200g/400g)](https://www.adafruit.com/product/4XXX)
+
  *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
  *
- *	This sensor communicates over I2C or SPI (our library code supports
+ *	These sensors communicate over I2C or SPI (our library code supports
  *both) so you can share it with a bunch of other sensors on the same I2C bus.
  *  There's an address selection pin so you can have two accelerometers share an
  *I2C bus.
@@ -19,7 +26,11 @@
  *  please support Adafruit andopen-source hardware by purchasing products
  *  from Adafruit!
  *
- *  K. Townsend / Limor Fried (Ladyada) - (Adafruit Industries).
+ *  @section author Author
+ *
+ *  Bryan Siepert / K. Townsend / Limor Fried (Adafruit Industries)
+ *
+ *  @section license License
  *
  *  BSD license, all text above must be included in any redistribution
  */
@@ -36,10 +47,10 @@
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
-
-/** I2C ADDRESS/BITS **/
-#define LIS3X_DEFAULT_ADDRESS (0x18) // if SDO/SA0 is 3V, its 0x19
-
+/** Default I2C ADDRESS. If SDO/SA0 is 3V, its 0x19**/
+#define LIS3X_DEFAULT_ADDRESS (0x18)
+#define LIS331_CHIP_ID                                                         \
+  0x32 ///< The default response to WHO_AM_I for the H3LIS331 and LIS331HH
 /*!
  *  STATUS_REG_AUX register
  *   321OR  1, 2 and 3 axis data overrun. Default value: 0
@@ -309,41 +320,12 @@
  */
 #define LIS3X_REG_TIMEWINDOW 0x3D
 
-// /** A structure to represent scales **/
-// typedef enum {
-//   LIS3X_RANGE_16_G = 0b11, // +/- 16g
-//   LIS3X_RANGE_8_G = 0b10,  // +/- 8g
-//   LIS3X_RANGE_4_G = 0b01,  // +/- 4g
-//   LIS3X_RANGE_2_G = 0b00,   // +/- 2g (default value)
-//   H3LIS331_RANGE_100_G = 0x0, ///< +/- 100g
-//   H3LIS331_RANGE_200_G = 0x1, ///< +/- 200g
-//   H3LIS331_RANGE_400_G = 0x03, ///< +/- 400g
-//   LIS331HH_RANGE_6_G = 0x0, ///< +/- 6G
-//   LIS331HH_RANGE_12_G = 0x1, ///< +/- 12G
-//   LIS331HH_RANGE_24_G = 0x03, ///< +/- 24G
-// } lis3dh_range_t;
-
 /** A structure to represent axes **/
 typedef enum {
   LIS3X_AXIS_X = 0x0,
   LIS3X_AXIS_Y = 0x1,
   LIS3X_AXIS_Z = 0x2,
 } lis3x_axis_t;
-
-// /** Used with register 0x2A (LIS3X_REG_CTRL_REG1) to set bandwidth **/
-// typedef enum {
-//   LIS3X_DATARATE_400_HZ = 0b01110, //  400Hz
-//   LIS3X_DATARATE_200_HZ = 0b01100, //  200Hz
-//   LIS3X_DATARATE_100_HZ = 0b01010, //  100Hz
-//   LIS3X_DATARATE_50_HZ = 0b01000,  //   50Hz
-//   LIS3X_DATARATE_25_HZ = 0b00110,  //   25Hz
-//   LIS3X_DATARATE_10_HZ = 0b00100,  // 10 Hz
-//   LIS3X_DATARATE_1_HZ = 0b00010,   // 1 Hz
-//   LIS3X_DATARATE_POWERDOWN = 00,
-//   LIS3X_DATARATE_LOWPOWER_1K6HZ = 0b10000,
-//   LIS3X_DATARATE_LOWPOWER_5KHZ = 0b10010,
-
-// } lis3dh_dataRate_t;
 
 /*!
  *  @brief  Class that stores state and functions for interacting with
@@ -359,16 +341,9 @@ public:
   bool haveNewData(void);
 
   void read(void);
-  int16_t readADC(uint8_t a);
 
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
-
-  void writeDataRate(uint8_t dataRate);
-  uint8_t readDataRate(void);
-
-  void writeRange(uint8_t range);
-  uint8_t readRange(void);
 
   virtual void _scaleValues(void);
   int16_t x; /**< x axis value */
@@ -379,21 +354,18 @@ protected:
   float x_g; /**< x_g axis value (calculated by selected range) */
   float y_g; /**< y_g axis value (calculated by selected range) */
   float z_g; /**< z_g axis value (calculated by selected scale) */
-  TwoWire *I2Cinterface;
-  SPIClass *SPIinterface;
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to I2C bus interface
 
-  uint8_t _wai;
+  void writeDataRate(uint8_t dataRate);
+  uint8_t readDataRate(void);
 
-  int8_t _cs, _mosi, _miso, _sck;
-
-  int8_t _i2caddr;
-
-  int32_t _sensorID;
+  void writeRange(uint8_t range);
+  uint8_t readRange(void);
 
 private:
+  int32_t _sensorID;
 };
 
 #endif

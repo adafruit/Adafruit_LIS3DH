@@ -3,24 +3,17 @@
  *
  *  This is a library for the Adafruit H3LIS331 Accel breakout board
  *
- *  Designed specifically to work with the Adafruit H3LIS331 Triple-Axis
- *Accelerometer
- *	(+-2g/4g/8g/16g)
+ *  Designed specifically to work with the [Adafruit H3LIS331 High-G Triple-Axis
+ * Accelerometer (+-100g/200g/400g)](https://www.adafruit.com/product/4XXX)
  *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
- *
- *	This sensor communicates over I2C or SPI (our library code supports
- *both) so you can share it with a bunch of other sensors on the same I2C bus.
- *  There's an address selection pin so you can have two accelerometers share an
- *I2C bus.
+ *  This sensor communicates over I2C or SPI (our library code supports both) so
+ * you can share it with a bunch of other sensors on the same I2C bus.
  *
  *  Adafruit invests time and resources providing this open source code,
  *  please support Adafruit andopen-source hardware by purchasing products
  *  from Adafruit!
  *
- *  K. Townsend / Limor Fried (Ladyada) - (Adafruit Industries).
- *
+ *  Bryan Siepert for Adafruit Industries
  *  BSD license, all text above must be included in any redistribution
  */
 
@@ -29,11 +22,6 @@
 
 #include "Adafruit_LIS3X.h"
 
-/** I2C ADDRESS/BITS **/
-#define H3LIS331_DEFAULT_ADDRESS (0x18) // if SDO/SA0 is 3V, its 0x19
-#define LIS331_CHIP_ID 0x32
-
-// CHANGED_BS
 /** Used with register 0x2A (H3LIS331_REG_CTRL_REG1) to set bandwidth **/
 typedef enum {
   H3LIS331_DATARATE_POWERDOWN = 0,
@@ -63,7 +51,7 @@ class Adafruit_H3LIS331 : public Adafruit_LIS3X {
 public:
   Adafruit_H3LIS331();
 
-  bool begin_I2C(uint8_t i2c_addr = H3LIS331_DEFAULT_ADDRESS,
+  bool begin_I2C(uint8_t i2c_addr = LIS3X_DEFAULT_ADDRESS,
                  TwoWire *wire = &Wire, int32_t sensorID = 0);
 
   void setDataRate(h3lis331dl_dataRate_t dataRate);

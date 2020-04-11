@@ -3,25 +3,19 @@
  *
  *  This is a library for the Adafruit LIS331HH Accel breakout board
  *
- *  Designed specifically to work with the Adafruit LIS331HH Triple-Axis
- *Accelerometer
- *	(+-2g/4g/8g/16g)
+ *  Designed specifically to work with the [Adafruit LIS331HH Triple-Axis
+ * Accelerometer (+-6g/12g/24g)](https://www.adafruit.com/product/4XXX)
  *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
- *
- *	This sensor communicates over I2C or SPI (our library code supports
- *both) so you can share it with a bunch of other sensors on the same I2C bus.
- *  There's an address selection pin so you can have two accelerometers share an
- *I2C bus.
+ *  This sensor communicates over I2C or SPI (our library code supports both) so
+ * you can share it with a bunch of other sensors on the same I2C bus.
  *
  *  Adafruit invests time and resources providing this open source code,
  *  please support Adafruit andopen-source hardware by purchasing products
  *  from Adafruit!
  *
- *  K. Townsend / Limor Fried (Ladyada) - (Adafruit Industries).
- *
+ *  Bryan Siepert for Adafruit Industries
  *  BSD license, all text above must be included in any redistribution
+ *
  */
 
 #ifndef ADAFRUIT_LIS331HH_H
@@ -31,7 +25,6 @@
 
 /** I2C ADDRESS/BITS **/
 #define LIS331HH_DEFAULT_ADDRESS (0x18) // if SDO/SA0 is 3V, its 0x19
-#define LIS331_CHIP_ID 0x32
 
 /** A structure to represent scales **/
 typedef enum {
@@ -61,22 +54,10 @@ typedef enum {
 class Adafruit_LIS331HH : public Adafruit_LIS3X {
 public:
   Adafruit_LIS331HH();
-  Adafruit_LIS331HH(int8_t cspin, SPIClass *theSPI = &SPI);
-  Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin,
-                    int8_t sckpin);
-  // Adafruit_LIS331HH(TwoWire *Wi = &Wire);
-  // Adafruit_LIS331HH(int8_t cspin, SPIClass *theSPI = &SPI);
-  // Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t
-  // sckpin);
 
-  // bool begin(uint8_t addr = LIS331HH_DEFAULT_ADDRESS, uint8_t nWAI =
-  // LIS331_CHIP_ID);
-  bool begin_I2C(uint8_t i2c_addr = LIS331HH_DEFAULT_ADDRESS,
+  bool begin_I2C(uint8_t i2c_addr = LIS3X_DEFAULT_ADDRESS,
                  TwoWire *wire = &Wire, int32_t sensorID = 0);
 
-  // bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI, int32_t sensorID =
-  // 0); bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
-  //  int8_t mosi_pin, int32_t sensorID = 0);
   void setDataRate(lis331hh_dataRate_t dataRate);
   lis331hh_dataRate_t getDataRate(void);
 

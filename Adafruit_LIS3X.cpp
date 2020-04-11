@@ -1,31 +1,5 @@
 /*!
  * @file Adafruit_LIS3X.cpp
- *
- *  @mainpage Adafruit LIS3X breakout board
- *
- *  @section intro_sec Introduction
- *
- *  This is a library for the Adafruit LIS3X Accel breakout board
- *
- *  Designed specifically to work with the Adafruit LIS3X Accel breakout board.
- *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
- *
- *  This sensor communicates over I2C or SPI (our library code supports both) so
- * you can share it with a bunch of other sensors on the same I2C bus.
- *
- *  Adafruit invests time and resources providing this open source code,
- *  please support Adafruit andopen-source hardware by purchasing products
- *  from Adafruit!
- *
- *  @section author Author
- *
- *  Bryan Siepert / K. Townsend / Limor Fried (Adafruit Industries)
- *
- *  @section license License
- *
- *  BSD license, all text above must be included in any redistribution
  */
 
 #include "Arduino.h"
@@ -38,10 +12,7 @@
  *  @param  Wi
  *          optional wire object
  */
-Adafruit_LIS3X::Adafruit_LIS3X(TwoWire *Wi)
-    : _cs(-1), _mosi(-1), _miso(-1), _sck(-1), _sensorID(-1) {
-  I2Cinterface = Wi;
-}
+Adafruit_LIS3X::Adafruit_LIS3X(TwoWire *Wi) {}
 
 /*!
  *   @brief  Instantiates a new LIS3X class using hardware SPI
@@ -50,14 +21,7 @@ Adafruit_LIS3X::Adafruit_LIS3X(TwoWire *Wi)
  *   @param  *theSPI
  *           optional parameter contains spi object
  */
-Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, SPIClass *theSPI) {
-  _cs = cspin;
-  _mosi = -1;
-  _miso = -1;
-  _sck = -1;
-  _sensorID = -1;
-  SPIinterface = theSPI;
-}
+Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, SPIClass *theSPI) {}
 
 /*!
  *   @brief  Instantiates a new LIS3X class using software SPI
@@ -71,15 +35,8 @@ Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, SPIClass *theSPI) {
  *           number of pin used for CLK (clock pin)
  */
 Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, int8_t mosipin, int8_t misopin,
-                               int8_t sckpin) {
-  _cs = cspin;
-  _mosi = mosipin;
-  _miso = misopin;
-  _sck = sckpin;
-  _sensorID = -1;
-}
+                               int8_t sckpin) {}
 
-/*****VVVVVV  SHARED CODE VVVVVVVV********************/
 /*!
  *  @brief  Get Device ID from LIS3X_REG_WHOAMI
  *  @return WHO AM I value
@@ -137,6 +94,11 @@ void Adafruit_LIS3X::read(void) {
  */
 void Adafruit_LIS3X::_scaleValues(void) {}
 
+/**
+ * @brief Set the measurement range for the sensor
+ *
+ * @param range The measurement range to set
+ */
 void Adafruit_LIS3X::writeRange(uint8_t range) {
 
   Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
@@ -148,6 +110,11 @@ void Adafruit_LIS3X::writeRange(uint8_t range) {
   delay(15); // delay to let new setting settle
 }
 
+/**
+ * @brief Get the measurement range
+ *
+ * @return uint8_t The measurement range
+ */
 uint8_t Adafruit_LIS3X::readRange(void) {
   Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3X_REG_CTRL4, 1);

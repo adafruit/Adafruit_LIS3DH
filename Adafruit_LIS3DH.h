@@ -3,24 +3,17 @@
  *
  *  This is a library for the Adafruit LIS3DH Accel breakout board
  *
- *  Designed specifically to work with the Adafruit LIS3DH Triple-Axis
- *Accelerometer
- *	(+-2g/4g/8g/16g)
+ *  Designed specifically to work with the [Adafruit LIS3DH Triple-Axis
+ * Accelerometer (+-2g/4g/8g/16g)](https://www.adafruit.com/product/2809)
  *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
- *
- *	This sensor communicates over I2C or SPI (our library code supports
- *both) so you can share it with a bunch of other sensors on the same I2C bus.
- *  There's an address selection pin so you can have two accelerometers share an
- *I2C bus.
+ *  This sensor communicates over I2C or SPI (our library code supports both) so
+ * you can share it with a bunch of other sensors on the same I2C bus.
  *
  *  Adafruit invests time and resources providing this open source code,
  *  please support Adafruit andopen-source hardware by purchasing products
  *  from Adafruit!
  *
- *  K. Townsend / Limor Fried (Ladyada) - (Adafruit Industries).
- *
+ *  Bryan Siepert for Adafruit Industries
  *  BSD license, all text above must be included in any redistribution
  */
 
@@ -74,7 +67,7 @@ public:
   Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI = &SPI);
   Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-  bool begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
+  bool begin(uint8_t addr = LIS3X_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
 
   int16_t readADC(uint8_t a);
   void setClick(uint8_t c, uint8_t clickthresh, uint8_t timelimit = 10,
@@ -87,20 +80,18 @@ public:
   void setRange(lis3dh_range_t range);
   lis3dh_range_t getRange(void);
 
-  // protected:
-  // float x_g; /**< x_g axis value (calculated by selected range) */
-  // float y_g; /**< y_g axis value (calculated by selected range) */
-  // float z_g; /**< z_g axis value (calculated by selected scale) */
-
 private:
   void _scaleValues(void);
 
   TwoWire *I2Cinterface;
   SPIClass *SPIinterface;
 
-  uint8_t _wai;
+  uint8_t _wai; ///< Who am I /chip ID
 
-  int8_t _cs, _mosi, _miso, _sck;
+  int8_t _cs, ///< CS Pin
+      _mosi,  ///< MOSI Pin
+      _miso,  ///< MISO Pin
+      _sck;   ///< SCK Pin
 
   int8_t _i2caddr;
 

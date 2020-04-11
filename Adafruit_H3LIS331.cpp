@@ -1,32 +1,5 @@
 /*!
  * @file Adafruit_H3LIS331.cpp
- *
- *  @mainpage Adafruit H3LIS331 breakout board
- *
- *  @section intro_sec Introduction
- *
- *  This is a library for the Adafruit H3LIS331 Accel breakout board
- *
- *  Designed specifically to work with the Adafruit H3LIS331 Accel breakout
- * board.
- *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/4XXX
- *
- *  This sensor communicates over I2C or SPI (our library code supports both) so
- * you can share it with a bunch of other sensors on the same I2C bus.
- *
- *  Adafruit invests time and resources providing this open source code,
- *  please support Adafruit andopen-source hardware by purchasing products
- *  from Adafruit!
- *
- *  @section author Author
- *
- *  Bryan Siepert for Adafruit Industries
- *
- *  @section license License
- *
- *  BSD license, all text above must be included in any redistribution
  */
 
 #include "Arduino.h"
@@ -35,9 +8,7 @@
 #include <Wire.h>
 
 /*!
- *  @brief  Instantiates a new H3LIS331 class in I2C
- *  @param  Wi
- *          optional wire object
+ *  @brief  Instantiates a new H3LIS331 class
  */
 Adafruit_H3LIS331::Adafruit_H3LIS331(){};
 

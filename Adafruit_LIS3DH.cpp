@@ -1,31 +1,5 @@
 /*!
  * @file Adafruit_LIS3DH.cpp
- *
- *  @mainpage Adafruit LIS3DH breakout board
- *
- *  @section intro_sec Introduction
- *
- *  This is a library for the Adafruit LIS3DH Accel breakout board
- *
- *  Designed specifically to work with the Adafruit LIS3DH Accel breakout board.
- *
- *  Pick one up today in the adafruit shop!
- *  ------> https://www.adafruit.com/product/2809
- *
- *  This sensor communicates over I2C or SPI (our library code supports both) so
- * you can share it with a bunch of other sensors on the same I2C bus.
- *
- *  Adafruit invests time and resources providing this open source code,
- *  please support Adafruit andopen-source hardware by purchasing products
- *  from Adafruit!
- *
- *  @section author Author
- *
- *  K. Townsend / Limor Fried (Adafruit Industries)
- *
- *  @section license License
- *
- *  BSD license, all text above must be included in any redistribution
  */
 
 #include "Arduino.h"
@@ -165,6 +139,11 @@ lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void) {
   return (lis3dh_dataRate_t)readDataRate();
 }
 
+/**
+ * @brief Sets the measurement range for the sensor
+ *
+ * @param range The measurement range to be set
+ */
 void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
   writeRange((uint8_t)range);
 }
