@@ -66,9 +66,9 @@
 #define LIS3X_REG_OUTADC2_H 0x0B /**< 2-axis acceleration data. High value */
 #define LIS3X_REG_OUTADC3_L 0x0C /**< 3-axis acceleration data. Low value */
 #define LIS3X_REG_OUTADC3_H 0x0D /**< 3-axis acceleration data. High value */
-#define LIS3X_REG_INTCOUNT                                                    \
+#define LIS3X_REG_INTCOUNT                                                     \
   0x0E /**< INT_COUNTER register [IC7, IC6, IC5, IC4, IC3, IC2, IC1, IC0] */
-#define LIS3X_REG_WHOAMI                                                      \
+#define LIS3X_REG_WHOAMI                                                       \
   0x0F /**< Device identification register. [0, 0, 1, 1, 0, 0, 1, 1] */
 /*!
  *  TEMP_CFG_REG
@@ -198,7 +198,7 @@
  *   FTH4:0   Default value: 0
  */
 #define LIS3X_REG_FIFOCTRL 0x2E
-#define LIS3X_REG_FIFOSRC                                                     \
+#define LIS3X_REG_FIFOSRC                                                      \
   0x2F /**< FIFO_SRC_REG [WTM, OVRN_FIFO, EMPTY, FSS4, FSS3, FSS2, FSS1, FSS0] \
         */
 /*!
@@ -241,9 +241,9 @@
  * the latched option  was chosen.
  */
 #define LIS3X_REG_INT1SRC 0x31
-#define LIS3X_REG_INT1THS                                                     \
+#define LIS3X_REG_INT1THS                                                      \
   0x32 /**< INT1_THS register [0, THS6, THS5, THS4, THS3, THS1, THS0] */
-#define LIS3X_REG_INT1DUR                                                     \
+#define LIS3X_REG_INT1DUR                                                      \
   0x33 /**< INT1_DURATION [0, D6, D5, D4, D3, D2, D1, D0] */
 /*!
  *  CLICK_CFG
@@ -375,7 +375,7 @@ public:
   int16_t y; /**< y axis value */
   int16_t z; /**< z axis value */
 
-  protected:
+protected:
   float x_g; /**< x_g axis value (calculated by selected range) */
   float y_g; /**< y_g axis value (calculated by selected range) */
   float z_g; /**< z_g axis value (calculated by selected scale) */
@@ -392,8 +392,8 @@ public:
   int8_t _i2caddr;
 
   int32_t _sensorID;
-private:
 
+private:
 };
 
 #endif

@@ -7,7 +7,8 @@
  *
  *  This is a library for the Adafruit H3LIS331 Accel breakout board
  *
- *  Designed specifically to work with the Adafruit H3LIS331 Accel breakout board.
+ *  Designed specifically to work with the Adafruit H3LIS331 Accel breakout
+ * board.
  *
  *  Pick one up today in the adafruit shop!
  *  ------> https://www.adafruit.com/product/4XXX
@@ -40,7 +41,6 @@
  */
 Adafruit_LIS331HH::Adafruit_LIS331HH(){};
 
-
 /*!
  *    @brief  Sets up the hardware and initializes I2C
  *    @param  i2c_address
@@ -51,7 +51,8 @@ Adafruit_LIS331HH::Adafruit_LIS331HH(){};
  *            The user-defined ID to differentiate different sensors
  *    @return True if initialization was successful, otherwise false.
  */
-bool Adafruit_LIS331HH::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t sensor_id) {
+bool Adafruit_LIS331HH::begin_I2C(uint8_t i2c_address, TwoWire *wire,
+                                  int32_t sensor_id) {
   if (i2c_dev) {
     delete i2c_dev; // remove old interface
   }
@@ -87,11 +88,11 @@ bool Adafruit_LIS331HH::begin_I2C(uint8_t i2c_address, TwoWire *wire, int32_t se
   return true;
 }
 
-void Adafruit_LIS331HH::_scaleValues(void){
+void Adafruit_LIS331HH::_scaleValues(void) {
 
   // actually 12 bit but left justified
-  x >>=4;
-  y >>=4;
+  x >>= 4;
+  y >>= 4;
   z >>= 4;
   uint8_t range = getRange();
   uint16_t scale_max = 1;
@@ -103,13 +104,12 @@ void Adafruit_LIS331HH::_scaleValues(void){
   if (range == LIS331HH_RANGE_24_G)
     scale_max = 24;
 
-  float lsb_value = 2*scale_max * (float) 1/4098;
+  float lsb_value = 2 * scale_max * (float)1 / 4098;
 
   x_g = ((float)x * lsb_value);
   y_g = ((float)y * lsb_value);
   z_g = ((float)z * lsb_value);
 }
-
 
 /*!
  *  @brief  Sets the data rate for the H3LIS331 (controls power consumption)
@@ -134,7 +134,6 @@ lis331hh_dataRate_t Adafruit_LIS331HH::getDataRate(void) {
  *  @param  range The range to set
  */
 
-
 void Adafruit_LIS331HH::setRange(lis331hh_range_t range) {
   writeRange((uint8_t)range);
 }
@@ -146,5 +145,4 @@ void Adafruit_LIS331HH::setRange(lis331hh_range_t range) {
 lis331hh_range_t Adafruit_LIS331HH::getRange(void) {
 
   return (lis331hh_range_t)readRange();
-
 }

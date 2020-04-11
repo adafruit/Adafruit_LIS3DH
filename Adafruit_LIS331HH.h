@@ -35,8 +35,8 @@
 
 /** A structure to represent scales **/
 typedef enum {
-  LIS331HH_RANGE_6_G = 0x0, ///< +/- 6G
-  LIS331HH_RANGE_12_G = 0x1, ///< +/- 12G
+  LIS331HH_RANGE_6_G = 0x0,   ///< +/- 6G
+  LIS331HH_RANGE_12_G = 0x1,  ///< +/- 12G
   LIS331HH_RANGE_24_G = 0x03, ///< +/- 24Gvalue)
 } lis331hh_range_t;
 
@@ -62,24 +62,27 @@ class Adafruit_LIS331HH : public Adafruit_LIS3X {
 public:
   Adafruit_LIS331HH();
   Adafruit_LIS331HH(int8_t cspin, SPIClass *theSPI = &SPI);
-  Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
+  Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin,
+                    int8_t sckpin);
   // Adafruit_LIS331HH(TwoWire *Wi = &Wire);
   // Adafruit_LIS331HH(int8_t cspin, SPIClass *theSPI = &SPI);
-  // Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
+  // Adafruit_LIS331HH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t
+  // sckpin);
 
-  // bool begin(uint8_t addr = LIS331HH_DEFAULT_ADDRESS, uint8_t nWAI = LIS331_CHIP_ID);
+  // bool begin(uint8_t addr = LIS331HH_DEFAULT_ADDRESS, uint8_t nWAI =
+  // LIS331_CHIP_ID);
   bool begin_I2C(uint8_t i2c_addr = LIS331HH_DEFAULT_ADDRESS,
                  TwoWire *wire = &Wire, int32_t sensorID = 0);
 
-  // bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI, int32_t sensorID = 0);
-  // bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
-                //  int8_t mosi_pin, int32_t sensorID = 0);
+  // bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI, int32_t sensorID =
+  // 0); bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
+  //  int8_t mosi_pin, int32_t sensorID = 0);
   void setDataRate(lis331hh_dataRate_t dataRate);
   lis331hh_dataRate_t getDataRate(void);
 
-
   void setRange(lis331hh_range_t range);
   lis331hh_range_t getRange(void);
+
 private:
   void _scaleValues(void);
 };

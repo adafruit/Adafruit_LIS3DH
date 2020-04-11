@@ -55,7 +55,6 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI)
   SPIinterface = theSPI;
 }
 
-
 /*!
  *   @brief  Instantiates a new LIS3DH class using software SPI
  *   @param  cspin
@@ -166,7 +165,6 @@ lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void) {
   return (lis3dh_dataRate_t)readDataRate();
 }
 
-
 void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
   writeRange((uint8_t)range);
 }
@@ -178,11 +176,9 @@ void Adafruit_LIS3DH::setRange(lis3dh_range_t range) {
 lis3dh_range_t Adafruit_LIS3DH::getRange(void) {
 
   return (lis3dh_range_t)readRange();
-
 }
 
-
-void Adafruit_LIS3DH::_scaleValues(void){
+void Adafruit_LIS3DH::_scaleValues(void) {
   uint8_t range = getRange();
   uint16_t divider = 1;
   if (range == LIS3DH_RANGE_16_G)
@@ -308,4 +304,3 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
 
   return click_reg.read();
 }
-

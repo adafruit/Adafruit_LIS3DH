@@ -34,22 +34,20 @@
 
 #include <Adafruit_BusIO_Register.h>
 #include <Adafruit_I2CDevice.h>
+#include <Adafruit_LIS3X.h>
 #include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_LIS3X.h>
 
 /** I2C ADDRESS/BITS **/
 #define LIS3DH_DEFAULT_ADDRESS (0x18) // if SDO/SA0 is 3V, its 0x19
-
 
 /** A structure to represent scales **/
 typedef enum {
   LIS3DH_RANGE_16_G = 0b11, // +/- 16g
   LIS3DH_RANGE_8_G = 0b10,  // +/- 8g
   LIS3DH_RANGE_4_G = 0b01,  // +/- 4g
-  LIS3DH_RANGE_2_G = 0b00,   // +/- 2g (default value)
+  LIS3DH_RANGE_2_G = 0b00,  // +/- 2g (default value)
 } lis3dh_range_t;
-
 
 /** Used with register 0x2A (LIS3X_REG_CTRL_REG1) to set bandwidth **/
 typedef enum {

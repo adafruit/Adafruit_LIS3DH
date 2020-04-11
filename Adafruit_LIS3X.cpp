@@ -71,7 +71,7 @@ Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, SPIClass *theSPI) {
  *           number of pin used for CLK (clock pin)
  */
 Adafruit_LIS3X::Adafruit_LIS3X(int8_t cspin, int8_t mosipin, int8_t misopin,
-                                 int8_t sckpin) {
+                               int8_t sckpin) {
   _cs = cspin;
   _mosi = mosipin;
   _miso = misopin;

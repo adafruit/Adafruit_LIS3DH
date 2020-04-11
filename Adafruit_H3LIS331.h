@@ -33,7 +33,7 @@
 #define H3LIS331_DEFAULT_ADDRESS (0x18) // if SDO/SA0 is 3V, its 0x19
 #define LIS331_CHIP_ID 0x32
 
-//CHANGED_BS
+// CHANGED_BS
 /** Used with register 0x2A (H3LIS331_REG_CTRL_REG1) to set bandwidth **/
 typedef enum {
   H3LIS331_DATARATE_POWERDOWN = 0,
@@ -50,8 +50,8 @@ typedef enum {
 
 /** A structure to represent scales **/
 typedef enum {
-  H3LIS331_RANGE_100_G = 0x0, ///< +/- 100g
-  H3LIS331_RANGE_200_G = 0x1, ///< +/- 200g
+  H3LIS331_RANGE_100_G = 0x0,  ///< +/- 100g
+  H3LIS331_RANGE_200_G = 0x1,  ///< +/- 200g
   H3LIS331_RANGE_400_G = 0x03, ///< +/- 400g
 } h3lis331dl_range_t;
 
@@ -71,6 +71,7 @@ public:
 
   void setRange(h3lis331dl_range_t range);
   h3lis331dl_range_t getRange(void);
+
 private:
   void _scaleValues(void);
 };
