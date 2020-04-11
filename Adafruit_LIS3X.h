@@ -355,8 +355,6 @@ public:
   Adafruit_LIS3X(int8_t cspin, SPIClass *theSPI = &SPI);
   Adafruit_LIS3X(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-  bool begin(uint8_t addr = LIS3X_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
-
   uint8_t getDeviceID(void);
   bool haveNewData(void);
 

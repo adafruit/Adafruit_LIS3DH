@@ -58,7 +58,7 @@ typedef enum {
  *  @brief  Class that stores state and functions for interacting with
  *          Adafruit_LIS331HH
  */
-class Adafruit_LIS331HH : public Adafruit_LIS3DH {
+class Adafruit_LIS331HH : public Adafruit_LIS3X {
 public:
   Adafruit_LIS331HH();
   Adafruit_LIS331HH(int8_t cspin, SPIClass *theSPI = &SPI);
