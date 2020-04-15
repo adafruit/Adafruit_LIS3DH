@@ -7,17 +7,13 @@
 #include <Adafruit_Sensor.h>
 
 // Used for software SPI
-#define H3LIS331_CLK 13
+#define H3LIS331_SCK 13
 #define H3LIS331_MISO 12
 #define H3LIS331_MOSI 11
 // Used for hardware & software SPI
 #define H3LIS331_CS 10
 
-// software SPI
-//Adafruit_H3LIS331 lis = Adafruit_H3LIS331(H3LIS331_CS, H3LIS331_MOSI, H3LIS331_MISO, H3LIS331_CLK);
-// hardware SPI
-//Adafruit_H3LIS331 lis = Adafruit_H3LIS331(H3LIS331_CS);
-// I2C
+
 Adafruit_H3LIS331 lis = Adafruit_H3LIS331();
 
 void setup(void) {
@@ -26,7 +22,9 @@ void setup(void) {
 
   Serial.println("H3LIS331 test!");
 
-  if (! lis.begin_I2C(0x18)) {   // change this to 0x19 for alternative i2c address
+//  if (!lis.begin_SPI(H3LIS331_CS)) {
+//  if (!lis.begin_SPI(H3LIS331_CS, H3LIS331_SCK, H3LIS331_MISO, H3LIS331_MOSI)) {
+ if (! lis.begin_I2C()) {   // change this to 0x19 for alternative i2c address
     Serial.println("Couldnt start");
     while (1) yield();
   }

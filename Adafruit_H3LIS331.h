@@ -54,6 +54,10 @@ public:
   bool begin_I2C(uint8_t i2c_addr = LIS3X_DEFAULT_ADDRESS,
                  TwoWire *wire = &Wire, int32_t sensorID = 0);
 
+  bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
+                 int32_t sensor_id = 0);
+  bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
+                 int8_t mosi_pin, int32_t sensor_id = 0);
   void setDataRate(h3lis331dl_dataRate_t dataRate);
   h3lis331dl_dataRate_t getDataRate(void);
 
@@ -61,6 +65,7 @@ public:
   h3lis331dl_range_t getRange(void);
 
 private:
+  bool _init(int32_t sensor_id);
   void _scaleValues(void);
 };
 
