@@ -89,6 +89,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a944218d109b853e831f8594523f2be6c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___h3_l_i_s331.html#a944218d109b853e831f8594523f2be6c">begin_I2C</a> (uint8_t i2c_addr=<a class="el" href="_adafruit___l_i_s3_x_8h.html#a006e977fadc354564f68651f9dfb4291">LIS3X_DEFAULT_ADDRESS</a>, TwoWire *wire=&amp;Wire, int32_t sensorID=0)</td></tr>
 <tr class="memdesc:a944218d109b853e831f8594523f2be6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes I2C.  <a href="#a944218d109b853e831f8594523f2be6c">More...</a><br /></td></tr>
 <tr class="separator:a944218d109b853e831f8594523f2be6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89787524dd921557baad3a4a3537189f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___h3_l_i_s331.html#a89787524dd921557baad3a4a3537189f">begin_SPI</a> (uint8_t cs_pin, SPIClass *theSPI=&amp;SPI, int32_t sensor_id=0)</td></tr>
+<tr class="memdesc:a89787524dd921557baad3a4a3537189f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes hardware SPI.  <a href="#a89787524dd921557baad3a4a3537189f">More...</a><br /></td></tr>
+<tr class="separator:a89787524dd921557baad3a4a3537189f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed484dda48f344aa19ea5e7d6e9fc6c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___h3_l_i_s331.html#aed484dda48f344aa19ea5e7d6e9fc6c8">begin_SPI</a> (int8_t cs_pin, int8_t sck_pin, int8_t miso_pin, int8_t mosi_pin, int32_t sensor_id=0)</td></tr>
+<tr class="memdesc:aed484dda48f344aa19ea5e7d6e9fc6c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes software SPI.  <a href="#aed484dda48f344aa19ea5e7d6e9fc6c8">More...</a><br /></td></tr>
+<tr class="separator:aed484dda48f344aa19ea5e7d6e9fc6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4e327614726738b4c090215ac459b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___h3_l_i_s331.html#a0f4e327614726738b4c090215ac459b4">setDataRate</a> (<a class="el" href="_adafruit___h3_l_i_s331_8h.html#ad79b3f8ad18ec3f1a7199737c5ccaf79">h3lis331dl_dataRate_t</a> dataRate)</td></tr>
 <tr class="memdesc:a0f4e327614726738b4c090215ac459b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the data rate for the H3LIS331 (controls power consumption)  <a href="#a0f4e327614726738b4c090215ac459b4">More...</a><br /></td></tr>
 <tr class="separator:a0f4e327614726738b4c090215ac459b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +212,110 @@ Adafruit_SPIDevice *&#160;</td><td class="memItemRight" valign="bottom"><a class
   <table class="params">
     <tr><td class="paramname">i2c_address</td><td>The I2C address to be used. </td></tr>
     <tr><td class="paramname">wire</td><td>The Wire object to be used for I2C connections. </td></tr>
+    <tr><td class="paramname">sensor_id</td><td>The user-defined ID to differentiate different sensors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization was successful, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="a89787524dd921557baad3a4a3537189f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89787524dd921557baad3a4a3537189f">&#9670;&nbsp;</a></span>begin_SPI() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_H3LIS331::begin_SPI </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cs_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SPIClass *&#160;</td>
+          <td class="paramname"><em>theSPI</em> = <code>&amp;SPI</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>sensor_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up the hardware and initializes hardware SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs_pin</td><td>The arduino pin # connected to chip select </td></tr>
+    <tr><td class="paramname">theSPI</td><td>The SPI object to be used for SPI connections. </td></tr>
+    <tr><td class="paramname">sensor_id</td><td>The user-defined ID to differentiate different sensors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization was successful, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="aed484dda48f344aa19ea5e7d6e9fc6c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed484dda48f344aa19ea5e7d6e9fc6c8">&#9670;&nbsp;</a></span>begin_SPI() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_H3LIS331::begin_SPI </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>cs_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>sck_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>miso_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>mosi_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>sensor_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up the hardware and initializes software SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs_pin</td><td>The arduino pin # connected to chip select </td></tr>
+    <tr><td class="paramname">sck_pin</td><td>The arduino pin # connected to SPI clock </td></tr>
+    <tr><td class="paramname">miso_pin</td><td>The arduino pin # connected to SPI MISO </td></tr>
+    <tr><td class="paramname">mosi_pin</td><td>The arduino pin # connected to SPI MOSI </td></tr>
     <tr><td class="paramname">sensor_id</td><td>The user-defined ID to differentiate different sensors </td></tr>
   </table>
   </dd>
