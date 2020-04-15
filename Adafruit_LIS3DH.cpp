@@ -127,7 +127,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
  */
 void Adafruit_LIS3DH::setDataRate(lis3dh_dataRate_t dataRate) {
 
-  writeDataRate((lis3dh_dataRate_t)dataRate);
+  writeDataRate((uint8_t)dataRate);
 }
 
 /*!

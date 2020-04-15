@@ -135,7 +135,7 @@ void Adafruit_LIS3X::writeDataRate(uint8_t dataRate) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3X_REG_CTRL1, 1);
   Adafruit_BusIO_RegisterBits data_rate_bits =
       // Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5); // including LPen bit
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 5, 3); // including LPen bit
 
   data_rate_bits.write(dataRate);
 }
@@ -149,7 +149,7 @@ uint8_t Adafruit_LIS3X::readDataRate(void) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3X_REG_CTRL1, 1);
   Adafruit_BusIO_RegisterBits data_rate_bits =
       // Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
-      Adafruit_BusIO_RegisterBits(&_ctrl1, 3, 5); // including LPen bit
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 5, 3); // including LPen bit
 
   return (uint8_t)data_rate_bits.read();
 }

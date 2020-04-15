@@ -32,35 +32,34 @@ void setup(void) {
   }
   Serial.println("H3LIS331 found!");
 
-//  lis.setRange(H3LIS331_RANGE_100_G);   // 100, 200, or 400 G!
-//  // lis.setDataRate(LIS331_DATARATE_50_HZ);
-//  Serial.print("Range set to: ");
-//  switch (lis.getRange()) {
-//    case H3LIS331_RANGE_100_G: Serial.println("100 g"); break;
-//    case H3LIS331_RANGE_200_G: Serial.println("200 g"); break;
-//    case H3LIS331_RANGE_400_G: Serial.println("400 g"); break;
-//  }
-  // // lis.setDataRate(LIS331_DATARATE_50_HZ);
-  // Serial.print("Data rate set to: ");
-  // switch (lis.getDataRate()) {
-  //   case LIS331_DATARATE_1_HZ: Serial.println("1 Hz"); break;
-  //   case LIS331_DATARATE_10_HZ: Serial.println("10 Hz"); break;
-  //   case LIS331_DATARATE_25_HZ: Serial.println("25 Hz"); break;
-  //   case LIS331_DATARATE_50_HZ: Serial.println("50 Hz"); break;
-  //   case LIS331_DATARATE_100_HZ: Serial.println("100 Hz"); break;
-  //   case LIS331_DATARATE_200_HZ: Serial.println("200 Hz"); break;
-  //   case LIS331_DATARATE_400_HZ: Serial.println("400 Hz"); break;
+ lis.setRange(H3LIS331_RANGE_100_G);   // 100, 200, or 400 G!
+ // lis.setDataRate(LIS331_DATARATE_50_HZ);
+  Serial.print("Range set to: ");
+  switch (lis.getRange()) {
+    case H3LIS331_RANGE_100_G: Serial.println("100 g"); break;
+    case H3LIS331_RANGE_200_G: Serial.println("200 g"); break;
+    case H3LIS331_RANGE_400_G: Serial.println("400 g"); break;
+  }
+  // lis.setDataRate(H3LIS331_DATARATE_1000_HZ);
+  Serial.print("Data rate set to: ");
+  switch (lis.getDataRate()) {
 
-  //   case LIS331_DATARATE_POWERDOWN: Serial.println("Powered Down"); break;
-  //   case LIS331_DATARATE_LOWPOWER_5KHZ: Serial.println("5 Khz Low Power"); break;
-  //   case LIS331_DATARATE_LOWPOWER_1K6HZ: Serial.println("16 Khz Low Power"); break;
-  // }
+    case H3LIS331_DATARATE_POWERDOWN: Serial.println("Powered Down"); break;
+    case H3LIS331_DATARATE_50_HZ: Serial.println("50 Hz"); break;
+    case H3LIS331_DATARATE_100_HZ: Serial.println("100 Hz"); break;
+    case H3LIS331_DATARATE_400_HZ: Serial.println("400 Hz"); break;
+    case H3LIS331_DATARATE_1000_HZ: Serial.println("1000 Hz"); break;
+    case H3LIS331_DATARATE_LOWPOWER_0_5_HZ: Serial.println("0.5 Hz Low Power"); break;
+    case H3LIS331_DATARATE_LOWPOWER_1_HZ: Serial.println("1 Hz Low Power"); break;
+    case H3LIS331_DATARATE_LOWPOWER_2_HZ: Serial.println("2 Hz Low Power"); break;
+    case H3LIS331_DATARATE_LOWPOWER_5_HZ: Serial.println("5 Hz Low Power"); break;
+    case H3LIS331_DATARATE_LOWPOWER_10_HZ: Serial.println("10 Hz Low Power"); break;
+
+  }
 }
 
 void loop() {
-  lis.read();      // get X Y and Z data at once
-
-  /* Or....get a new sensor event, normalized */
+  /* Get a new sensor event, normalized */
   sensors_event_t event;
   lis.getEvent(&event);
 
@@ -70,7 +69,11 @@ void loop() {
   Serial.print(" \tZ: "); Serial.print(event.acceleration.z);
   Serial.println(" m/s^2 ");
 
-  Serial.println();
+  /* Alternately, given the range of the H3LIS331, display the results measured in g */
+  // Serial.print("\t\tX:"); Serial.print(event.acceleration.x / SENSORS_GRAVITY_STANDARD);
+  // Serial.print(" \tY: "); Serial.print(event.acceleration.y / SENSORS_GRAVITY_STANDARD);
+  // Serial.print(" \tZ: "); Serial.print(event.acceleration.z / SENSORS_GRAVITY_STANDARD);
+  // Serial.println(" g");
 
   delay(1000);
 }

@@ -32,35 +32,33 @@ void setup(void) {
   }
   Serial.println("LIS331HH found!");
 
-//  lis.setRange(LIS331HH_RANGE_100_G);   // 100, 200, or 400 G!
-//  // lis.setDataRate(LIS331_DATARATE_50_HZ);
-//  Serial.print("Range set to: ");
-//  switch (lis.getRange()) {
-//    case LIS331HH_RANGE_100_G: Serial.println("100 g"); break;
-//    case LIS331HH_RANGE_200_G: Serial.println("200 g"); break;
-//    case LIS331HH_RANGE_400_G: Serial.println("400 g"); break;
-//  }
-  // // lis.setDataRate(LIS331_DATARATE_50_HZ);
-  // Serial.print("Data rate set to: ");
-  // switch (lis.getDataRate()) {
-  //   case LIS331_DATARATE_1_HZ: Serial.println("1 Hz"); break;
-  //   case LIS331_DATARATE_10_HZ: Serial.println("10 Hz"); break;
-  //   case LIS331_DATARATE_25_HZ: Serial.println("25 Hz"); break;
-  //   case LIS331_DATARATE_50_HZ: Serial.println("50 Hz"); break;
-  //   case LIS331_DATARATE_100_HZ: Serial.println("100 Hz"); break;
-  //   case LIS331_DATARATE_200_HZ: Serial.println("200 Hz"); break;
-  //   case LIS331_DATARATE_400_HZ: Serial.println("400 Hz"); break;
+ lis.setRange(LIS331HH_RANGE_6_G);   // 6, 12, or 24 G
+ Serial.print("Range set to: ");
+ switch (lis.getRange()) {
+   case LIS331HH_RANGE_6_G: Serial.println("6 g"); break;
+   case LIS331HH_RANGE_12_G: Serial.println("12 g"); break;
+   case LIS331HH_RANGE_24_G: Serial.println("24 g"); break;
+ }
+  // lis.setDataRate(LIS331_DATARATE_50_HZ);
+  Serial.print("Data rate set to: ");
+  switch (lis.getDataRate()) {
 
-  //   case LIS331_DATARATE_POWERDOWN: Serial.println("Powered Down"); break;
-  //   case LIS331_DATARATE_LOWPOWER_5KHZ: Serial.println("5 Khz Low Power"); break;
-  //   case LIS331_DATARATE_LOWPOWER_1K6HZ: Serial.println("16 Khz Low Power"); break;
-  // }
+    case LIS331HH_DATARATE_POWERDOWN: Serial.println("Powered Down"); break;
+    case LIS331HH_DATARATE_50_HZ: Serial.println("50 Hz"); break;
+    case LIS331HH_DATARATE_100_HZ: Serial.println("100 Hz"); break;
+    case LIS331HH_DATARATE_400_HZ: Serial.println("400 Hz"); break;
+    case LIS331HH_DATARATE_1000_HZ: Serial.println("1000 Hz"); break;
+    case LIS331HH_DATARATE_LOWPOWER_0_5_HZ: Serial.println("0.5 Hz Low Power"); break;
+    case LIS331HH_DATARATE_LOWPOWER_1_HZ: Serial.println("1 Hz Low Power"); break;
+    case LIS331HH_DATARATE_LOWPOWER_2_HZ: Serial.println("2 Hz Low Power"); break;
+    case LIS331HH_DATARATE_LOWPOWER_5_HZ: Serial.println("5 Hz Low Power"); break;
+    case LIS331HH_DATARATE_LOWPOWER_10_HZ: Serial.println("10 Hz Low Power"); break;
+
+  }
 }
 
 void loop() {
-  lis.read();      // get X Y and Z data at once
-
-  /* Or....get a new sensor event, normalized */
+  /* Get a new sensor event, normalized */
   sensors_event_t event;
   lis.getEvent(&event);
 
