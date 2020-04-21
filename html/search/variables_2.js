@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['x',['x',['../class_adafruit___l_i_s3_x.html#a7b54e7ed237976a8091084c1b8326fe7',1,'Adafruit_LIS3X']]],
-  ['x_5fg',['x_g',['../class_adafruit___l_i_s3_x.html#a4b308310547dd9bedbfda59bbd191656',1,'Adafruit_LIS3X']]]
+  ['z',['z',['../class_adafruit___l_i_s3_d_h.html#a7910a0a5b5ee3a8b345c2fb11e5352ec',1,'Adafruit_LIS3DH']]],
+  ['z_5fg',['z_g',['../class_adafruit___l_i_s3_d_h.html#a01ebf52b2c28a305d172e53ad99e426a',1,'Adafruit_LIS3DH']]]
 ];
