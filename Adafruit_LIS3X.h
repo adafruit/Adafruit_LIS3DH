@@ -10,10 +10,6 @@
  *  Designed specifically to work with:
  *  * [Adafruit LIS3DH Triple-Axis Accelerometer
  (+-2g/4g/8g/16g)](https://www.adafruit.com/product/2809)
- *  * [Adafruit LIS331HH Triple-Axis Accelerometer
- (+-6g/12g/24g)](https://www.adafruit.com/product/4XXX)
- *  * [Adafruit H3LIS331 High-G Triple-Axis Accelerometer
- (+-100g/200g/400g)](https://www.adafruit.com/product/4XXX)
 
  *  Pick one up today in the adafruit shop!
  *
@@ -49,8 +45,6 @@
 #include <Adafruit_Sensor.h>
 /** Default I2C ADDRESS. If SDO/SA0 is 3V, its 0x19**/
 #define LIS3X_DEFAULT_ADDRESS (0x18)
-#define LIS331_CHIP_ID                                                         \
-  0x32 ///< The default response to WHO_AM_I for the H3LIS331 and LIS331HH
 /*!
  *  STATUS_REG_AUX register
  *   321OR  1, 2 and 3 axis data overrun. Default value: 0
