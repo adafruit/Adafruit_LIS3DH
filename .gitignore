@@ -6,6 +6,3 @@ Doxyfile*
 doxygen_sqlite3.db
 html
 *.tmp
-# arduino-cli
-*.hex
-*.elf
