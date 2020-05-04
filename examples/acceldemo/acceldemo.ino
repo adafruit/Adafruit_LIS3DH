@@ -26,18 +26,18 @@ void setup(void) {
 
   Serial.println("LIS3DH test!");
 
-  if (! lis.begin()) {   // change this to 0x19 for alternative i2c address
+  if (! lis.begin(0x18)) {   // change this to 0x19 for alternative i2c address
     Serial.println("Couldnt start");
     while (1) yield();
   }
   Serial.println("LIS3DH found!");
 
-//   lis.setRange(LIS3DH_RANGE_4_G);   // 2, 4, 8 or 16 G!
-//
-  Serial.print("Range = "); Serial.print(2 << lis.getRange());
-  Serial.println("g");
+  // lis.setRange(LIS3DH_RANGE_4_G);   // 2, 4, 8 or 16 G!
 
-  // lis.setDataRate(LIS3DH_DATARATE_10_HZ);
+  Serial.print("Range = "); Serial.print(2 << lis.getRange());
+  Serial.println("G");
+
+  // lis.setDataRate(LIS3DH_DATARATE_50_HZ);
   Serial.print("Data rate set to: ");
   switch (lis.getDataRate()) {
     case LIS3DH_DATARATE_1_HZ: Serial.println("1 Hz"); break;
@@ -55,8 +55,13 @@ void setup(void) {
 }
 
 void loop() {
+  lis.read();      // get X Y and Z data at once
+  // Then print out the raw data
+  Serial.print("X:  "); Serial.print(lis.x);
+  Serial.print("  \tY:  "); Serial.print(lis.y);
+  Serial.print("  \tZ:  "); Serial.print(lis.z);
 
-  /* Get a new sensor event, normalized */
+  /* Or....get a new sensor event, normalized */
   sensors_event_t event;
   lis.getEvent(&event);
 
@@ -68,5 +73,5 @@ void loop() {
 
   Serial.println();
 
-  delay(1000);
+  delay(200);
 }
