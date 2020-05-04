@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['i2c_5fdev',['i2c_dev',['../class_adafruit___l_i_s3_x.html#afe1530ceaf6b725e33817b92ea653c85',1,'Adafruit_LIS3X']]]
+  ['read',['read',['../class_adafruit___l_i_s3_d_h.html#a7f3bb9fd26fef61971b01d961f7d923c',1,'Adafruit_LIS3DH']]],
+  ['readadc',['readADC',['../class_adafruit___l_i_s3_d_h.html#aa326ca8d436ebe2d87501ae4c985fb6d',1,'Adafruit_LIS3DH']]]
 ];
