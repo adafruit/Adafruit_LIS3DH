@@ -175,7 +175,7 @@ bool Adafruit_LIS3DH::haveNewData(void) {
   if (fifoEnabled && !zyx_available) {
     // Check the FIFO_SRC_REG if it's empty
      Adafruit_BusIO_Register fifosrc = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_FIFOSRC, 1);
+         i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_FIFOSRC, 1);
     Adafruit_BusIO_RegisterBits fifo_empty =
         Adafruit_BusIO_RegisterBits(&fifosrc, 1, 5);
     return !fifo_empty.read();
@@ -357,7 +357,8 @@ void Adafruit_LIS3DH::setFifoMode(lis3dh_fifoMode_t mode) {
   // Any mode that isn't bypass needs this turned on
   bool enabled = (mode != LIS3DH_FIFO_BYPASS);
   // Check if we need to write it
-  if (fifoEnabled != enabled) fifo_bit.write(enabled);
+  if (fifoEnabled != enabled) 
+    fifo_bit.write(enabled);
   // Update our internal var if we've turned on the fifo
   fifoEnabled = enabled;
 }
