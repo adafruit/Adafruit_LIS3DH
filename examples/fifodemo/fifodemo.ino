@@ -69,8 +69,7 @@ void loop() {
   // The Fifo can hold 32 samples at once
   int samples_collected = 0;
   for (samples_collected=0; samples_collected < 32 && lis.haveNewData(); samples_collected++) {
-    lis.getEvent(&data[i]);
-    samples_collected = i;
+    lis.getEvent(&data[samples_collected]);
   }
   // We should have 32 samples
   // Process them here
