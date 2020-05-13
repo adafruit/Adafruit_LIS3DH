@@ -22,6 +22,7 @@
  *  @section author Author
  *
  *  K. Townsend / Limor Fried (Adafruit Industries)
+ *  Matthew Carlson
  *
  *  @section license License
  *
@@ -169,7 +170,17 @@ bool Adafruit_LIS3DH::haveNewData(void) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_STATUS2, 1);
   Adafruit_BusIO_RegisterBits zyx_data_available =
       Adafruit_BusIO_RegisterBits(&status_2, 1, 3);
-  return zyx_data_available.read();
+  boolean zyx_available = zyx_data_available.read();
+  // Check the fifo if we are enabled
+  if (fifoEnabled && !zyx_available) {
+    // Check the FIFO_SRC_REG if it's empty
+     Adafruit_BusIO_Register fifosrc = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_FIFOSRC, 1);
+    Adafruit_BusIO_RegisterBits fifo_empty =
+        Adafruit_BusIO_RegisterBits(&fifosrc, 1, 5);
+    return !fifo_empty.read();
+  }
+  return zyx_available;
 }
 
 /*!
@@ -323,6 +334,32 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKSRC, 1);
 
   return click_reg.read();
+}
+
+/*!
+ *   @brief  Turns Fifo mode on or off\
+ *   @param  mode
+ *           what mode the fifo should be set to
+ */
+void Adafruit_LIS3DH::setFifoMode(lis3dh_fifoMode_t mode) {
+  // Update the mode in the fifoctrl register
+  Adafruit_BusIO_Register fifoctrl = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_FIFOCTRL);
+  Adafruit_BusIO_RegisterBits fifo_mode =
+      Adafruit_BusIO_RegisterBits(&fifoctrl, 2, 6);
+  fifo_mode.write(mode);
+
+  // Get the fifo enable register
+  Adafruit_BusIO_Register ctrl5 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL5);
+  Adafruit_BusIO_RegisterBits fifo_bit =
+      Adafruit_BusIO_RegisterBits(&ctrl5, 1, 6);
+  // Any mode that isn't bypass needs this turned on
+  bool enabled = (mode != LIS3DH_FIFO_BYPASS);
+  // Check if we need to write it
+  if (fifoEnabled != enabled) fifo_bit.write(enabled);
+  // Update our internal var if we've turned on the fifo
+  fifoEnabled = enabled;
 }
 
 /*!

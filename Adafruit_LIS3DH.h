@@ -20,6 +20,7 @@
  *  from Adafruit!
  *
  *  K. Townsend / Limor Fried (Ladyada) - (Adafruit Industries).
+ *  Matthew Carlson
  *
  *  BSD license, all text above must be included in any redistribution
  */
@@ -195,7 +196,9 @@
  *   TR       Trigger selection. Default value: 0
  *            0: Trigger event liked to trigger signal on INT1
  *            1: Trigger event liked to trigger signal on INT2
- *   FTH4:0   Default value: 0
+ *   FTH4-FTH0  
+ *           On Read: The number of items in the fifo, default value 0000
+ *           On Write: The highwater mark for the fifo
  */
 #define LIS3DH_REG_FIFOCTRL 0x2E
 #define LIS3DH_REG_FIFOSRC                                                     \
@@ -339,6 +342,14 @@ typedef enum {
 
 } lis3dh_dataRate_t;
 
+/** Used with register 0x2E (LIS3DH_REG_FIFOCTRL) to set fifo mode **/
+typedef enum {
+  LIS3DH_FIFO_BYPASS = 0b00,    //  Disabled
+  LIS3DH_FIFO_MODE = 0b01,      //  The default mode
+  LIS3DH_FIFO_STREAM = 0b10,    //  Stream mode
+  LIS3DH_FIFO_STREAM_TO = 0b11, //  stream to FIFO mode
+} lis3dh_fifoMode_t;
+
 /*!
  *  @brief  Class that stores state and functions for interacting with
  *          Adafruit_LIS3DH
@@ -370,6 +381,8 @@ public:
                 uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
+  void setFifoMode(lis3dh_fifoMode_t mode = LIS3DH_FIFO_BYPASS);
+
   int16_t x; /**< x axis value */
   int16_t y; /**< y axis value */
   int16_t z; /**< z axis value */
@@ -392,6 +405,8 @@ private:
   int8_t _i2caddr;
 
   int32_t _sensorID;
+
+  boolean fifoEnabled = false; // by default, we are non-fifo mode
 };
 
 #endif
