@@ -39,7 +39,7 @@ void setup(void) {
 
   // First set the fifo to bypass mode to clear the FIFO
   // This important because the hardware might not have been reset if we warm flashed
-  imu.setFifoMode(LIS3DH_FIFO_BYPASS);
+  lis.setFifoMode(LIS3DH_FIFO_BYPASS);
 
   lis.setDataRate(LIS3DH_DATARATE_100_HZ);
   Serial.print("Data rate set to: ");
@@ -57,9 +57,9 @@ void setup(void) {
     case LIS3DH_DATARATE_LOWPOWER_1K6HZ: Serial.println("16 Khz Low Power"); break;
   }
   // enable the fifo and set the right mode
-  imu.setFifoMode(LIS3DH_FIFO_MODE); // writes will stop once the fifo is full
-  //imu.setFifoMode(LIS3DH_FIFO_STREAM); // stream mode will overrwrite fifo values once full
-  //imu.setFifoMode(LIS3DH_FIFO_STREAM_TO); // will be in stream mode until an interrupt comes in
+  lis.setFifoMode(LIS3DH_FIFO_MODE); // writes will stop once the fifo is full
+  //lis.setFifoMode(LIS3DH_FIFO_STREAM); // stream mode will overrwrite fifo values once full
+  //lis.setFifoMode(LIS3DH_FIFO_STREAM_TO); // will be in stream mode until an interrupt comes in
 }
 // A place to store our samples
 sensors_event_t data[32]; 
