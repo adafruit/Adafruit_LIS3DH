@@ -196,7 +196,7 @@
  *   TR       Trigger selection. Default value: 0
  *            0: Trigger event liked to trigger signal on INT1
  *            1: Trigger event liked to trigger signal on INT2
- *   FTH4-FTH0  
+ *   FTH4-FTH0
  *           On Read: The number of items in the fifo, default value 0000
  *           On Write: The highwater mark for the fifo
  */
