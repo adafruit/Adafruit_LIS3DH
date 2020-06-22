@@ -100,6 +100,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf930ab517340b4d959950f51d1ec17b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#abf930ab517340b4d959950f51d1ec17b">haveNewData</a> (void)</td></tr>
 <tr class="memdesc:abf930ab517340b4d959950f51d1ec17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if new data available.  <a href="#abf930ab517340b4d959950f51d1ec17b">More...</a><br /></td></tr>
 <tr class="separator:abf930ab517340b4d959950f51d1ec17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca8da6249158d39c9fd6c799df94e6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#acca8da6249158d39c9fd6c799df94e6e">enableDRDY</a> (bool enable_drdy=true, uint8_t int_pin=1)</td></tr>
+<tr class="memdesc:acca8da6249158d39c9fd6c799df94e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable the Data Ready interupt.  <a href="#acca8da6249158d39c9fd6c799df94e6e">More...</a><br /></td></tr>
+<tr class="separator:acca8da6249158d39c9fd6c799df94e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f3bb9fd26fef61971b01d961f7d923c"><td class="memItemLeft" align="right" valign="top"><a id="a7f3bb9fd26fef61971b01d961f7d923c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a7f3bb9fd26fef61971b01d961f7d923c">read</a> (void)</td></tr>
 <tr class="memdesc:a7f3bb9fd26fef61971b01d961f7d923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads x y z values at once. <br /></td></tr>
@@ -342,6 +345,44 @@ Public Attributes</h2></td></tr>
 
 <p>Check to see if new data available. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if there is new data available, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="acca8da6249158d39c9fd6c799df94e6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acca8da6249158d39c9fd6c799df94e6e">&#9670;&nbsp;</a></span>enableDRDY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_LIS3DH::enableDRDY </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_drdy</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>int_pin</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable or disable the Data Ready interupt. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_drdy</td><td>true to enable the given Data Ready interrupt on INT1, false to disable it </td></tr>
+    <tr><td class="paramname">int_pin</td><td>which DRDY interrupt to enable; 1 for DRDY1, 2 for DRDY2 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true: success false: failure </dd></dl>
 
 </div>
 </div>
