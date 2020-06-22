@@ -137,9 +137,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
   _ctrl4.write(0x88); // High res & BDU enabled
 
-  Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
-  _ctrl3.write(0x10); // DRDY on INT1
+  enableDRDY(true, 1);
 
   // Turn on orientation config
 
@@ -323,6 +321,31 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKSRC, 1);
 
   return click_reg.read();
+}
+
+/**
+ * @brief Enable or disable the Data Ready interupt
+ *
+ * @param enable_drdy true to enable the given Data Ready interrupt on INT1,
+ * false to disable it
+ * @param int_pin which DRDY interrupt to enable; 1 for DRDY1, 2 for DRDY2
+ * @return true: success false: failure
+ */
+bool Adafruit_LIS3DH::enableDRDY(bool enable_drdy, uint8_t int_pin) {
+  Adafruit_BusIO_Register _ctrl3 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
+  Adafruit_BusIO_RegisterBits _drdy1_int_enable =
+      Adafruit_BusIO_RegisterBits(&_ctrl3, 1, 4);
+  Adafruit_BusIO_RegisterBits _drdy2_int_enable =
+      Adafruit_BusIO_RegisterBits(&_ctrl3, 1, 3);
+
+  if (int_pin == 1) {
+    return _drdy1_int_enable.write(enable_drdy);
+  } else if (int_pin == 2) {
+    return _drdy2_int_enable.write(enable_drdy);
+  } else {
+    return false;
+  }
 }
 
 /*!
