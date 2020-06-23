@@ -353,6 +353,7 @@ public:
 
   uint8_t getDeviceID(void);
   bool haveNewData(void);
+  bool enableDRDY(bool enable_drdy = true, uint8_t int_pin = 1);
 
   void read(void);
   int16_t readADC(uint8_t a);
