@@ -1,6 +1,7 @@
 var searchData=
 [
   ['lis3dh_5fdefault_5faddress',['LIS3DH_DEFAULT_ADDRESS',['../_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6',1,'Adafruit_LIS3DH.h']]],
+  ['lis3dh_5flsb16_5fto_5fkilo_5flsb10',['LIS3DH_LSB16_TO_KILO_LSB10',['../_adafruit___l_i_s3_d_h_8h.html#a862da029aede4f82c5053e206de09f5c',1,'Adafruit_LIS3DH.h']]],
   ['lis3dh_5freg_5fclickcfg',['LIS3DH_REG_CLICKCFG',['../_adafruit___l_i_s3_d_h_8h.html#a62d98822c7a3c1cc4c8ff4ea4f107092',1,'Adafruit_LIS3DH.h']]],
   ['lis3dh_5freg_5fclicksrc',['LIS3DH_REG_CLICKSRC',['../_adafruit___l_i_s3_d_h_8h.html#a781b6c5ad811ec998b53067ef03f9014',1,'Adafruit_LIS3DH.h']]],
   ['lis3dh_5freg_5fclickths',['LIS3DH_REG_CLICKTHS',['../_adafruit___l_i_s3_d_h_8h.html#a73c50156e26285f8d86f9d3cb8a78b61',1,'Adafruit_LIS3DH.h']]],
