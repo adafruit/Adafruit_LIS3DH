@@ -309,6 +309,10 @@
  */
 #define LIS3DH_REG_TIMEWINDOW 0x3D
 
+#define LIS3DH_LSB16_TO_KILO_LSB10                                             \
+  64000 ///< Scalar to convert from 16-bit lsb to 10-bit and divide by 1k to
+        ///< convert from milli-gs to gs
+
 /** A structure to represent scales **/
 typedef enum {
   LIS3DH_RANGE_16_G = 0b11, // +/- 16g
