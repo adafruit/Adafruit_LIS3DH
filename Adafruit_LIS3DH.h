@@ -381,14 +381,14 @@ public:
 
   float x_g; /**< x_g axis value (calculated by selected range) */
   float y_g; /**< y_g axis value (calculated by selected range) */
-  float z_g; /**< z_g axis value (calculated by selected scale) */
+  float z_g; /**< z_g axis value (calculated by selected range) */
 
 private:
   TwoWire *I2Cinterface;
   SPIClass *SPIinterface;
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
-  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to I2C bus interface
+  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
 
   uint8_t _wai;
 
