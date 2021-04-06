@@ -381,7 +381,7 @@ public:
 
   float x_g; /**< x_g axis value (calculated by selected range) */
   float y_g; /**< y_g axis value (calculated by selected range) */
-  float z_g; /**< z_g axis value (calculated by selected scale) */
+  float z_g; /**< z_g axis value (calculated by selected range) */
 
 private:
   TwoWire *I2Cinterface;
