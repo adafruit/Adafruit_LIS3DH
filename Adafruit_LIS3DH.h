@@ -400,7 +400,7 @@ private:
   int8_t _i2caddr;
 
   int32_t _sensorID;
-  
+
   bool _temp_ADC3_en;
 };
 
