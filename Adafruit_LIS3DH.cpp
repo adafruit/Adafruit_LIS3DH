@@ -144,6 +144,7 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
   Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TEMPCFG, 1);
   _tmp_cfg.write(0x80); // enable adcs
+  _temp_ADC3_en = false;
 
   return true;
 }
@@ -457,4 +458,42 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   sensor->max_value = 0;
   sensor->min_value = 0;
   sensor->resolution = 0;
+}
+
+/**
+ * @brief Enable or disable the Temperature
+ *
+ * @param enable_temp true to enable the Temperature read on ADC3
+ * @return true: success false: failure
+ */
+bool Adafruit_LIS3DH::enableTemperature(bool enable_temp) {
+    Adafruit_BusIO_Register _tmp_cfg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_TEMPCFG, 1);
+  Adafruit_BusIO_RegisterBits _tmp_enable =
+      Adafruit_BusIO_RegisterBits(&_tmp_cfg, 1, 6);
+  
+  if(_tmp_enable.write(enable_temp))
+  {
+    _temp_ADC3_en = enable_temp;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*!
+ *  @brief  Read the temperature sensor
+ *  @param  reference
+ *          reference temperature, lis3dh measures difference
+ *  @return temperature in °C
+ */
+int8_t Adafruit_LIS3DH::readTemperature(int8_t reference) {
+  if(!_temp_ADC3_en){
+    if(!enableTemperature(true))
+      return 0;
+  }
+
+// ADC3_H is the delta_t of an unspecified temperature
+  return (int8_t)(readADC(3) >> 8) + reference;
+
 }
