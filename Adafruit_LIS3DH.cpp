@@ -333,6 +333,17 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
   return click_reg.read();
 }
 
+/*!
+ *   @brief  Get uint8_t for INT1 source and clear interrupt
+ *   @return register LIS3DH_REG_INT1SRC
+ */
+uint8_t Adafruit_LIS3DH::readAndClearInterrupt(void) {
+  Adafruit_BusIO_Register int_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_INT1SRC, 1);
+
+  return int_reg.read();
+}
+
 /**
  * @brief Enable or disable the Data Ready interupt
  *
