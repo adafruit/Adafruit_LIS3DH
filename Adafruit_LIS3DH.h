@@ -375,7 +375,7 @@ public:
                 uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
-  uint8_t clearInterrupt(void);
+  uint8_t readAndClearInterrupt(void);
 
   int16_t x; /**< x axis value */
   int16_t y; /**< y axis value */
