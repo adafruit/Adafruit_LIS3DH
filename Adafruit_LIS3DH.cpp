@@ -117,9 +117,6 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
     }
   }
 
-  Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
-
   /* Check connection */
   if (getDeviceID() != _wai) {
     /* No LIS3DH detected ... return false */
