@@ -117,9 +117,6 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
     }
   }
 
-  Adafruit_BusIO_Register _chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_WHOAMI, 1);
-
   /* Check connection */
   if (getDeviceID() != _wai) {
     /* No LIS3DH detected ... return false */
@@ -332,6 +329,17 @@ uint8_t Adafruit_LIS3DH::getClick(void) {
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CLICKSRC, 1);
 
   return click_reg.read();
+}
+
+/*!
+ *   @brief  Get uint8_t for INT1 source and clear interrupt
+ *   @return register LIS3DH_REG_INT1SRC
+ */
+uint8_t Adafruit_LIS3DH::readAndClearInterrupt(void) {
+  Adafruit_BusIO_Register int_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_INT1SRC, 1);
+
+  return int_reg.read();
 }
 
 /**

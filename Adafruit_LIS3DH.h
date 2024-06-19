@@ -377,6 +377,7 @@ public:
 
   bool enableTemperature(bool enable_temp);
   int8_t readTemperature(int8_t reference);
+  uint8_t readAndClearInterrupt(void);
 
   int16_t x; /**< x axis value */
   int16_t y; /**< y axis value */
