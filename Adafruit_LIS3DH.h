@@ -375,6 +375,8 @@ public:
                 uint8_t timelatency = 20, uint8_t timewindow = 255);
   uint8_t getClick(void);
 
+  bool enableTemperature(bool enable_temp);
+  int8_t readTemperature(int8_t reference);
   uint8_t readAndClearInterrupt(void);
 
   int16_t x; /**< x axis value */
@@ -399,6 +401,8 @@ private:
   int8_t _i2caddr;
 
   int32_t _sensorID;
+
+  bool _temp_ADC3_en;
 };
 
 #endif
