@@ -312,6 +312,14 @@
 #define LIS3DH_LSB16_TO_KILO_LSB10                                             \
   64000 ///< Scalar to convert from 16-bit lsb to 10-bit and divide by 1k to
         ///< convert from milli-gs to gs
+#define LIS3DH_LSB16_TO_KILO_LSB12                                             \
+  16000 ///< Scalar to convert from 16-bit lsb to 12-bit and divide by 1k to
+        ///< convert from milli-gs to gs
+#define LIS3DH_LSB16_TO_KILO_LSB8                                              \
+  256000 ///< Scalar to convert from 16-bit lsb to 8-bit and divide by 1k to
+         ///< convert from milli-gs to gs
+
+#define LIS3DH_DEFAULT_SPIFREQ 500000 ///< SPI frequency for LIS3DH
 
 /** A structure to represent scales **/
 typedef enum {
@@ -328,7 +336,17 @@ typedef enum {
   LIS3DH_AXIS_Z = 0x2,
 } lis3dh_axis_t;
 
-/** Used with register 0x2A (LIS3DH_REG_CTRL_REG1) to set bandwidth **/
+/** Operational / performance modes **/
+typedef enum {
+  LIS3DH_MODE_LOW_POWER = 0x0,
+  LIS3DH_MODE_NORMAL = 0x1,
+  LIS3DH_MODE_HIGH_RESOLUTION = 0x2,
+} lis3dh_mode_t;
+
+/*!
+ * @brief  Data rate selection
+ * Used with register 0x2A (LIS3DH_REG_CTRL_REG1) to set bandwidth
+ */
 typedef enum {
   LIS3DH_DATARATE_400_HZ = 0b0111, //  400Hz
   LIS3DH_DATARATE_200_HZ = 0b0110, //  200Hz
@@ -350,8 +368,10 @@ typedef enum {
 class Adafruit_LIS3DH : public Adafruit_Sensor {
 public:
   Adafruit_LIS3DH(TwoWire *Wi = &Wire);
-  Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI = &SPI);
-  Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
+  Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI = &SPI,
+                  uint32_t frequency = LIS3DH_DEFAULT_SPIFREQ);
+  Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin,
+                  uint32_t frequency = LIS3DH_DEFAULT_SPIFREQ);
 
   bool begin(uint8_t addr = LIS3DH_DEFAULT_ADDRESS, uint8_t nWAI = 0x33);
 
@@ -361,6 +381,9 @@ public:
 
   void read(void);
   int16_t readADC(uint8_t a);
+
+  lis3dh_mode_t getPerformanceMode(void);
+  void setPerformanceMode(lis3dh_mode_t mode);
 
   void setRange(lis3dh_range_t range);
   lis3dh_range_t getRange(void);
@@ -399,6 +422,7 @@ private:
   int8_t _i2caddr;
 
   int32_t _sensorID;
+  uint32_t _frequency = LIS3DH_DEFAULT_SPIFREQ;
 };
 
 #endif

@@ -49,14 +49,18 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(TwoWire *Wi)
  *           number of CSPIN (Chip Select)
  *   @param  *theSPI
  *           optional parameter contains spi object
+ *   @param  frequency
+ *           frequency of the SPI interface
  */
-Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI) {
+Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI,
+                                 uint32_t frequency) {
   _cs = cspin;
   _mosi = -1;
   _miso = -1;
   _sck = -1;
   _sensorID = -1;
   SPIinterface = theSPI;
+  _frequency = frequency;
 }
 
 /*!
@@ -69,14 +73,17 @@ Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, SPIClass *theSPI) {
  *           number of pin used for MISO (Master In Slave Out)
  *   @param  sckpin
  *           number of pin used for CLK (clock pin)
+ *   @param  frequency
+ *           frequency of the SPI interface
  */
 Adafruit_LIS3DH::Adafruit_LIS3DH(int8_t cspin, int8_t mosipin, int8_t misopin,
-                                 int8_t sckpin) {
+                                 int8_t sckpin, uint32_t frequency) {
   _cs = cspin;
   _mosi = mosipin;
   _miso = misopin;
   _sck = sckpin;
   _sensorID = -1;
+  _frequency = frequency;
 }
 
 /*!
@@ -101,13 +108,13 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
     // SPIinterface->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     if (_sck == -1) {
       spi_dev = new Adafruit_SPIDevice(_cs,
-                                       500000,                // frequency
+                                       _frequency,            // frequency
                                        SPI_BITORDER_MSBFIRST, // bit order
                                        SPI_MODE0,             // data mode
                                        SPIinterface);
     } else {
       spi_dev = new Adafruit_SPIDevice(_cs, _sck, _miso, _mosi,
-                                       500000,                // frequency
+                                       _frequency,            // frequency
                                        SPI_BITORDER_MSBFIRST, // bit order
                                        SPI_MODE0);            // data mode
     }
@@ -193,8 +200,6 @@ void Adafruit_LIS3DH::read(void) {
   z = buffer[4];
   z |= ((uint16_t)buffer[5]) << 8;
 
-  uint8_t range = getRange();
-
   // this scaling process accounts for the shift due to actually being 10 bits
   // (normal mode) as well as the lsb=> mg conversion and the mg=> g conversion
   // final value is raw_lsb => 10-bit lsb -> milli-gs -> gs
@@ -205,18 +210,53 @@ void Adafruit_LIS3DH::read(void) {
   // then we can then multiply the resulting value by the lsb value to get the
   // value in g's
 
-  uint8_t lsb_value = 1;
-  if (range == LIS3DH_RANGE_2_G)
-    lsb_value = 4;
-  if (range == LIS3DH_RANGE_4_G)
-    lsb_value = 8;
-  if (range == LIS3DH_RANGE_8_G)
-    lsb_value = 16;
-  if (range == LIS3DH_RANGE_16_G)
-    lsb_value = 48;
-  x_g = lsb_value * ((float)x / LIS3DH_LSB16_TO_KILO_LSB10);
-  y_g = lsb_value * ((float)y / LIS3DH_LSB16_TO_KILO_LSB10);
-  z_g = lsb_value * ((float)z / LIS3DH_LSB16_TO_KILO_LSB10);
+  uint8_t range = getRange();
+  uint8_t mode = getPerformanceMode();
+  uint8_t lsb_value = 4;
+  if (range == LIS3DH_RANGE_2_G) {
+    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+      lsb_value = 1; // 1 mg/LSB for 12-bit mode
+    } else if (mode == LIS3DH_MODE_NORMAL) {
+      lsb_value = 4; // 4 mg/LSB for 10-bit mode
+    } else if (mode == LIS3DH_MODE_LOW_POWER) {
+      lsb_value = 16; // 16 mg/LSB for 8-bit mode
+    }
+  } else if (range == LIS3DH_RANGE_4_G) {
+    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+      lsb_value = 2; // 2 mg/LSB for 12-bit mode
+    } else if (mode == LIS3DH_MODE_NORMAL) {
+      lsb_value = 8; // 8 mg/LSB for 10-bit mode
+    } else if (mode == LIS3DH_MODE_LOW_POWER) {
+      lsb_value = 32; // 32 mg/LSB for 8-bit mode
+    }
+  } else if (range == LIS3DH_RANGE_8_G) {
+    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+      lsb_value = 4; // 4 mg/LSB for 12-bit mode
+    } else if (mode == LIS3DH_MODE_NORMAL) {
+      lsb_value = 16; // 16 mg/LSB for 10-bit mode
+    } else if (mode == LIS3DH_MODE_LOW_POWER) {
+      lsb_value = 64; // 64 mg/LSB for 8-bit mode
+    }
+  } else if (range == LIS3DH_RANGE_16_G) {
+    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+      lsb_value = 12; // 12 mg/LSB for 12-bit mode
+    } else if (mode == LIS3DH_MODE_NORMAL) {
+      lsb_value = 48; // 48 mg/LSB for 10-bit mode
+    } else if (mode == LIS3DH_MODE_LOW_POWER) {
+      lsb_value = 192; // 192 mg/LSB for 8-bit mode
+    }
+  }
+  float convert_from_LSB16 = 64000.0;
+  if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+    convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB12;
+  } else if (mode == LIS3DH_MODE_NORMAL) {
+    convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB10;
+  } else if (mode == LIS3DH_MODE_LOW_POWER) {
+    convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB8;
+  }
+  x_g = lsb_value * ((float)x / convert_from_LSB16);
+  y_g = lsb_value * ((float)y / convert_from_LSB16);
+  z_g = lsb_value * ((float)z / convert_from_LSB16);
 }
 
 /*!
@@ -364,6 +404,80 @@ bool Adafruit_LIS3DH::enableDRDY(bool enable_drdy, uint8_t int_pin) {
   } else {
     return false;
   }
+}
+
+/*!
+ *   @brief  Sets the performance mode for the LIS3DH.
+ *
+ *   The turn-on time to transition to another operating mode is calculated as:
+ *   || 12-bit mode (high resolution) to 8-bit mode (low power): 1/ODR
+ *   || 12-bit mode (high resolution) to 10-bit mode (normal): 1/ODR
+ *   || 10-bit mode (normal) to 8-bit mode (low power): 1/ODR
+ *   || 10-bit mode (normal) to 12-bit mode (high resolution): 7/ODR
+ *   || 8-bit mode (low power) to 10-bit mode (normal): 1/ODR
+ *   || 8-bit mode (low power) to 12-bit mode (high resolution): 7/ODR
+ *   (Where ODR is the Output Data Rate - see lis3dh_dataRate_t for values)
+ *
+ *   @param  mode
+ *          mode - low power, normal, high resolution e.g. LIS3DH_MODE_LOW_POWER
+ */
+void Adafruit_LIS3DH::setPerformanceMode(lis3dh_mode_t mode) {
+  // low power bit is in CTRL1, 4th bit from right
+  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+  Adafruit_BusIO_RegisterBits ctrl1_mode_bits =
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 1, 3);
+  // high res bit is in CTRL4, 4th bit from right
+  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
+  Adafruit_BusIO_RegisterBits ctrl4_mode_bits =
+      Adafruit_BusIO_RegisterBits(&_ctrl4, 1, 3);
+  switch (mode) {
+  case LIS3DH_MODE_LOW_POWER:
+    // set HR bit low (CTRL4) and LP bit high (CTRL1)
+    ctrl4_mode_bits.write(0);
+    ctrl1_mode_bits.write(1);
+    delay(1); // turn-on transition time (worse case)
+    break;
+  case LIS3DH_MODE_NORMAL:
+    // set HR bit low (CTRL4) and LP bit low (CTRL1)
+    ctrl1_mode_bits.write(0);
+    ctrl4_mode_bits.write(0);
+    delay(1); // turn-on transition time (worse case)
+    break;
+  case LIS3DH_MODE_HIGH_RESOLUTION:
+    // set HR bit high (CTRL4) and LP bit low (CTRL1)
+    ctrl1_mode_bits.write(0);
+    ctrl4_mode_bits.write(1);
+    delay(7); // turn-on transition time (worse case)
+    break;
+  }
+}
+
+/*!
+ *   @brief  Gets the performance mode for the LIS3DH
+ *   @return Returns performance mode value
+ */
+lis3dh_mode_t Adafruit_LIS3DH::getPerformanceMode(void) {
+  // low power bit is in CTRL1, 4th bit from right
+  Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+  Adafruit_BusIO_RegisterBits ctrl1_mode_bits =
+      Adafruit_BusIO_RegisterBits(&_ctrl1, 1, 3);
+  // high res bit is in CTRL4, 4th bit from right
+  Adafruit_BusIO_Register _ctrl4 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL4, 1);
+  Adafruit_BusIO_RegisterBits ctrl4_mode_bits =
+      Adafruit_BusIO_RegisterBits(&_ctrl4, 1, 3);
+
+  bool lp = ctrl1_mode_bits.read() == 1;
+  bool hr = ctrl4_mode_bits.read() == 1;
+  if (!lp && !hr) {
+    return LIS3DH_MODE_NORMAL;
+  } else if (lp && !hr) {
+    return LIS3DH_MODE_LOW_POWER;
+  }
+  return LIS3DH_MODE_HIGH_RESOLUTION;
 }
 
 /*!
