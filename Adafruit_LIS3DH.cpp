@@ -222,15 +222,15 @@ void Adafruit_LIS3DH::read(void) {
     lsb_value = 16;
   if (range == LIS3DH_RANGE_16_G)
     lsb_value = 48;
-  
+
   float convert_from_LSB16 = 64000.0;
   if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
-    lsb_value = lsb_value / 4;  # 1 at 2G, 2 at 4G, 4 at 8G, 12 at 16G
+    lsb_value = lsb_value / 4; // 1 at 2G, 2 at 4G, 4 at 8G, 12 at 16G
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB12;
   } else if (mode == LIS3DH_MODE_NORMAL) {
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB10;
   } else if (mode == LIS3DH_MODE_LOW_POWER) {
-    lsb_value = lsb_value * 4;  # 16 at 2G, 32 at 4G, 64 at 8G, 192 at 16G
+    lsb_value = lsb_value * 4; // 16 at 2G, 32 at 4G, 64 at 8G, 192 at 16G
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB8;
   }
   x_g = lsb_value * ((float)x / convert_from_LSB16);
