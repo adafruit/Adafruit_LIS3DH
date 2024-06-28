@@ -200,58 +200,37 @@ void Adafruit_LIS3DH::read(void) {
   z = buffer[4];
   z |= ((uint16_t)buffer[5]) << 8;
 
+  uint8_t range = getRange();
+  uint8_t mode = getPerformanceMode();
+
   // this scaling process accounts for the shift due to actually being 10 bits
   // (normal mode) as well as the lsb=> mg conversion and the mg=> g conversion
   // final value is raw_lsb => 10-bit lsb -> milli-gs -> gs
 
-  // regardless of the range, we'll always convert the value to 10 bits and g's
-  // so we'll always divide by LIS3DH_LSB16_TO_KILO_LSB10 (16000):
+  // depending on the range, we'll always convert the value to 8/10/12 bits and
+  // g's so we'll divide by LIS3DH_LSB16_TO_KILO_LSB10 (16000), _LSB8 or _LSB12:
 
   // then we can then multiply the resulting value by the lsb value to get the
   // value in g's
 
-  uint8_t range = getRange();
-  uint8_t mode = getPerformanceMode();
-  uint8_t lsb_value = 4;
-  if (range == LIS3DH_RANGE_2_G) {
-    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
-      lsb_value = 1; // 1 mg/LSB for 12-bit mode
-    } else if (mode == LIS3DH_MODE_NORMAL) {
-      lsb_value = 4; // 4 mg/LSB for 10-bit mode
-    } else if (mode == LIS3DH_MODE_LOW_POWER) {
-      lsb_value = 16; // 16 mg/LSB for 8-bit mode
-    }
-  } else if (range == LIS3DH_RANGE_4_G) {
-    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
-      lsb_value = 2; // 2 mg/LSB for 12-bit mode
-    } else if (mode == LIS3DH_MODE_NORMAL) {
-      lsb_value = 8; // 8 mg/LSB for 10-bit mode
-    } else if (mode == LIS3DH_MODE_LOW_POWER) {
-      lsb_value = 32; // 32 mg/LSB for 8-bit mode
-    }
-  } else if (range == LIS3DH_RANGE_8_G) {
-    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
-      lsb_value = 4; // 4 mg/LSB for 12-bit mode
-    } else if (mode == LIS3DH_MODE_NORMAL) {
-      lsb_value = 16; // 16 mg/LSB for 10-bit mode
-    } else if (mode == LIS3DH_MODE_LOW_POWER) {
-      lsb_value = 64; // 64 mg/LSB for 8-bit mode
-    }
-  } else if (range == LIS3DH_RANGE_16_G) {
-    if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
-      lsb_value = 12; // 12 mg/LSB for 12-bit mode
-    } else if (mode == LIS3DH_MODE_NORMAL) {
-      lsb_value = 48; // 48 mg/LSB for 10-bit mode
-    } else if (mode == LIS3DH_MODE_LOW_POWER) {
-      lsb_value = 192; // 192 mg/LSB for 8-bit mode
-    }
-  }
+  uint8_t lsb_value = 1;
+  if (range == LIS3DH_RANGE_2_G)
+    lsb_value = 4;
+  if (range == LIS3DH_RANGE_4_G)
+    lsb_value = 8;
+  if (range == LIS3DH_RANGE_8_G)
+    lsb_value = 16;
+  if (range == LIS3DH_RANGE_16_G)
+    lsb_value = 48;
+  
   float convert_from_LSB16 = 64000.0;
   if (mode == LIS3DH_MODE_HIGH_RESOLUTION) {
+    lsb_value = lsb_value / 4;  # 1 at 2G, 2 at 4G, 4 at 8G, 12 at 16G
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB12;
   } else if (mode == LIS3DH_MODE_NORMAL) {
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB10;
   } else if (mode == LIS3DH_MODE_LOW_POWER) {
+    lsb_value = lsb_value * 4;  # 16 at 2G, 32 at 4G, 64 at 8G, 192 at 16G
     convert_from_LSB16 = LIS3DH_LSB16_TO_KILO_LSB8;
   }
   x_g = lsb_value * ((float)x / convert_from_LSB16);
