@@ -18,7 +18,7 @@
 // hardware SPI
 //Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS);
 // Low Power 5Khz data rate needs faster SPI, and calling setPerformanceMode & setDataRate
-//Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS, 2_000_000);
+//Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS, 2000000);
 // I2C
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
