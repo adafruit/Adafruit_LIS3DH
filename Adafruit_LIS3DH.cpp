@@ -388,8 +388,8 @@ bool Adafruit_LIS3DH::enableDRDY(bool enable_drdy, uint8_t int_pin) {
 /*!
  *   @brief  Sets the performance mode for the LIS3DH.
  *
- *   The turn-on time to transition to 12-bit mode (high resolution) is set at 7ms,
- *   or swtch to 10-bit mode (normal) or to 8-bit mode (low power) is 1ms
+ *   The turn-on time to transition to 12-bit mode (high resolution) is set at
+ * 7ms, or swtch to 10-bit mode (normal) or to 8-bit mode (low power) is 1ms
  *
  *   @param  mode
  *          mode - low power, normal, high resolution e.g. LIS3DH_MODE_LOW_POWER
