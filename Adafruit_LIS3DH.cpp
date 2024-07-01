@@ -388,14 +388,8 @@ bool Adafruit_LIS3DH::enableDRDY(bool enable_drdy, uint8_t int_pin) {
 /*!
  *   @brief  Sets the performance mode for the LIS3DH.
  *
- *   The turn-on time to transition to another operating mode is calculated as:
- *   || 12-bit mode (high resolution) to 8-bit mode (low power): 1/ODR
- *   || 12-bit mode (high resolution) to 10-bit mode (normal): 1/ODR
- *   || 10-bit mode (normal) to 8-bit mode (low power): 1/ODR
- *   || 10-bit mode (normal) to 12-bit mode (high resolution): 7/ODR
- *   || 8-bit mode (low power) to 10-bit mode (normal): 1/ODR
- *   || 8-bit mode (low power) to 12-bit mode (high resolution): 7/ODR
- *   (Where ODR is the Output Data Rate - see lis3dh_dataRate_t for values)
+ *   The turn-on time to transition to 12-bit mode (high resolution) is set at 7ms,
+ *   or swtch to 10-bit mode (normal) or to 8-bit mode (low power) is 1ms
  *
  *   @param  mode
  *          mode - low power, normal, high resolution e.g. LIS3DH_MODE_LOW_POWER
@@ -416,19 +410,19 @@ void Adafruit_LIS3DH::setPerformanceMode(lis3dh_mode_t mode) {
     // set HR bit low (CTRL4) and LP bit high (CTRL1)
     ctrl4_mode_bits.write(0);
     ctrl1_mode_bits.write(1);
-    delay(1); // turn-on transition time (worse case)
+    delay(1); // turn-on transition time (worst case)
     break;
   case LIS3DH_MODE_NORMAL:
     // set HR bit low (CTRL4) and LP bit low (CTRL1)
     ctrl1_mode_bits.write(0);
     ctrl4_mode_bits.write(0);
-    delay(1); // turn-on transition time (worse case)
+    delay(1); // turn-on transition time (worst case)
     break;
   case LIS3DH_MODE_HIGH_RESOLUTION:
     // set HR bit high (CTRL4) and LP bit low (CTRL1)
     ctrl1_mode_bits.write(0);
     ctrl4_mode_bits.write(1);
-    delay(7); // turn-on transition time (worse case)
+    delay(7); // turn-on transition time (worst case)
     break;
   }
 }
