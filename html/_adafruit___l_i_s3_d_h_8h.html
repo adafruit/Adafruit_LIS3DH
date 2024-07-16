@@ -161,6 +161,16 @@ Macros</h2></td></tr>
 <tr class="memitem:a862da029aede4f82c5053e206de09f5c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a862da029aede4f82c5053e206de09f5c">LIS3DH_LSB16_TO_KILO_LSB10</a>&#160;&#160;&#160;64000</td></tr>
 <tr class="memdesc:a862da029aede4f82c5053e206de09f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert from milli-gs to gs  <a href="#a862da029aede4f82c5053e206de09f5c">More...</a><br /></td></tr>
 <tr class="separator:a862da029aede4f82c5053e206de09f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20e2ee873a0ffd3caa2c99ae414e369b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a20e2ee873a0ffd3caa2c99ae414e369b">LIS3DH_LSB16_TO_KILO_LSB12</a>&#160;&#160;&#160;16000</td></tr>
+<tr class="memdesc:a20e2ee873a0ffd3caa2c99ae414e369b"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert from milli-gs to gs  <a href="#a20e2ee873a0ffd3caa2c99ae414e369b">More...</a><br /></td></tr>
+<tr class="separator:a20e2ee873a0ffd3caa2c99ae414e369b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e32ce88fdb15874e33cc36d86fe5566"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a5e32ce88fdb15874e33cc36d86fe5566">LIS3DH_LSB16_TO_KILO_LSB8</a>&#160;&#160;&#160;256000</td></tr>
+<tr class="memdesc:a5e32ce88fdb15874e33cc36d86fe5566"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert from milli-gs to gs  <a href="#a5e32ce88fdb15874e33cc36d86fe5566">More...</a><br /></td></tr>
+<tr class="separator:a5e32ce88fdb15874e33cc36d86fe5566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba692b255d46d85463a4ea1910bb28f8"><td class="memItemLeft" align="right" valign="top"><a id="aba692b255d46d85463a4ea1910bb28f8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#aba692b255d46d85463a4ea1910bb28f8">LIS3DH_DEFAULT_SPIFREQ</a>&#160;&#160;&#160;500000</td></tr>
+<tr class="memdesc:aba692b255d46d85463a4ea1910bb28f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI frequency for LIS3DH. <br /></td></tr>
+<tr class="separator:aba692b255d46d85463a4ea1910bb28f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -175,7 +185,12 @@ Enumerations</h2></td></tr>
 <b>LIS3DH_AXIS_Z</b> = 0x2
  }</td></tr>
 <tr class="separator:aa155fce3ef980ddc2ff94497efc47178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dd70603bb60c3662a7e6a32c11be561"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a3dd70603bb60c3662a7e6a32c11be561">lis3dh_dataRate_t</a> { <br />
+<tr class="memitem:afe05001a4fd0dfcae50d6fdc8b4deef4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a> { <b>LIS3DH_MODE_LOW_POWER</b> = 0x0, 
+<b>LIS3DH_MODE_NORMAL</b> = 0x1, 
+<b>LIS3DH_MODE_HIGH_RESOLUTION</b> = 0x2
+ }</td></tr>
+<tr class="separator:afe05001a4fd0dfcae50d6fdc8b4deef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dd70603bb60c3662a7e6a32c11be561"><td class="memItemLeft" align="right" valign="top"><a id="a3dd70603bb60c3662a7e6a32c11be561"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a3dd70603bb60c3662a7e6a32c11be561">lis3dh_dataRate_t</a> { <br />
 &#160;&#160;<b>LIS3DH_DATARATE_400_HZ</b> = 0b0111, 
 <b>LIS3DH_DATARATE_200_HZ</b> = 0b0110, 
 <b>LIS3DH_DATARATE_100_HZ</b> = 0b0101, 
@@ -189,7 +204,8 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>LIS3DH_DATARATE_LOWPOWER_1K6HZ</b> = 0b1000, 
 <b>LIS3DH_DATARATE_LOWPOWER_5KHZ</b> = 0b1001
 <br />
- }</td></tr>
+ }<tr class="memdesc:a3dd70603bb60c3662a7e6a32c11be561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data rate selection Used with register 0x2A (LIS3DH_REG_CTRL_REG1) to set bandwidth. <br /></td></tr>
+</td></tr>
 <tr class="separator:a3dd70603bb60c3662a7e6a32c11be561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -775,6 +791,40 @@ mode" ZHIE/ZUPE Enable interrupt generation on Z high event or on Direction reco
 
 </div>
 </div>
+<a id="a20e2ee873a0ffd3caa2c99ae414e369b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20e2ee873a0ffd3caa2c99ae414e369b">&#9670;&nbsp;</a></span>LIS3DH_LSB16_TO_KILO_LSB12</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIS3DH_LSB16_TO_KILO_LSB12&#160;&#160;&#160;16000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>convert from milli-gs to gs </p>
+<p>Scalar to convert from 16-bit lsb to 12-bit and divide by 1k to </p>
+
+</div>
+</div>
+<a id="a5e32ce88fdb15874e33cc36d86fe5566"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e32ce88fdb15874e33cc36d86fe5566">&#9670;&nbsp;</a></span>LIS3DH_LSB16_TO_KILO_LSB8</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIS3DH_LSB16_TO_KILO_LSB8&#160;&#160;&#160;256000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>convert from milli-gs to gs </p>
+<p>Scalar to convert from 16-bit lsb to 8-bit and divide by 1k to </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a095ff5661264010298f504731a9b0a18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a095ff5661264010298f504731a9b0a18">&#9670;&nbsp;</a></span>lis3dh_range_t</h2>
@@ -806,18 +856,18 @@ mode" ZHIE/ZUPE Enable interrupt generation on Z high event or on Direction reco
 
 </div>
 </div>
-<a id="a3dd70603bb60c3662a7e6a32c11be561"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dd70603bb60c3662a7e6a32c11be561">&#9670;&nbsp;</a></span>lis3dh_dataRate_t</h2>
+<a id="afe05001a4fd0dfcae50d6fdc8b4deef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe05001a4fd0dfcae50d6fdc8b4deef4">&#9670;&nbsp;</a></span>lis3dh_mode_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a3dd70603bb60c3662a7e6a32c11be561">lis3dh_dataRate_t</a></td>
+          <td class="memname">enum <a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Used with register 0x2A (LIS3DH_REG_CTRL_REG1) to set bandwidth </p>
+<p>Operational / performance modes </p>
 
 </div>
 </div>

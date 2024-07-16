@@ -85,12 +85,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f6855878edab66f3ac811b38a3b3a64"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a2f6855878edab66f3ac811b38a3b3a64">Adafruit_LIS3DH</a> (TwoWire *Wi=&amp;Wire)</td></tr>
 <tr class="memdesc:a2f6855878edab66f3ac811b38a3b3a64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class in I2C.  <a href="#a2f6855878edab66f3ac811b38a3b3a64">More...</a><br /></td></tr>
 <tr class="separator:a2f6855878edab66f3ac811b38a3b3a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25eb48b387d1f5380562d8d246d0d23a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a25eb48b387d1f5380562d8d246d0d23a">Adafruit_LIS3DH</a> (int8_t cspin, SPIClass *theSPI=&amp;SPI)</td></tr>
-<tr class="memdesc:a25eb48b387d1f5380562d8d246d0d23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class using hardware SPI.  <a href="#a25eb48b387d1f5380562d8d246d0d23a">More...</a><br /></td></tr>
-<tr class="separator:a25eb48b387d1f5380562d8d246d0d23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a139fd9b82c1fe379d642b854790656b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a139fd9b82c1fe379d642b854790656b0">Adafruit_LIS3DH</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)</td></tr>
-<tr class="memdesc:a139fd9b82c1fe379d642b854790656b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class using software SPI.  <a href="#a139fd9b82c1fe379d642b854790656b0">More...</a><br /></td></tr>
-<tr class="separator:a139fd9b82c1fe379d642b854790656b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae737ae3747472c6ae3e5a5505bf1af9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#ae737ae3747472c6ae3e5a5505bf1af9b">Adafruit_LIS3DH</a> (int8_t cspin, SPIClass *theSPI=&amp;SPI, uint32_t frequency=<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#aba692b255d46d85463a4ea1910bb28f8">LIS3DH_DEFAULT_SPIFREQ</a>)</td></tr>
+<tr class="memdesc:ae737ae3747472c6ae3e5a5505bf1af9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class using hardware SPI.  <a href="#ae737ae3747472c6ae3e5a5505bf1af9b">More...</a><br /></td></tr>
+<tr class="separator:ae737ae3747472c6ae3e5a5505bf1af9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb545f771ae813862cca45045cf4a2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a3cb545f771ae813862cca45045cf4a2f">Adafruit_LIS3DH</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin, uint32_t frequency=<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#aba692b255d46d85463a4ea1910bb28f8">LIS3DH_DEFAULT_SPIFREQ</a>)</td></tr>
+<tr class="memdesc:a3cb545f771ae813862cca45045cf4a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new LIS3DH class using software SPI.  <a href="#a3cb545f771ae813862cca45045cf4a2f">More...</a><br /></td></tr>
+<tr class="separator:a3cb545f771ae813862cca45045cf4a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a284400739526e307eb4a9423b2299e90"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a284400739526e307eb4a9423b2299e90">begin</a> (uint8_t addr=<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#acd71cca6695e86b56b3be85eee01b7d6">LIS3DH_DEFAULT_ADDRESS</a>, uint8_t nWAI=0x33)</td></tr>
 <tr class="memdesc:a284400739526e307eb4a9423b2299e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the HW (reads coefficients values, etc.)  <a href="#a284400739526e307eb4a9423b2299e90">More...</a><br /></td></tr>
 <tr class="separator:a284400739526e307eb4a9423b2299e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,6 +110,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aa326ca8d436ebe2d87501ae4c985fb6d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#aa326ca8d436ebe2d87501ae4c985fb6d">readADC</a> (uint8_t a)</td></tr>
 <tr class="memdesc:aa326ca8d436ebe2d87501ae4c985fb6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the auxilary ADC.  <a href="#aa326ca8d436ebe2d87501ae4c985fb6d">More...</a><br /></td></tr>
 <tr class="separator:aa326ca8d436ebe2d87501ae4c985fb6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a5abf7c96c4439f5bb23f19e06572d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a0a5abf7c96c4439f5bb23f19e06572d4">getPerformanceMode</a> (void)</td></tr>
+<tr class="memdesc:a0a5abf7c96c4439f5bb23f19e06572d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the performance mode for the LIS3DH.  <a href="#a0a5abf7c96c4439f5bb23f19e06572d4">More...</a><br /></td></tr>
+<tr class="separator:a0a5abf7c96c4439f5bb23f19e06572d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ce2a3ad85d3066117455bf99aac4e11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#a7ce2a3ad85d3066117455bf99aac4e11">setPerformanceMode</a> (<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a> mode)</td></tr>
+<tr class="memdesc:a7ce2a3ad85d3066117455bf99aac4e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the performance mode for the LIS3DH.  <a href="#a7ce2a3ad85d3066117455bf99aac4e11">More...</a><br /></td></tr>
+<tr class="separator:a7ce2a3ad85d3066117455bf99aac4e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf864b4a584afae1ac6b53970d135c37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___l_i_s3_d_h.html#aaf864b4a584afae1ac6b53970d135c37">setRange</a> (<a class="el" href="_adafruit___l_i_s3_d_h_8h.html#a095ff5661264010298f504731a9b0a18">lis3dh_range_t</a> range)</td></tr>
 <tr class="memdesc:aaf864b4a584afae1ac6b53970d135c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the g range for the accelerometer.  <a href="#aaf864b4a584afae1ac6b53970d135c37">More...</a><br /></td></tr>
 <tr class="separator:aaf864b4a584afae1ac6b53970d135c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,8 +188,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a25eb48b387d1f5380562d8d246d0d23a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25eb48b387d1f5380562d8d246d0d23a">&#9670;&nbsp;</a></span>Adafruit_LIS3DH() <span class="overload">[2/3]</span></h2>
+<a id="ae737ae3747472c6ae3e5a5505bf1af9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae737ae3747472c6ae3e5a5505bf1af9b">&#9670;&nbsp;</a></span>Adafruit_LIS3DH() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +204,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">SPIClass *&#160;</td>
-          <td class="paramname"><em>theSPI</em> = <code>&amp;SPI</code>&#160;</td>
+          <td class="paramname"><em>theSPI</em> = <code>&amp;SPI</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>frequency</em> = <code><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#aba692b255d46d85463a4ea1910bb28f8">LIS3DH_DEFAULT_SPIFREQ</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -213,14 +225,15 @@ Public Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">cspin</td><td>number of CSPIN (Chip Select) </td></tr>
     <tr><td class="paramname">*theSPI</td><td>optional parameter contains spi object </td></tr>
+    <tr><td class="paramname">frequency</td><td>frequency of the SPI interface </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a139fd9b82c1fe379d642b854790656b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a139fd9b82c1fe379d642b854790656b0">&#9670;&nbsp;</a></span>Adafruit_LIS3DH() <span class="overload">[3/3]</span></h2>
+<a id="a3cb545f771ae813862cca45045cf4a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cb545f771ae813862cca45045cf4a2f">&#9670;&nbsp;</a></span>Adafruit_LIS3DH() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +260,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>sckpin</em>&#160;</td>
+          <td class="paramname"><em>sckpin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>frequency</em> = <code><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#aba692b255d46d85463a4ea1910bb28f8">LIS3DH_DEFAULT_SPIFREQ</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -264,6 +283,7 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">mosipin</td><td>number of pin used for MOSI (Master Out Slave In)) </td></tr>
     <tr><td class="paramname">misopin</td><td>number of pin used for MISO (Master In Slave Out) </td></tr>
     <tr><td class="paramname">sckpin</td><td>number of pin used for CLK (clock pin) </td></tr>
+    <tr><td class="paramname">frequency</td><td>frequency of the SPI interface </td></tr>
   </table>
   </dd>
 </dl>
@@ -413,6 +433,54 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>auxilary ADC value </dd></dl>
+
+</div>
+</div>
+<a id="a0a5abf7c96c4439f5bb23f19e06572d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a5abf7c96c4439f5bb23f19e06572d4">&#9670;&nbsp;</a></span>getPerformanceMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a> Adafruit_LIS3DH::getPerformanceMode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the performance mode for the LIS3DH. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns performance mode value </dd></dl>
+
+</div>
+</div>
+<a id="a7ce2a3ad85d3066117455bf99aac4e11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ce2a3ad85d3066117455bf99aac4e11">&#9670;&nbsp;</a></span>setPerformanceMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_LIS3DH::setPerformanceMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_adafruit___l_i_s3_d_h_8h.html#afe05001a4fd0dfcae50d6fdc8b4deef4">lis3dh_mode_t</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the performance mode for the LIS3DH. </p>
+<p>The turn-on time to transition to 12-bit mode (high resolution) is set at 7ms, or swtch to 10-bit mode (normal) or to 8-bit mode (low power) is 1ms</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>mode - low power, normal, high resolution e.g. LIS3DH_MODE_LOW_POWER </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
