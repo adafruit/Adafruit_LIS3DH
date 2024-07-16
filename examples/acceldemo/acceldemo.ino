@@ -17,6 +17,8 @@
 //Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS, LIS3DH_MOSI, LIS3DH_MISO, LIS3DH_CLK);
 // hardware SPI
 //Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS);
+// Low Power 5Khz data rate needs faster SPI, and calling setPerformanceMode & setDataRate
+//Adafruit_LIS3DH lis = Adafruit_LIS3DH(LIS3DH_CS, 2000000);
 // I2C
 Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
@@ -37,6 +39,14 @@ void setup(void) {
   Serial.print("Range = "); Serial.print(2 << lis.getRange());
   Serial.println("G");
 
+  // lis.setPerformanceMode(LIS3DH_MODE_LOW_POWER);
+  Serial.print("Performance mode set to: ");
+  switch (lis.getPerformanceMode()) {
+    case LIS3DH_MODE_NORMAL: Serial.println("Normal 10bit"); break;
+    case LIS3DH_MODE_LOW_POWER: Serial.println("Low Power 8bit"); break;
+    case LIS3DH_MODE_HIGH_RESOLUTION: Serial.println("High Resolution 12bit"); break;
+  }
+
   // lis.setDataRate(LIS3DH_DATARATE_50_HZ);
   Serial.print("Data rate set to: ");
   switch (lis.getDataRate()) {
@@ -50,7 +60,7 @@ void setup(void) {
 
     case LIS3DH_DATARATE_POWERDOWN: Serial.println("Powered Down"); break;
     case LIS3DH_DATARATE_LOWPOWER_5KHZ: Serial.println("5 Khz Low Power"); break;
-    case LIS3DH_DATARATE_LOWPOWER_1K6HZ: Serial.println("16 Khz Low Power"); break;
+    case LIS3DH_DATARATE_LOWPOWER_1K6HZ: Serial.println("1.6 Khz Low Power"); break;
   }
 }
 
