@@ -130,6 +130,11 @@ bool Adafruit_LIS3DH::begin(uint8_t i2caddr, uint8_t nWAI) {
     // Serial.println(deviceid, HEX);
     return false;
   }
+
+  Adafruit_BusIO_Register _ctrl0 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL0, 1);
+  _ctrl0.write(0x10); // Pull-up SDO/SA0 default mode
+
   Adafruit_BusIO_Register _ctrl1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
   _ctrl1.write(0x07); // enable all axes, normal mode
@@ -507,6 +512,44 @@ lis3dh_dataRate_t Adafruit_LIS3DH::getDataRate(void) {
       Adafruit_BusIO_RegisterBits(&_ctrl1, 4, 4);
 
   return (lis3dh_dataRate_t)data_rate_bits.read();
+}
+
+/*!
+ *  @brief  Sets the pull-up configuration for the LIS3DH
+ *  @param  pullup
+ *          pull-up value (0:is present in hw/1:not present in hw)
+ */
+void Adafruit_LIS3DH::setPullUpConfig(lis3dh_pullup_t pullup) {
+  Adafruit_BusIO_Register _ctrl0 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL0, 1);
+  Adafruit_BusIO_RegisterBits pullup_config =
+      Adafruit_BusIO_RegisterBits(&_ctrl0, 1, 7);
+
+  switch (pullup) {
+  case LIS3DH_PULLUP_CONNECTED:
+    // Asume Pull-Up is externally connected.
+    pullup_config.write(0);
+    delay(1); // turn-on transition time (worst case)
+    break;
+  case LIS3DH_PULLUP_DISCONECTED:
+    // Asume Pull-Up is externally disconnected, use chip internal instead.
+    pullup_config.write(1);
+    delay(1); // turn-on transition time (worst case)
+    break;
+  }
+}
+
+/*!
+ *  @brief  Gets the pull-up configuration for the LIS3DH
+ *  @return pull-up value (0:is present in hw/1:not present in hw)
+ */
+lis3dh_pullup_t Adafruit_LIS3DH::getPullUpConfig(void) {
+  Adafruit_BusIO_Register _ctrl0 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL0, 1);
+  Adafruit_BusIO_RegisterBits pullup_config =
+      Adafruit_BusIO_RegisterBits(&_ctrl0, 1, 7);
+
+  return (lis3dh_pullup_t)pullup_config.read();
 }
 
 /*!

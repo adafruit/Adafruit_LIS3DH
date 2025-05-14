@@ -70,6 +70,14 @@
   0x0E /**< INT_COUNTER register [IC7, IC6, IC5, IC4, IC3, IC2, IC1, IC0] */
 #define LIS3DH_REG_WHOAMI                                                      \
   0x0F /**< Device identification register. [0, 0, 1, 1, 0, 0, 1, 1] */
+
+/*!
+ *  CTRL_REG0
+ *  Disconnect SDO/SA0 pull-up.
+ *   SDO_PU_DISC   Pull-up connected to SDO/SA0 pin. Default value: 0
+ *                 (0: connected; 1: disconnected)
+ */
+#define LIS3DH_REG_CTRL0 0x1E
 /*!
  *  TEMP_CFG_REG
  *  Temperature configuration register.
@@ -321,6 +329,12 @@
 
 #define LIS3DH_DEFAULT_SPIFREQ 500000 ///< SPI frequency for LIS3DH
 
+/** A structure to represent pull-up config **/
+typedef enum {
+  LIS3DH_PULLUP_CONNECTED = 0x0,
+  LIS3DH_PULLUP_DISCONECTED = 0x1
+} lis3dh_pullup_t;
+
 /** A structure to represent scales **/
 typedef enum {
   LIS3DH_RANGE_16_G = 0b11, // +/- 16g
@@ -390,6 +404,9 @@ public:
 
   void setDataRate(lis3dh_dataRate_t dataRate);
   lis3dh_dataRate_t getDataRate(void);
+
+  void setPullUpConfig(lis3dh_pullup_t pullup);
+  lis3dh_pullup_t getPullUpConfig(void);
 
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
