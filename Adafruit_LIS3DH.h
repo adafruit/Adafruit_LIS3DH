@@ -409,11 +409,11 @@ public:
   float z_g; /**< z_g axis value (calculated by selected range) */
 
 private:
-  TwoWire *I2Cinterface;
-  SPIClass *SPIinterface;
+  TwoWire *I2Cinterface = NULL;  ///< Pointer to I2C bus interface
+  SPIClass *SPIinterface = NULL; ///< Pointer to SPI bus interface
 
-  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
-  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C device
+  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI device
 
   uint8_t _wai;
 
