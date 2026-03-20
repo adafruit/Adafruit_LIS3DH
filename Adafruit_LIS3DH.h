@@ -222,6 +222,12 @@
  * enable interrupt request.)
  */
 #define LIS3DH_REG_INT1CFG 0x30
+
+/*!
+ *  INT2_CFG
+ */
+#define LIS3DH_REG_INT2CFG 0x34
+
 /*!
  *  INT1_SRC
  *   [0, IA, ZH, ZL, YH, YL, XH, XL]
@@ -245,6 +251,32 @@
   0x32 /**< INT1_THS register [0, THS6, THS5, THS4, THS3, THS1, THS0] */
 #define LIS3DH_REG_INT1DUR                                                     \
   0x33 /**< INT1_DURATION [0, D6, D5, D4, D3, D2, D1, D0] */
+
+
+/*!
+ *  INT2_SRC
+ *   [0, IA, ZH, ZL, YH, YL, XH, XL]
+ *    IA  Interrupt active. Default value: 0
+ *        (0: no interrupt has been generated; 1: one or more interrupts have
+ * been generated) ZH  Z high. Default value: 0 (0: no interrupt, 1: Z High
+ * event has occurred) ZL  Z low. Default value: 0 (0: no interrupt; 1: Z Low
+ * event has occurred) YH  Y high. Default value: 0 (0: no interrupt, 1: Y High
+ * event has occurred) YL  Y low. Default value: 0 (0: no interrupt, 1: Y Low
+ * event has occurred) XH  X high. Default value: 0 (0: no interrupt, 1: X High
+ * event has occurred) XL  X low. Default value: 0 (0: no interrupt, 1: X Low
+ * event has occurred)
+ *
+ *    Interrupt 1 source register. Read only register.
+ *    Reading at this address clears INT1_SRC IA bit (and the interrupt signal
+ * on INT 1 pin) and allows the refreshment of data in the INT1_SRC register if
+ * the latched option  was chosen.
+ */
+#define LIS3DH_REG_INT2SRC 0x35
+#define LIS3DH_REG_INT2THS                                                     \
+  0x36 /**< INT1_THS register [0, THS6, THS5, THS4, THS3, THS1, THS0] */
+#define LIS3DH_REG_INT2DUR                                                     \
+  0x37 /**< INT1_DURATION [0, D6, D5, D4, D3, D2, D1, D0] */
+
 /*!
  *  CLICK_CFG
  *   [--, --, ZD, ZS, YD, YS, XD, XS]
@@ -361,6 +393,21 @@ typedef enum {
 
 } lis3dh_dataRate_t;
 
+typedef enum {
+	LIS3DH_INT_1 = 1,
+	LIS3DH_INT_2
+} lis3dh_interrupt_t;
+
+typedef enum {
+	LIS3DH_DET_STOP,
+	LIS3DH_DET_MOVE,
+} lis3dh_event_t;
+
+typedef enum {
+  LIS3DH_HIGH_RESOLUTION_MODE = 0,
+  LIS3DH_LOW_POWER_MODE = 1
+} lis3dh_power_mode_t;
+
 /*!
  *  @brief  Class that stores state and functions for interacting with
  *          Adafruit_LIS3DH
@@ -399,6 +446,9 @@ public:
   uint8_t getClick(void);
 
   uint8_t readAndClearInterrupt(void);
+
+  bool intConfig(lis3dh_interrupt_t interrupt, lis3dh_event_t moveType, uint8_t threshold, uint8_t timeDur, bool polarity);
+  bool lowPowerConfig(lis3dh_power_mode_t power_mode);
 
   int16_t x; /**< x axis value */
   int16_t y; /**< y axis value */

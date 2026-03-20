@@ -553,3 +553,65 @@ void Adafruit_LIS3DH::getSensor(sensor_t *sensor) {
   sensor->min_value = 0;
   sensor->resolution = 0;
 }
+
+bool Adafruit_LIS3DH::intConfig(lis3dh_interrupt_t interrupt, lis3dh_event_t moveType, uint8_t threshold, uint8_t timeDur, bool polarity) {
+	bool returnError = true;
+
+  Adafruit_BusIO_Register regToWrite = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, (interrupt == LIS3DH_INT_1) ? LIS3DH_REG_INT1CFG : LIS3DH_REG_INT2CFG, 1);
+
+  Adafruit_BusIO_RegisterBits range_bits = Adafruit_BusIO_RegisterBits(&regToWrite, 6, 0);
+
+	//Build INT_CFG 0x30 or 0x34
+	//Detect movement or stop
+	if(moveType == LIS3DH_DET_MOVE) {
+    range_bits.write(0x0A);
+  }
+	else {
+    range_bits.write(0x05);
+  }
+	
+	//Build INT_THS 0x32 or 0x36
+	regToWrite = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, (interrupt == LIS3DH_INT_1) ? LIS3DH_REG_INT1THS : LIS3DH_REG_INT2THS, 1); 
+  range_bits = Adafruit_BusIO_RegisterBits(&regToWrite, 7, 0);
+	range_bits.write(threshold);
+
+	//Build INT_DURATION 0x33 or 0x37
+  regToWrite = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, (interrupt == LIS3DH_INT_1) ? LIS3DH_REG_INT1DUR : LIS3DH_REG_INT2DUR, 1); 
+  range_bits = Adafruit_BusIO_RegisterBits(&regToWrite, 7, 0);
+	range_bits.write(timeDur);
+
+	// Attach configuration to Interrupt X
+	if(interrupt == LIS3DH_INT_1)
+	{
+    regToWrite = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL3, 1);
+    regToWrite.write(0x40); // enable ia1 on int1 pin
+	}
+	else
+	{
+    regToWrite = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL6, 1);
+    regToWrite.write(0x20); // enable ia2 on int2 pin
+	}
+
+  // Change polarity
+  regToWrite = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL6, 1);
+  range_bits = Adafruit_BusIO_RegisterBits(&regToWrite, 1, 1);
+	range_bits.write(polarity);
+	
+	return returnError;
+}
+
+bool Adafruit_LIS3DH::lowPowerConfig(lis3dh_power_mode_t power_mode) {
+  bool returnError = true;
+  Adafruit_BusIO_Register regToWrite = Adafruit_BusIO_Register(
+    i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LIS3DH_REG_CTRL1, 1);
+
+  Adafruit_BusIO_RegisterBits range_bits = Adafruit_BusIO_RegisterBits(&regToWrite, 1, 3);
+  range_bits.write(power_mode);
+
+  if (((regToWrite.read() & 0x8) >> 3) != power_mode) {
+    returnError = true;
+  }
+
+  return returnError;
+}
